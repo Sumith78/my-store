@@ -56,11 +56,32 @@
 }
 
 
-    .menu-right {
+        .menu-right {
       display: flex;
       align-items: center;
       gap: 15px;
     }
+
+ .signin-icon {
+  font-size: 1.5rem;
+  color: white; /* ✅ white icon */
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.signin-icon:hover {
+  transform: scale(1.3);
+  color: #ffdd57; /* optional hover color like light yellow */
+  cursor: pointer;
+}
+
+
+
+    .cart-icon:hover {
+      transform: scale(1.2);
+      color: #ffc107;
+    }
+
 
     .menu-dropdown {
       display: none;
@@ -222,10 +243,15 @@
       <img src="WhatsApp Image 2025-06-23 at 17.03.47_9950cd83.jpg" alt="Mahaveer Enterprises Logo" class="logo-img" />
     </div>
 
-    <div class="menu-right">
+       <div class="menu-right">
       <button class="search-icon" onclick="toggleSearch()">🔍</button>
+
+      <a href="auth.html" class="signin-icon" title="Sign In">👤</a>
+
+
       <button class="cart-icon" onclick="showCart()">🛒</button>
     </div>
+
 
     <div class="search-container" id="searchContainer">
       <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()" />
