@@ -389,34 +389,50 @@
     function searchProducts() {
   const input = document.getElementById('searchInput').value.trim().toLowerCase();
   const products = document.querySelectorAll('.product-card');
+  const homeSection = document.querySelector('.home-background-section');
+
+  let anyMatch = false;
 
   products.forEach(product => {
     const name = product.querySelector('h3')?.textContent.toLowerCase();
     const desc = product.querySelector('p')?.textContent.toLowerCase();
 
-    // Hide all products if search input is empty
     if (input === "") {
       product.style.display = "none";
     } else if (name.includes(input) || desc.includes(input)) {
       product.style.display = "flex";
+      anyMatch = true;
     } else {
       product.style.display = "none";
     }
   });
+
+  // Hide home section if any match or if there's text
+  homeSection.style.display = (input === "") ? "flex" : "none";
 }
 
 
-    function filterProducts(tag) {
-      const products = document.querySelectorAll('.product-card');
-      products.forEach(product => {
-        const tags = product.getAttribute('data-tags') || '';
-        if (tags.includes(tag)) {
-          product.style.display = 'flex';
-        } else {
-          product.style.display = 'none';
-        }
-      });
+function filterProducts(tag) {
+  const products = document.querySelectorAll('.product-card');
+  const homeSection = document.querySelector('.home-background-section');
+  let anyMatch = false;
+
+  products.forEach(product => {
+    const tags = product.getAttribute('data-tags') || '';
+    if (tags.includes(tag)) {
+      product.style.display = 'flex';
+      anyMatch = true;
+    } else {
+      product.style.display = 'none';
     }
+  });
+
+  // Hide home section if any match
+  homeSection.style.display = anyMatch ? "none" : "flex";
+
+  // Also hide search bar
+  document.getElementById('searchContainer').style.display = "none";
+}
 
     function addToCart(productName) {
       if (!localStorage.getItem('user_email')) {
