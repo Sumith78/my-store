@@ -291,6 +291,110 @@
         width: 90%;
       }
     }
+
+
+.vedic-section {
+  background-color: rgb(11, 65, 39);
+  padding: 40px 20px;
+  color: white;
+  text-align: left;
+}
+
+.vedic-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Main container for cards */
+.vedic-slider {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Card styles for desktop (2 cards side-by-side) */
+.vedic-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  width: 46%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-align: left;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.vedic-card:hover {
+  transform: translateY(-5px);
+}
+
+.vedic-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.vedic-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: #f8f9fa;
+}
+
+.shop-now-text {
+  font-weight: bold;
+  color: #ffc107;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 8px;
+  display: inline-block;
+  transition: text-decoration 0.2s ease;
+}
+
+.shop-now-text:hover {
+  text-decoration: underline;
+}
+
+/* On mobile: show horizontal slider behavior */
+@media (max-width: 768px) {
+  .vedic-slider {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .vedic-card {
+    flex: 0 0 85%;
+    max-width: 85%;
+    scroll-snap-align: start;
+    margin-right: 15px;
+  }
+}
+
+
+.product-card {
+  position: relative;
+}
+
+.product-card .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 10;
+}
+
+
+
+
+
+
   </style>
 </head>
 
@@ -330,37 +434,76 @@
     </div>
   </header>
 
-    <div class="main-content-wrapper">
-  <!-- First Section with Background Image -->
-  <div class="home-background-section">
-    <div class="home-content">
-      <h1>Welcome to Mahaveer Enterprises</h1>
-      <p>Find the best deals on watches, bracelets, trousers & kids’ toys!</p>
+<div class="main-content-wrapper">
+
+  <!-- ✅ Wrap both sections inside #homeSections -->
+  <div id="homeSections">
+
+    <!-- First Section with Background Image -->
+    <div class="home-background-section">
+      <div class="home-content">
+        <h1>Welcome to Mahaveer Enterprises</h1>
+        <p>Find the best deals on watches, bracelets, trousers & kids’ toys!</p>
+      </div>
     </div>
-  </div>
 
+    <!-- Vedic Favorites Section -->
+    <section class="vedic-section">
+      <h2>This Week's Mahaveer's Favorites</h2>
 
+      <div class="vedic-slider">
+        <!-- Card 1 -->
+        <div class="vedic-card" onclick="filterProducts('bracelet')">
+          <img src="money.webp" alt="Money Bracelet" />
+          <p>
+            A Money Bracelet is a spiritual accessory made with crystals, Rudraksha,
+            or symbols, believed to attract wealth, abundance, and financial success.
+          </p>
+          <div class="shop-now-text" onclick="event.stopPropagation(); showBraceletsOnly()">Shop Now →</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="vedic-card" onclick="filterProducts('bracelet')">
+          <img src="rudraksh.webp" alt="Rudraksha Bracelet" />
+          <p>
+            A Rudraksha bracelet is a sacred bead accessory believed to bring
+            spiritual protection, inner peace, and attract positive energy, health,
+            and prosperity.
+          </p>
+          <div class="shop-now-text" onclick="event.stopPropagation(); showBraceletsOnly()">Shop Now →</div>
+        </div>
+      </div>
+    </section>
+     </div>
 
   <div class="products-container" id="productList">
     <div class="product-card" data-tags="watch">
+      <button class="close-btn" onclick="showHome()">❌</button>
+
       <h3>Classic Watch</h3>
       <p>Elegant men's wristwatch with leather strap.</p>
       <p><strong>₹4,299</strong></p>
       <button onclick="addToCart('Classic Watch')">+ Add to Cart</button>
     </div>
-    <div class="product-card" data-tags="bracelet">
-      <h3>Silver Bracelet</h3>
-      <p>Premium sterling silver bracelet for women.</p>
-      <p><strong>₹2,199</strong></p>
-      <button onclick="addToCart('Silver Bracelet')">+ Add to Cart</button>
-    </div>
+  <div class="product-card" data-tags="bracelet">
+  <button class="close-btn" onclick="showHome()">❌</button>
+  <h3>Silver Bracelet</h3>
+  <p>Premium sterling silver bracelet for women.</p>
+  <p><strong>₹2,199</strong></p>
+  <button onclick="addToCart('Classic Watch')">+ Add to Cart</button>
+</div>
+
     <div class="product-card" data-tags="trousers">
+      <button class="close-btn" onclick="showHome()">❌</button>
+
       <h3>Men's Trousers</h3>
       <p>Comfortable and stylish trousers for men.</p>
       <p><strong>₹1,499</strong></p>
       <button onclick="addToCart('Men Trousers')">+ Add to Cart</button>
     </div>
     <div class="product-card" data-tags="kids">
+      <button class="close-btn" onclick="showHome()">❌</button>
+
       <h3>Kids Toy Set</h3>
       <p>Fun and safe toy set for kids aged 3-8.</p>
       <p><strong>₹889</strong></p>
@@ -467,6 +610,82 @@ function filterProducts(tag) {
         if (logoutBtn) logoutBtn.style.display = 'none';
       }
     }
+
+
+    function showCategory(tag) {
+  // Hide all sections EXCEPT header
+  document.querySelector('.home-background-section').style.display = "none";
+  document.querySelector('.vedic-section').style.display = "none";
+  document.getElementById("productList").style.display = "flex";
+
+  // Show only matching products
+  const cards = document.querySelectorAll('.product-card');
+  cards.forEach(card => {
+    const tags = card.getAttribute('data-tags') || '';
+    card.style.display = tags.includes(tag) ? "flex" : "none";
+  });
+}
+
+function showHome() {
+  document.querySelector('.home-background-section').style.display = "flex";
+  document.querySelector('.vedic-section').style.display = "block";
+  document.getElementById("productList").style.display = "none";
+}
+
+
+function showHome() {
+  // Hide products
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.style.display = 'none';
+  });
+
+  // Show home sections
+  document.getElementById('homeSections').style.display = 'block';
+}
+
+// Called on search input
+function searchProducts() {
+  const input = document.getElementById('searchInput').value.trim().toLowerCase();
+  const products = document.querySelectorAll('.product-card');
+
+  let anyMatch = false;
+  products.forEach(product => {
+    const name = product.querySelector('h3')?.textContent.toLowerCase();
+    const desc = product.querySelector('p')?.textContent.toLowerCase();
+
+    if (input && (name.includes(input) || desc.includes(input))) {
+      product.style.display = 'flex';
+      anyMatch = true;
+    } else {
+      product.style.display = 'none';
+    }
+  });
+
+  document.getElementById('homeSections').style.display = input ? 'none' : 'block';
+}
+
+// Called from menu (like filterProducts('bracelet'))
+function filterProducts(tag) {
+  const products = document.querySelectorAll('.product-card');
+
+  products.forEach(product => {
+    const tags = product.getAttribute('data-tags') || '';
+    if (tags.includes(tag)) {
+      product.style.display = 'flex';
+    } else {
+      product.style.display = 'none';
+    }
+  });
+
+  document.getElementById('homeSections').style.display = 'none';
+}
+
+// Called when Shop Now is clicked
+function showBraceletsOnly() {
+  filterProducts('bracelet'); // this will already hide the rest
+}
+
+
   </script>
 </body>
 </html>
