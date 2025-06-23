@@ -32,9 +32,7 @@
 }
 
 
-.home-background-section {
-  background-color: rgb(11, 65, 39); /* background color fallback */
-}
+
 
 
     .menu-left {
@@ -118,8 +116,16 @@
       }
     }
 
-    .home-background-section {
-  height: calc(100vh - 80px); /* adjusts based on header height */
+    .main-content-wrapper {
+  background-color: rgb(11, 65, 39);
+  min-height: 100vh;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+}
+
+/* Existing styles */
+.home-background-section {
+  min-height: calc(100vh - 80px); /* full screen minus header */
   background-image: url('home_below.jpeg');
   background-size: cover;
   background-position: center;
@@ -132,7 +138,7 @@
 }
 
 .home-content {
-  background: rgba(0, 0, 0, 0.5); /* Optional dark overlay for readability */
+  background: rgba(0, 0, 0, 0.5); /* dark overlay */
   padding: 30px;
   border-radius: 10px;
   color: white;
@@ -140,9 +146,17 @@
   max-width: 90%;
 }
 
+/* Optional second section styling */
+.custom-section {
+  padding: 40px 20px;
+  color: white;
+  text-align: center;
+}
+
+/* Responsive fix */
 @media (max-width: 768px) {
   .home-background-section {
-    height: auto;
+    min-height: auto;
     padding: 40px 10px;
     background-position: top;
   }
@@ -153,6 +167,7 @@
     font-size: 1rem;
   }
 }
+
 
 
 
@@ -315,12 +330,16 @@
     </div>
   </header>
 
-    <div class="home-background-section">
-  <div class="home-content">
-    <h1>Welcome to Mahaveer Enterprises</h1>
-    <p>Find the best deals on watches, bracelets, trousers & kids’ toys!</p>
+    <div class="main-content-wrapper">
+  <!-- First Section with Background Image -->
+  <div class="home-background-section">
+    <div class="home-content">
+      <h1>Welcome to Mahaveer Enterprises</h1>
+      <p>Find the best deals on watches, bracelets, trousers & kids’ toys!</p>
+    </div>
   </div>
-</div>
+
+
 
   <div class="products-container" id="productList">
     <div class="product-card" data-tags="watch">
