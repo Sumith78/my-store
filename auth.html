@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authentication</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      position: relative;
+      background: white;
+      padding: 2rem;
+      padding-top: 2.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Close icon styles */
+    .close-icon {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 18px;
+      color: #888;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-weight: bold;
+    }
+
+    .close-icon:hover {
+      color: red;
+    }
+
+    .card h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .card input {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.4rem 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .card button {
+   
+      padding: 0.7rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+
+    .card a {
+      display: block;
+      text-align: center;
+      margin-top: 0.5rem;
+      color: #007bff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <!-- Clean close icon on top-right -->
+    <button class="close-icon" onclick="window.location.href='index.html'">✕</button>
+
+    <!-- Sign Up Section -->
+    <div id="signupSection">
+      <h2>Sign Up</h2>
+      <input type="text" id="signupName" placeholder="Full Name" required />
+      <input type="email" id="signupEmail" placeholder="Email" required />
+      <input type="password" id="signupPassword" placeholder="Password" required />
+      <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
+      <button onclick="signupUser()">Sign Up</button>
+      <a onclick="showSection('signinSection')">Already have an account? Sign In</a>
+    </div>
+
+    <!-- Sign In Section -->
+    <div id="signinSection" class="hidden">
+      <h2>Sign In</h2>
+      <input type="email" id="signinEmail" placeholder="Email" required />
+      <input type="password" id="signinPassword" placeholder="Password" required />
+      <button onclick="signinUser()">Sign In</button>
+      <a onclick="showSection('forgotSection')">Forgot Password?</a>
+      <a onclick="showSection('signupSection')">Don't have an account? Sign Up</a>
+    </div>
+
+    <!-- Forgot Password Section -->
+    <div id="forgotSection" class="hidden">
+      <h2>Reset Password</h2>
+      <input type="email" id="resetEmail" placeholder="Your registered email" required />
+      <input type="password" id="newPassword" placeholder="New password" required />
+      <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required />
+      <button onclick="resetPassword()">Reset Password</button>
+      <a onclick="showSection('signinSection')">Back to Sign In</a>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.getElementById("signupSection").classList.add("hidden");
+      document.getElementById("signinSection").classList.add("hidden");
+      document.getElementById("forgotSection").classList.add("hidden");
+      document.getElementById(id).classList.remove("hidden");
+    }
+
+    function signupUser() {
+      const name = document.getElementById("signupName").value;
+      const email = document.getElementById("signupEmail").value;
+      const password = document.getElementById("signupPassword").value;
+      const confirmPassword = document.getElementById("signupConfirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      localStorage.setItem("user_name", name);
+      localStorage.setItem("user_email", email);
+      localStorage.setItem("user_pass", password);
+
+      alert("Sign-up successful! Please sign in.");
+      showSection("signinSection");
+    }
+
+    function signinUser() {
+      const email = document.getElementById("signinEmail").value;
+      const password = document.getElementById("signinPassword").value;
+
+      const savedEmail = localStorage.getItem("user_email");
+      const savedPass = localStorage.getItem("user_pass");
+
+      if (email === savedEmail && password === savedPass) {
+        alert("Login successful!");
+        window.location.href = "index.html";
+      } else {
+        alert("Invalid credentials or unregistered email. Please sign up.");
+        showSection("signupSection");
+      }
+    }
+
+    function resetPassword() {
+      const email = document.getElementById("resetEmail").value;
+      const newPass = document.getElementById("newPassword").value;
+      const confirmPass = document.getElementById("confirmNewPassword").value;
+
+      const savedEmail = localStorage.getItem("user_email");
+
+      if (email !== savedEmail) {
+        alert("This email is not registered. Please sign up.");
+        showSection("signupSection");
+        return;
+      }
+
+      if (newPass !== confirmPass) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      localStorage.setItem("user_pass", newPass);
+      alert("Password reset successful! Please sign in.");
+      showSection("signinSection");
+    }
+
+    window.onload = () => {
+      const view = localStorage.getItem('auth_view');
+      if (view === 'signin') showSection('signinSection');
+      else if (view === 'forgot') showSection('forgotSection');
+      else showSection('signupSection');
+      localStorage.removeItem('auth_view');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MAHAVEER ENTERPRISES</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 1rem;
+      background-color:rgb(11, 65, 39);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 80px;
+    }
+
+    .menu-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .menu-button,
+    .search-icon,
+    .cart-icon {
+      font-size: 1.5rem;
+      background: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+    }
+
+ .logo-img {
+  max-height: 80px;
+  max-width: 200px;  /  * ✅ Add this line to control width */
+  width: auto;
+  object-fit: contain;
+}
+
+
+    .menu-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .menu-dropdown {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 10px;
+      width: 240px;
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      animation: slideDown 0.3s ease forwards;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: scaleY(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scaleY(1);
+      }
+    }
+
+    .menu-dropdown a,
+    .menu-dropdown button {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 5px 0;
+      text-decoration: none;
+      color: #333;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .menu-dropdown a:hover,
+    .menu-dropdown button:hover {
+      background-color: #e2e6ea;
+    }
+
+    .menu-dropdown button {
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 45px;
+      box-sizing: border-box;
+    }
+
+    .search-container {
+      position: absolute;
+      top: 50%;
+      right: 70px;
+      transform: translateY(-50%);
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 999;
+    }
+
+    .search-container input {
+      padding: 6px;
+      width: 180px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .search-container .close-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .products-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      width: 300px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-card h3 {
+      margin: 0.5rem 0;
+    }
+
+    .product-card button {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .cart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffc107;
+      padding: 1rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .product-card {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="menu-left">
+      <button class="menu-button" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <div class="brand">
+      <img src="WhatsApp Image 2025-06-23 at 17.03.47_9950cd83.jpg" alt="Mahaveer Enterprises Logo" class="logo-img" />
+    </div>
+
+    <div class="menu-right">
+      <button class="search-icon" onclick="toggleSearch()">🔍</button>
+      <button class="cart-icon" onclick="showCart()">🛒</button>
+    </div>
+
+    <div class="search-container" id="searchContainer">
+      <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()" />
+      <button class="close-btn" onclick="toggleSearch()">❌</button>
+    </div>
+
+    <div class="menu-dropdown" id="menuDropdown">
+      <a href="#orders"><span>📦</span>View My Orders</a>
+      <a href="#watches"><span>⌚</span>Watches</a>
+      <a href="#bracelets"><span>🧿</span>Bracelets</a>
+      <a href="#men"><span>👖</span>Men Trousers</a>
+      <a href="#kids"><span>🧒</span>Kids Zone</a>
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')"><span>📝</span>Sign Up</a>
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')"><span>🔐</span>Sign In</a>
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'forgot')"><span>❓</span>Forgot Password</a>
+      <button onclick="logoutUser()">Logout</button>
+    </div>
+  </header>
+
+  <div class="products-container" id="productList">
+    <div class="product-card" id="watches">
+      <h3>Classic Watch</h3>
+      <p>Elegant men's wristwatch with leather strap.</p>
+      <p><strong>₹4,299</strong></p>
+      <button onclick="addToCart('Classic Watch')">+ Add to Cart</button>
+    </div>
+    <div class="product-card" id="bracelets">
+      <h3>Silver Bracelet</h3>
+      <p>Premium sterling silver bracelet for women.</p>
+      <p><strong>₹2,199</strong></p>
+      <button onclick="addToCart('Silver Bracelet')">+ Add to Cart</button>
+    </div>
+    <div class="product-card" id="men">
+      <h3>Men's Trousers</h3>
+      <p>Comfortable and stylish trousers for men.</p>
+      <p><strong>₹1,499</strong></p>
+      <button onclick="addToCart('Men Trousers')">+ Add to Cart</button>
+    </div>
+    <div class="product-card" id="kids">
+      <h3>Kids Toy Set</h3>
+      <p>Fun and safe toy set for kids aged 3-8.</p>
+      <p><strong>₹889</strong></p>
+      <button onclick="addToCart('Kids Toy Set')">+ Add to Cart</button>
+    </div>
+  </div>
+
+  <div class="cart" onclick="showCart()">
+    🛒 <span id="cartCount">0</span>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const dropdown = document.getElementById("menuDropdown");
+      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    }
+
+    function toggleSearch() {
+      const box = document.getElementById("searchContainer");
+      const input = document.getElementById("searchInput");
+      const visible = box.style.display === "block";
+      box.style.display = visible ? "none" : "block";
+      if (!visible) input.focus();
+    }
+
+    function searchProducts() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const products = document.querySelectorAll('.product-card');
+
+      products.forEach(product => {
+        const name = product.querySelector('h3')?.textContent.toLowerCase();
+        const desc = product.querySelector('p')?.textContent.toLowerCase();
+
+        if (name.includes(input) || desc.includes(input)) {
+          product.style.display = 'flex';
+        } else {
+          product.style.display = 'none';
+        }
+      });
+    }
+
+    function addToCart(productName) {
+      if (!localStorage.getItem('user_email')) {
+        alert("Please sign in to add items to cart.");
+        window.location.href = "auth.html";
+        return;
+      }
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push(productName);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      document.getElementById('cartCount').textContent = cart.length;
+      alert(productName + " added to cart!");
+    }
+
+    function showCart() {
+      window.location.href = 'cart.html';
+    }
+
+    function logoutUser() {
+      localStorage.removeItem('user_email');
+      localStorage.removeItem('user_pass');
+      localStorage.removeItem('user_name');
+      alert('Logged out successfully!');
+      window.location.href = 'auth.html';
+    }
+
+    window.onload = () => {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      document.getElementById('cartCount').textContent = cart.length;
+
+      if (!localStorage.getItem('user_email')) {
+        const logoutBtn = document.querySelector('button[onclick="logoutUser()"]');
+        if (logoutBtn) logoutBtn.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+
+</html>
