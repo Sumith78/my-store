@@ -686,6 +686,48 @@ function showBraceletsOnly() {
 }
 
 
+let isMenuOpen = false;
+
+  function toggleMenu() {
+    const dropdown = document.getElementById("menuDropdown");
+    isMenuOpen = !isMenuOpen;
+    dropdown.style.display = isMenuOpen ? "flex" : "none";
+  }
+
+  // Auto-hide on outside click
+  document.addEventListener('click', function (e) {
+    const menu = document.getElementById("menuDropdown");
+    const menuBtn = document.querySelector('.menu-button');
+    if (isMenuOpen && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
+      menu.style.display = "none";
+      isMenuOpen = false;
+    }
+  });
+
+  // Auto-hide after clicking a menu item
+  window.onload = () => {
+    const links = document.querySelectorAll('#menuDropdown a, #menuDropdown button');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        setTimeout(() => {
+          document.getElementById("menuDropdown").style.display = "none";
+          isMenuOpen = false;
+        }, 300);
+      });
+    });
+
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    document.getElementById('cartCount').textContent = cart.length;
+    if (!localStorage.getItem('user_email')) {
+      const logoutBtn = document.querySelector('button[onclick="logoutUser()"]');
+      if (logoutBtn) logoutBtn.style.display = 'none';
+    }
+  };
+
+
+
+  
+
   </script>
 </body>
 </html>
