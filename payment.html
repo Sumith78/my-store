@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Gateway</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: rgb(11, 65, 39);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h3 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    .option-section {
+      margin-bottom: 30px;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 10px;
+      background-color: #f8f8f8;
+      min-height: 90px;
+      white-space: pre-line;
+    }
+
+    .upi-image {
+      width: 200px;
+      height: auto;
+      margin: 10px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    .address-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      width: 400px;
+      max-width: 90%;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      display: none;
+      z-index: 1001;
+    }
+
+    .popup h3 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 1.4rem;
+      color: #333;
+    }
+
+    .popup input,
+    .popup textarea {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .green-btn {
+      background-color: green;
+      color: white;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: green;
+      z-index: 2000;
+      animation: fadeout 4s ease forwards;
+    }
+
+    @keyframes fadeout {
+      0% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    .add-address {
+      background-color: #007bff;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .card span {
+      display: block;
+      text-align: left;
+      white-space: pre-line;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    💳 Payment Gateway 
+    <span id="countdown" style="float: right; font-size: 1rem; font-weight: normal;">⏳ 05:00</span>
+  </header>
+  
+
+  <div class="container">
+    <div class="option-section">
+      <h3>Select Payment Method</h3>
+      <label><input type="radio" name="payment" value="upi" checked> UPI (Scanner)</label>
+      <div class="card" id="upiSection">
+        <img src="QR.png" alt="Scan QR" class="upi-image" />
+        <p><strong>UPI ID:</strong> 9739170288@ybl</p>
+      </div>
+
+      <label><input type="radio" name="payment" value="cod"> Cash on Delivery (COD)</label>
+      <div class="card" id="codSection" style="display: none;">
+        <div class="add-address" onclick="togglePopup()">+ Add New Address</div>
+        <div class="address-options">
+          <label><input type="radio" name="address" value="checkoutAddress" checked> <span id="checkoutAddress">No address found</span></label>
+        </div>
+        <label><input type="checkbox" id="sameDelivery"> Deliver on selected address</label>
+      </div>
+    </div>
+
+    <button class="btn green-btn" onclick="placeOrder()">Place the Order</button>
+  </div>
+
+  <!-- ✅ UPDATED ADD NEW ADDRESS POPUP -->
+  <div class="popup" id="popup">
+    <h3>Add New Address</h3>
+    <input type="text" id="newName" placeholder="Full Name" />
+    <input type="text" id="newContact" placeholder="Mobile Number" />
+    <textarea id="newAddress" placeholder="Current Address" rows="4"></textarea>
+    <button class="btn green-btn" onclick="saveNewAddress()">Save Details</button>
+  </div>
+
+  <div id="celebration" class="celebration" style="display: none;">🎉 Order Placed Successfully!</div>
+
+  <script>
+    const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails'));
+    const nameLine = checkoutData?.name || "Name not found";
+    const addressLine = checkoutData?.currentAddress || "Address not found";
+    const checkoutAddress = `${nameLine}\n${addressLine}`;
+    document.getElementById('checkoutAddress').textContent = checkoutAddress;
+
+    const codSection = document.getElementById('codSection');
+    const popup = document.getElementById('popup');
+    const addressOptions = document.querySelector('.address-options');
+
+    document.querySelectorAll('input[name="payment"]').forEach(el => {
+      el.addEventListener('change', () => {
+        codSection.style.display = el.value === 'cod' ? 'block' : 'none';
+      });
+    });
+
+    function togglePopup() {
+      popup.style.display = 'block';
+    }
+
+    function saveNewAddress() {
+      const name = document.getElementById('newName').value.trim();
+      const contact = document.getElementById('newContact').value.trim();
+      const address = document.getElementById('newAddress').value.trim();
+      if (!name || !contact || !address) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const fullAddress = `${name}<br>${contact}<br>${address}`;
+      const radio = document.createElement('label');
+      radio.innerHTML = `<input type="radio" name="address" value="${fullAddress}"> <span>${fullAddress}</span>`;
+      addressOptions.appendChild(radio);
+      popup.style.display = 'none';
+    }
+
+    function placeOrder() {
+      const selectedPayment = document.querySelector('input[name="payment"]:checked');
+      if (!selectedPayment) return alert("Please select a payment method.");
+
+      if (selectedPayment.value === 'cod') {
+        const selectedAddress = document.querySelector('input[name="address"]:checked');
+        if (!selectedAddress || !document.getElementById('sameDelivery').checked) {
+          alert("Please select address and check delivery confirmation.");
+          return;
+        }
+      }
+
+      document.getElementById('celebration').style.display = 'flex';
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3500);
+    }
+
+
+    // Timer setup: will start only after user taps anywhere
+let countdownTime = 5 * 60; // 5 minutes in seconds
+let timerStarted = false;
+
+function startCountdown() {
+  if (timerStarted) return;
+  timerStarted = true;
+  updateCountdown();
+}
+
+function updateCountdown() {
+  const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
+  const seconds = String(countdownTime % 60).padStart(2, '0');
+  document.getElementById("countdown").textContent = `⏳ ${minutes}:${seconds}`;
+
+  if (countdownTime <= 0) {
+    alert("⏳ Time's up! Redirecting to homepage.");
+    window.location.href = "index.html";
+  } else {
+    countdownTime--;
+    setTimeout(updateCountdown, 1000);
+  }
+}
+
+// Start the timer when user taps/clicks anywhere on the screen
+document.body.addEventListener('click', startCountdown);
+document.body.addEventListener('touchstart', startCountdown); // for mobile
+
+  </script>
+</body>
+</html>
