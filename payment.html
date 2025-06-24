@@ -5,11 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Payment Gateway</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f7f9fa;
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fa;
     }
 
     header {
@@ -31,25 +37,15 @@
       white-space: nowrap;
     }
 
-    @media screen and (max-width: 480px) {
-      header {
-        flex-direction: column;
-        font-size: 1.2rem;
-      }
-
-      #countdown {
-        margin-top: 8px;
-        font-size: 1rem;
-      }
-    }
-
     .container {
+      width: 90%;
       max-width: 800px;
       margin: 30px auto;
       padding: 20px;
       background-color: white;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow-wrap: break-word;
     }
 
     h3 {
@@ -66,13 +62,15 @@
       padding: 15px;
       border-radius: 6px;
       margin-top: 10px;
+      margin-bottom: 20px; /* 👈 add this */
       background-color: #f8f8f8;
     }
 
     .upi-image {
-      width: 200px;
+      max-width: 100%;
       height: auto;
       margin: 10px 0;
+      display: block;
     }
 
     label {
@@ -80,7 +78,8 @@
       margin-bottom: 10px;
     }
 
-    input[type="radio"], input[type="checkbox"] {
+    input[type="radio"],
+    input[type="checkbox"] {
       margin-right: 10px;
     }
 
@@ -97,8 +96,8 @@
       transform: translate(-50%, -50%);
       background: white;
       padding: 30px;
-      width: 400px;
-      max-width: 90%;
+      width: 90%;
+      max-width: 400px;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
       display: none;
@@ -121,7 +120,6 @@
       font-size: 1rem;
       border: 1px solid #ccc;
       border-radius: 6px;
-      box-sizing: border-box;
     }
 
     .btn {
@@ -130,6 +128,7 @@
       border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
+      box-sizing: border-box;
     }
 
     .green-btn {
@@ -153,8 +152,8 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
       background: white;
       z-index: 2000;
       display: flex;
@@ -163,11 +162,73 @@
       flex-direction: column;
       font-size: 2rem;
       font-weight: bold;
-      color: red;
+      color: green;
       text-align: center;
       padding: 20px;
       box-sizing: border-box;
+      word-break: break-word;
     }
+    
+    @media screen and (max-width: 600px) {
+      .celebration {
+        font-size: 1.5rem;
+        padding: 16px;
+      }
+    }
+    
+    .emoji {
+      position: fixed;
+      top: -2rem;
+      font-size: 2rem;
+      animation: fall linear;
+      z-index: 2001;
+      pointer-events: none;
+    }
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+
+    @media screen and (max-width: 480px) {
+      header {
+        flex-direction: column;
+        font-size: 1.2rem;
+      }
+
+      #countdown {
+        margin-top: 8px;
+        font-size: 1rem;
+      }
+
+      .btn {
+        font-size: 0.95rem;
+        padding: 10px;
+      }
+    }
+
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 1.2rem;
+      color: #888;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1002;
+    }
+    
+    .close-popup:hover {
+      color: #e74c3c;
+    }
+    
   </style>
 </head>
 <body>
@@ -200,7 +261,9 @@
 
   <!-- Add Address Popup -->
   <div class="popup" id="popup">
+    <span class="close-popup" onclick="closePopup()">✖</span>
     <h3>Add New Address</h3>
+  
     <input type="text" id="newName" placeholder="Full Name" />
     <input type="text" id="newContact" placeholder="Mobile Number" />
     <textarea id="newAddress" placeholder="Current Address" rows="4"></textarea>
@@ -212,7 +275,12 @@
     ❌ Payment Failed
   </div>
 
-  <!-- JavaScript -->
+  <!-- Success Screen -->
+<div id="successScreen" class="celebration" style="display: none;">
+  🎉 Order Placed Successfully! 🎉
+</div>
+
+
   <script>
     // Refresh detection
     if (performance.navigation.type === 1) {
@@ -240,7 +308,6 @@
       document.getElementById('popup').style.display = 'block';
     }
 
-    // Save new address
     function saveNewAddress() {
       const name = document.getElementById('newName').value.trim();
       const contact = document.getElementById('newContact').value.trim();
@@ -257,11 +324,10 @@
       document.getElementById('popup').style.display = 'none';
     }
 
-    // Place order
     function placeOrder() {
       const selectedPayment = document.querySelector('input[name="payment"]:checked');
       if (!selectedPayment) return alert("Please select a payment method.");
-
+    
       if (selectedPayment.value === 'cod') {
         const selectedAddress = document.querySelector('input[name="address"]:checked');
         if (!selectedAddress || !document.getElementById('sameDelivery').checked) {
@@ -269,28 +335,28 @@
           return;
         }
       }
-
-      const celebration = document.createElement('div');
-      celebration.className = 'celebration';
-      celebration.style.color = 'green';
-      celebration.innerText = '🎉 Order Placed Successfully!';
-      document.body.innerHTML = '';
-      document.body.appendChild(celebration);
-
+    
+      // Show success screen
+      document.getElementById('successScreen').style.display = 'flex';
+    
+      // Emoji Confetti Animation
+      for (let i = 0; i < 60; i++) {
+        const emoji = document.createElement('div');
+        emoji.className = 'emoji';
+        emoji.textContent = Math.random() > 0.5 ? '🎉' : '🎊';
+        emoji.style.left = `${Math.random() * 100}%`;
+        emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
+        emoji.style.animationDelay = `${Math.random()}s`;
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 4000);
+      }
+    
+      // Redirect to home after 4 seconds
       setTimeout(() => {
         window.location.href = "index.html";
-      }, 3000);
+      }, 4000);
     }
-
-    // Countdown timer
-    let countdownTime = 5 * 60;
-    let timerStarted = false;
-
-    function startCountdown() {
-      if (timerStarted) return;
-      timerStarted = true;
-      updateCountdown();
-    }
+    
 
     function updateCountdown() {
       const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
@@ -316,11 +382,18 @@
     document.body.addEventListener('click', startCountdown);
     document.body.addEventListener('touchstart', startCountdown);
 
-    // Load checkout details if available
+    // Load checkout details
     const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails'));
     const nameLine = checkoutData?.name || "Name not found";
     const addressLine = checkoutData?.currentAddress || "Address not found";
     document.getElementById('checkoutAddress').textContent = `${nameLine}\n${addressLine}`;
+
+
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+    
   </script>
 </body>
 </html>
