@@ -24,7 +24,6 @@
       gap: 10px;
       text-align: center;
     }
-    
 
     #countdown {
       font-size: 1rem;
@@ -32,19 +31,17 @@
       white-space: nowrap;
     }
 
-    
     @media screen and (max-width: 480px) {
       header {
         flex-direction: column;
         font-size: 1.2rem;
       }
-    
+
       #countdown {
         margin-top: 8px;
         font-size: 1rem;
       }
     }
-    
 
     .container {
       max-width: 800px;
@@ -70,8 +67,6 @@
       border-radius: 6px;
       margin-top: 10px;
       background-color: #f8f8f8;
-      min-height: 90px;
-      white-space: pre-line;
     }
 
     .upi-image {
@@ -144,28 +139,6 @@
       margin-top: 20px;
     }
 
-    .celebration {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: green;
-      z-index: 2000;
-      animation: fadeout 4s ease forwards;
-    }
-
-    @keyframes fadeout {
-      0% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; visibility: hidden; }
-    }
-
     .add-address {
       background-color: #007bff;
       color: white;
@@ -174,13 +147,6 @@
       margin-bottom: 10px;
       cursor: pointer;
       display: inline-block;
-    }
-
-    .card span {
-      display: block;
-      text-align: left;
-      white-space: pre-line;
-      line-height: 1.5;
     }
 
     .celebration {
@@ -197,49 +163,18 @@
       flex-direction: column;
       font-size: 2rem;
       font-weight: bold;
-      color: green;
+      color: red;
       text-align: center;
       padding: 20px;
       box-sizing: border-box;
-      overflow: hidden;
-      animation: fadeout 4s ease forwards;
     }
-    
-    @keyframes fadeout {
-      0%, 85% {
-        opacity: 1;
-      }
-      100% {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-    
-    .falling-emoji {
-      position: absolute;
-      font-size: 2rem;
-      animation: fall 3s linear forwards;
-    }
-    
-    @keyframes fall {
-      0% {
-        transform: translateY(-10vh) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
   </style>
 </head>
 <body>
   <header>
     💳 Payment Gateway 
-    <span id="countdown" style="float: right; font-size: 1rem; font-weight: normal;">⏳ 05:00</span>
+    <span id="countdown">⏳ 05:00</span>
   </header>
-  
 
   <div class="container">
     <div class="option-section">
@@ -263,7 +198,7 @@
     <button class="btn green-btn" onclick="placeOrder()">Place the Order</button>
   </div>
 
-  <!-- ✅ UPDATED ADD NEW ADDRESS POPUP -->
+  <!-- Add Address Popup -->
   <div class="popup" id="popup">
     <h3>Add New Address</h3>
     <input type="text" id="newName" placeholder="Full Name" />
@@ -272,39 +207,40 @@
     <button class="btn green-btn" onclick="saveNewAddress()">Save Details</button>
   </div>
 
-  <div id="celebration" class="celebration" style="display: none;">
-    <div>Order Placed Successfully! 🎉</div>
-  
-    <!-- Falling emojis -->
-    <span class="falling-emoji" style="left: 10%;">🎊</span>
-    <span class="falling-emoji" style="left: 30%;">🎉</span>
-    <span class="falling-emoji" style="left: 50%;">🎊</span>
-    <span class="falling-emoji" style="left: 70%;">🎉</span>
-    <span class="falling-emoji" style="left: 90%;">🎊</span>
+  <!-- Failure Screen -->
+  <div id="failureScreen" class="celebration" style="display: none;">
+    ❌ Payment Failed
   </div>
-  
 
+  <!-- JavaScript -->
   <script>
-    const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails'));
-    const nameLine = checkoutData?.name || "Name not found";
-    const addressLine = checkoutData?.currentAddress || "Address not found";
-    const checkoutAddress = `${nameLine}\n${addressLine}`;
-    document.getElementById('checkoutAddress').textContent = checkoutAddress;
+    // Refresh detection
+    if (performance.navigation.type === 1) {
+      document.body.innerHTML = '';
+      const failDiv = document.createElement('div');
+      failDiv.className = 'celebration';
+      failDiv.style.color = 'red';
+      failDiv.innerText = '❌ Payment Failed';
+      document.body.appendChild(failDiv);
+      setTimeout(() => {
+        window.location.href = "checkout.html";
+      }, 3000);
+    }
 
+    // Handle COD visibility
     const codSection = document.getElementById('codSection');
-    const popup = document.getElementById('popup');
-    const addressOptions = document.querySelector('.address-options');
-
     document.querySelectorAll('input[name="payment"]').forEach(el => {
       el.addEventListener('change', () => {
         codSection.style.display = el.value === 'cod' ? 'block' : 'none';
       });
     });
 
+    // Popup toggle
     function togglePopup() {
-      popup.style.display = 'block';
+      document.getElementById('popup').style.display = 'block';
     }
 
+    // Save new address
     function saveNewAddress() {
       const name = document.getElementById('newName').value.trim();
       const contact = document.getElementById('newContact').value.trim();
@@ -317,10 +253,11 @@
       const fullAddress = `${name}<br>${contact}<br>${address}`;
       const radio = document.createElement('label');
       radio.innerHTML = `<input type="radio" name="address" value="${fullAddress}"> <span>${fullAddress}</span>`;
-      addressOptions.appendChild(radio);
-      popup.style.display = 'none';
+      document.querySelector('.address-options').appendChild(radio);
+      document.getElementById('popup').style.display = 'none';
     }
 
+    // Place order
     function placeOrder() {
       const selectedPayment = document.querySelector('input[name="payment"]:checked');
       if (!selectedPayment) return alert("Please select a payment method.");
@@ -333,42 +270,57 @@
         }
       }
 
-      document.getElementById('celebration').style.display = 'flex';
+      const celebration = document.createElement('div');
+      celebration.className = 'celebration';
+      celebration.style.color = 'green';
+      celebration.innerText = '🎉 Order Placed Successfully!';
+      document.body.innerHTML = '';
+      document.body.appendChild(celebration);
+
       setTimeout(() => {
         window.location.href = "index.html";
-      }, 3500);
+      }, 3000);
     }
 
+    // Countdown timer
+    let countdownTime = 5 * 60;
+    let timerStarted = false;
 
-    // Timer setup: will start only after user taps anywhere
-let countdownTime = 5 * 60; // 5 minutes in seconds
-let timerStarted = false;
+    function startCountdown() {
+      if (timerStarted) return;
+      timerStarted = true;
+      updateCountdown();
+    }
 
-function startCountdown() {
-  if (timerStarted) return;
-  timerStarted = true;
-  updateCountdown();
-}
+    function updateCountdown() {
+      const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
+      const seconds = String(countdownTime % 60).padStart(2, '0');
+      document.getElementById("countdown").textContent = `⏳ ${minutes}:${seconds} remaining`;
 
-function updateCountdown() {
-  const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
-  const seconds = String(countdownTime % 60).padStart(2, '0');
-  document.getElementById("countdown").textContent = `⏳ ${minutes}:${seconds} remaining`;
+      if (countdownTime <= 0) {
+        document.body.innerHTML = '';
+        const failDiv = document.createElement('div');
+        failDiv.className = 'celebration';
+        failDiv.style.color = 'red';
+        failDiv.innerText = '❌ Payment Failed';
+        document.body.appendChild(failDiv);
+        setTimeout(() => {
+          window.location.href = "checkout.html";
+        }, 3000);
+      } else {
+        countdownTime--;
+        setTimeout(updateCountdown, 1000);
+      }
+    }
 
+    document.body.addEventListener('click', startCountdown);
+    document.body.addEventListener('touchstart', startCountdown);
 
-  if (countdownTime <= 0) {
-    alert("⏳ Time's up! Redirecting to homepage.");
-    window.location.href = "index.html";
-  } else {
-    countdownTime--;
-    setTimeout(updateCountdown, 1000);
-  }
-}
-
-// Start the timer when user taps/clicks anywhere on the screen
-document.body.addEventListener('click', startCountdown);
-document.body.addEventListener('touchstart', startCountdown); // for mobile
-
+    // Load checkout details if available
+    const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails'));
+    const nameLine = checkoutData?.name || "Name not found";
+    const addressLine = checkoutData?.currentAddress || "Address not found";
+    document.getElementById('checkoutAddress').textContent = `${nameLine}\n${addressLine}`;
   </script>
 </body>
 </html>
