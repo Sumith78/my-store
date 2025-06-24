@@ -156,6 +156,56 @@
       white-space: pre-line;
       line-height: 1.5;
     }
+
+    .celebration {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 2rem;
+      font-weight: bold;
+      color: green;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+      animation: fadeout 4s ease forwards;
+    }
+    
+    @keyframes fadeout {
+      0%, 85% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+    
+    .falling-emoji {
+      position: absolute;
+      font-size: 2rem;
+      animation: fall 3s linear forwards;
+    }
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
   </style>
 </head>
 <body>
@@ -196,7 +246,17 @@
     <button class="btn green-btn" onclick="saveNewAddress()">Save Details</button>
   </div>
 
-  <div id="celebration" class="celebration" style="display: none;">🎉 Order Placed Successfully!</div>
+  <div id="celebration" class="celebration" style="display: none;">
+    <div>Order Placed Successfully! 🎉</div>
+  
+    <!-- Falling emojis -->
+    <span class="falling-emoji" style="left: 10%;">🎊</span>
+    <span class="falling-emoji" style="left: 30%;">🎉</span>
+    <span class="falling-emoji" style="left: 50%;">🎊</span>
+    <span class="falling-emoji" style="left: 70%;">🎉</span>
+    <span class="falling-emoji" style="left: 90%;">🎊</span>
+  </div>
+  
 
   <script>
     const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails'));
@@ -267,7 +327,8 @@ function startCountdown() {
 function updateCountdown() {
   const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
   const seconds = String(countdownTime % 60).padStart(2, '0');
-  document.getElementById("countdown").textContent = `⏳ ${minutes}:${seconds}`;
+  document.getElementById("countdown").textContent = `⏳ ${minutes}:${seconds} remaining`;
+
 
   if (countdownTime <= 0) {
     alert("⏳ Time's up! Redirecting to homepage.");

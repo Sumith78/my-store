@@ -305,6 +305,28 @@
       cursor: pointer;
     }
 
+    .cart-icon {
+      position: relative;
+      font-size: 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background-color: red;
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-weight: bold;
+      display: none; /* initially hidden if no items */
+    }
+    
+
     @media (max-width: 600px) {
       .product-card {
         width: 90%;
@@ -433,7 +455,11 @@
     <div class="menu-right">
       <button class="search-icon" onclick="toggleSearch()">🔍</button>
       <a href="auth.html" class="signin-icon" title="Sign In">👤</a>
-      <button class="cart-icon" onclick="showCart()">🛒</button>
+      <button class="cart-icon" onclick="showCart()">
+        🛒
+        <span id="cart-count" class="cart-badge">0</span>
+      </button>
+      
     </div>
 
     <div class="search-container" id="searchContainer">
@@ -839,6 +865,26 @@
       document.getElementById('cartCount').textContent = cart.length;
       alert(`${productName} - ₹${price} added to cart!`);
     }
+
+
+    
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const count = cart.length;
+        const badge = document.getElementById('cart-count');
+    
+        if (count > 0) {
+          badge.textContent = count;
+          badge.style.display = 'inline-block';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+    
+      // Call once when the page loads
+      updateCartCount();
+  
+    
     
   
     function showCart() {
