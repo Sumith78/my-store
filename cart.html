@@ -9,6 +9,11 @@
       box-sizing: border-box;
     }
 
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f8;
@@ -40,14 +45,17 @@
       padding: 1rem 0;
       border-bottom: 1px solid #eee;
       gap: 10px;
+      width: 100%;
     }
 
     .item-info {
       display: flex;
+      flex-wrap: wrap;
       flex: 1;
-      min-width: 0;
       align-items: center;
       gap: 15px;
+      min-width: 0;
+      word-break: break-word;
     }
 
     .item-info img {
@@ -62,7 +70,6 @@
       font-size: 1rem;
       font-weight: 500;
       color: #444;
-      word-break: break-word;
       flex: 1;
     }
 
@@ -76,6 +83,7 @@
       font-weight: 600;
       transition: background 0.2s ease-in-out;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .remove-btn:hover {
@@ -131,44 +139,43 @@
       background-color: #0056b3;
     }
 
-    @media screen and (max-width: 480px) {
+    @media screen and (max-width: 768px) {
       .cart-item {
         flex-direction: column;
         align-items: flex-start;
-        width: 100%;
       }
-    
+
       .item-info {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         align-items: flex-start;
         width: 100%;
       }
-    
+
       .item-info img {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         margin-bottom: 8px;
       }
-    
+
       .item-name {
+        width: 100%;
         font-size: 1rem;
-        text-align: left;
-        width: 100%;
+        margin-top: 4px;
       }
-    
+
       .remove-btn {
-        font-size: 0.9rem;
-        padding: 8px 12px;
         width: 100%;
+        font-size: 0.95rem;
+        padding: 10px;
+        margin-top: 8px;
       }
-    
+
       .total {
         text-align: center;
         font-size: 1rem;
       }
     }
-    
-    
   </style>
 </head>
 <body>
