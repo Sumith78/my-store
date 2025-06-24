@@ -22,7 +22,7 @@
       background-color: #ffffff;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      padding: 1.5rem;
+      padding: 1.5rem 1rem;
     }
 
     h2 {
@@ -132,31 +132,41 @@
     }
 
     @media screen and (max-width: 480px) {
+      .item-info {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        text-align: center;
+      }
+    
+      .item-info img {
+        width: 60px;
+        height: 60px;
+      }
+    
       .item-name {
         font-size: 0.95rem;
+        text-align: center;
       }
-
-      .item-info img {
-        width: 40px;
-        height: 40px;
-      }
-
+    
       .remove-btn {
         font-size: 0.9rem;
         padding: 8px 12px;
         width: 100%;
       }
-
+    
       .cart-item {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        text-align: center;
       }
-
+    
       .total {
         text-align: center;
         font-size: 1rem;
       }
     }
+    
   </style>
 </head>
 <body>
