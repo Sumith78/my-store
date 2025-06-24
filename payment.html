@@ -176,6 +176,7 @@
       }
     }
     
+
     .emoji {
       position: fixed;
       top: -2rem;
@@ -228,6 +229,27 @@
     .close-popup:hover {
       color: #e74c3c;
     }
+
+    .emoji {
+      position: fixed;
+      top: -2rem;
+      font-size: 2rem;
+      animation: fall linear;
+      z-index: 2001;
+      pointer-events: none;
+    }
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
     
   </style>
 </head>
@@ -336,10 +358,14 @@
         }
       }
     
-      // Show success screen
-      document.getElementById('successScreen').style.display = 'flex';
+      const celebration = document.createElement('div');
+      celebration.className = 'celebration';
+      celebration.style.color = 'green';
+      celebration.innerText = '🎉 Order Placed Successfully!';
+      document.body.innerHTML = '';
+      document.body.appendChild(celebration);
     
-      // Emoji Confetti Animation
+      // 🎊 Emoji Confetti Animation
       for (let i = 0; i < 60; i++) {
         const emoji = document.createElement('div');
         emoji.className = 'emoji';
@@ -351,12 +377,22 @@
         setTimeout(() => emoji.remove(), 4000);
       }
     
-      // Redirect to home after 4 seconds
       setTimeout(() => {
         window.location.href = "index.html";
       }, 4000);
     }
     
+    
+
+    // Countdown timer
+    let countdownTime = 5 * 60;
+    let timerStarted = false;
+
+    function startCountdown() {
+      if (timerStarted) return;
+      timerStarted = true;
+      updateCountdown();
+    }
 
     function updateCountdown() {
       const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
