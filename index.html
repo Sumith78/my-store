@@ -32,6 +32,25 @@
 }
 
 
+.heart-btn {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+
+.product-card {
+  position: relative;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 220px;
+}
 
 
 
@@ -427,9 +446,10 @@
       <a href="#" onclick="filterProducts('bracelet')"><span>🧿</span>Bracelets</a>
       <a href="#" onclick="filterProducts('trousers')"><span>👖</span>Men Trousers</a>
       <a href="#" onclick="filterProducts('kids')"><span>🧒</span>Kids Zone</a>
+      <a href="#" onclick="showWishlist()"><span>❤️</span>My Wishlist</a>
       <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')"><span>📝</span>Sign Up</a>
       <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')"><span>🔐</span>Sign In</a>
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'forgot')"><span>❓</span>Forgot Password</a>
+  
       <button onclick="logoutUser()">Logout</button>
     </div>
   </header>
@@ -476,15 +496,222 @@
     </section>
      </div>
 
-  <div class="products-container" id="productList">
-    <div class="product-card" data-tags="watch">
-      <button class="close-btn" onclick="showHome()">❌</button>
+  <!-- FULL-PAGE PRODUCT SECTION -->
+<div id="watches-section" class="category-section" style="display: none;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 20px;">
+    <h2 style="color: white; font-weight: bold;">Watch Collection's</h2>
+    <button class="close-main-btn" onclick="showHome()" style="font-size: 1.3rem;">❌ Back</button>
+  </div>  
+  
 
-      <h3>Classic Watch</h3>
-      <p>Elegant men's wristwatch with leather strap.</p>
-      <p><strong>₹4,299</strong></p>
-      <button onclick="addToCart('Classic Watch')">+ Add to Cart</button>
+  <!-- Main Product Container -->
+  <div class="products-container" id="productList">
+
+    <!-- Watch 1 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch1.jpg" alt="Minimalist Dress Watch" />
+      <h3>Minimalist Dress Watch</h3>
+      <p>Ultra-thin quartz watch with brown leather strap for formal wear.</p>
+      <p><strong>₹3,899</strong></p>
+      <button onclick="addToCart('Minimalist Dress Watch')">+ Add to Cart</button>
     </div>
+
+    <!-- Watch 2 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch2.jpg" alt="Black Steel Chrono" />
+      <h3>Black Steel Chrono</h3>
+      <p>Bold chronograph with black stainless steel strap and matte dial.</p>
+      <p><strong>₹4,499</strong></p>
+      <button onclick="addToCart('Black Steel Chrono')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 3 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch3.jpg" alt="Casual Blue Dial Watch" />
+      <h3>Casual Blue Dial Watch</h3>
+      <p>Trendy blue dial watch perfect for everyday styling.</p>
+      <p><strong>₹2,999</strong></p>
+      <button onclick="addToCart('Casual Blue Dial Watch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 4 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch4.jpg" alt="Rose Gold Elegance" />
+      <h3>Rose Gold Elegance</h3>
+      <p>Elegant women's watch with rose gold mesh strap and white dial.</p>
+      <p><strong>₹5,299</strong></p>
+      <button onclick="addToCart('Rose Gold Elegance')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 5 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch5.jpg" alt="Analog Sports Watch" />
+      <h3>Analog Sports Watch</h3>
+      <p>Shock-resistant analog watch with silicone band and water resistance.</p>
+      <p><strong>₹3,499</strong></p>
+      <button onclick="addToCart('Analog Sports Watch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 6 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch6.jpg" alt="Classic Roman Dial" />
+      <h3>Classic Roman Dial</h3>
+      <p>Traditional analog watch featuring Roman numerals and black strap.</p>
+      <p><strong>₹2,199</strong></p>
+      <button onclick="addToCart('Classic Roman Dial')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 7 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch7.jpg" alt="Smartwatch Touchscreen" />
+      <h3>Smartwatch Touchscreen</h3>
+      <p>Feature-rich smartwatch with heart rate and fitness tracking.</p>
+      <p><strong>₹6,999</strong></p>
+      <button onclick="addToCart('Smartwatch Touchscreen')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 8 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch8.jpg" alt="Vintage Brown Leather" />
+      <h3>Vintage Brown Leather</h3>
+      <p>Retro-inspired analog watch with premium brown leather strap.</p>
+      <p><strong>₹4,099</strong></p>
+      <button onclick="addToCart('Vintage Brown Leather')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 9 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch9.jpg" alt="Titan Slimline" />
+      <h3>Titan Slimline</h3>
+      <p>Lightweight and elegant slimline watch for business attire.</p>
+      <p><strong>₹5,899</strong></p>
+      <button onclick="addToCart('Titan Slimline')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 10 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch10.jpg" alt="Blue Sports Dial" />
+      <h3>Blue Sports Dial</h3>
+      <p>Sporty chronograph with blue dial and luminous markers.</p>
+      <p><strong>₹3,799</strong></p>
+      <button onclick="addToCart('Blue Sports Dial')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 11 to 20 (Continue as per your data) -->
+
+    <!-- Watch 11 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch11.jpg" alt="Mesh Strap Smartwatch" />
+      <h3>Mesh Strap Smartwatch</h3>
+      <p>Elegant smartwatch with stainless steel mesh band and OLED display.</p>
+      <p><strong>₹5,499</strong></p>
+      <button onclick="addToCart('Mesh Strap Smartwatch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 12 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch12.jpg" alt="Luxe Black Dial" />
+      <h3>Luxe Black Dial</h3>
+      <p>Premium luxury watch with matte black dial and leather strap.</p>
+      <p><strong>₹6,299</strong></p>
+      <button onclick="addToCart('Luxe Black Dial')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 13 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch13.jpg" alt="Classic Dual Time" />
+      <h3>Classic Dual Time</h3>
+      <p>Dual time zone functionality with vintage silver bezel.</p>
+      <p><strong>₹4,749</strong></p>
+      <button onclick="addToCart('Classic Dual Time')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 14 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch14.jpg" alt="Titan Rose Chronograph" />
+      <h3>Titan Rose Chronograph</h3>
+      <p>Elegant chronograph with rose gold accents and white dial.</p>
+      <p><strong>₹7,599</strong></p>
+      <button onclick="addToCart('Titan Rose Chronograph')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 15 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch15.jpg" alt="All Black Digital Watch" />
+      <h3>All Black Digital Watch</h3>
+      <p>Durable digital watch with backlight and stopwatch features.</p>
+      <p><strong>₹2,299</strong></p>
+      <button onclick="addToCart('All Black Digital Watch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 16 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch16.jpg" alt="Formal Leather Strap" />
+      <h3>Formal Leather Strap</h3>
+      <p>Business-class watch with date display and black leather finish.</p>
+      <p><strong>₹3,299</strong></p>
+      <button onclick="addToCart('Formal Leather Strap')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 17 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch17.jpg" alt="Gold Link Watch" />
+      <h3>Gold Link Watch</h3>
+      <p>Luxurious gold-tone bracelet watch for formal evenings.</p>
+      <p><strong>₹8,199</strong></p>
+      <button onclick="addToCart('Gold Link Watch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 18 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch18.jpg" alt="Digital Outdoor Watch" />
+      <h3>Digital Outdoor Watch</h3>
+      <p>Rugged watch with digital compass, altimeter & barometer.</p>
+      <p><strong>₹4,799</strong></p>
+      <button onclick="addToCart('Digital Outdoor Watch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 19 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch19.jpg" alt="White Dial Leather Watch" />
+      <h3>White Dial Leather Watch</h3>
+      <p>Minimalist white dial with brown genuine leather strap.</p>
+      <p><strong>₹3,199</strong></p>
+      <button onclick="addToCart('White Dial Leather Watch')">+ Add to Cart</button>
+    </div>
+
+    <!-- Watch 20 -->
+    <div class="product-card" data-tags="watch">
+      <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
+      <img src="watch20.jpg" alt="Dual Tone Steel Watch" />
+      <h3>Dual Tone Steel Watch</h3>
+      <p>Elegant two-tone stainless steel watch with scratch-proof glass.</p>
+      <p><strong>₹5,899</strong></p>
+      <button onclick="addToCart('Dual Tone Steel Watch')">+ Add to Cart</button>
+    </div>
+
+
+</div> <!-- End of watches-section -->
+
   <div class="product-card" data-tags="bracelet">
   <button class="close-btn" onclick="showHome()">❌</button>
   <h3>Silver Bracelet</h3>
@@ -634,40 +861,57 @@ function showHome() {
 
 
 function showHome() {
-  // Hide products
-  document.querySelectorAll('.product-card').forEach(card => {
-    card.style.display = 'none';
-  });
-
-  // Show home sections
   document.getElementById('homeSections').style.display = 'block';
+  document.getElementById('watches-section').style.display = 'none';
+  document.getElementById('wishlist-section').style.display = 'none';
+
+  const products = document.querySelectorAll('.product-card');
+  products.forEach(p => p.style.display = 'none');
 }
+
 
 // Called on search input
 function searchProducts() {
   const input = document.getElementById('searchInput').value.trim().toLowerCase();
-  const products = document.querySelectorAll('.product-card');
-
+  const products = document.querySelectorAll('#watches-section .product-card');
+  const watchesSection = document.getElementById('watches-section');
+  const homeSections = document.getElementById('homeSections');
   let anyMatch = false;
+
+  if (input === "") {
+    homeSections.style.display = "block";
+    watchesSection.style.display = "none";
+    return;
+  }
+
   products.forEach(product => {
     const name = product.querySelector('h3')?.textContent.toLowerCase();
     const desc = product.querySelector('p')?.textContent.toLowerCase();
-
-    if (input && (name.includes(input) || desc.includes(input))) {
-      product.style.display = 'flex';
+    if (name.includes(input) || desc.includes(input)) {
+      product.style.display = "flex";
       anyMatch = true;
     } else {
-      product.style.display = 'none';
+      product.style.display = "none";
     }
   });
 
-  document.getElementById('homeSections').style.display = input ? 'none' : 'block';
+  watchesSection.style.display = anyMatch ? "block" : "none";
+  homeSections.style.display = "none";
 }
+
 
 // Called from menu (like filterProducts('bracelet'))
 function filterProducts(tag) {
-  const products = document.querySelectorAll('.product-card');
+  const products = document.querySelectorAll('#watches-section .product-card');
+  const watchesSection = document.getElementById('watches-section');
 
+  // Hide home sections
+  document.getElementById('homeSections').style.display = 'none';
+
+  // Show watches section
+  watchesSection.style.display = 'block';
+
+  // Filter products
   products.forEach(product => {
     const tags = product.getAttribute('data-tags') || '';
     if (tags.includes(tag)) {
@@ -677,8 +921,13 @@ function filterProducts(tag) {
     }
   });
 
-  document.getElementById('homeSections').style.display = 'none';
+  // Hide search box if open
+  document.getElementById('searchContainer').style.display = "none";
+
+  // Also hide wishlist section if visible
+  document.getElementById('wishlist-section').style.display = 'none';
 }
+
 
 // Called when Shop Now is clicked
 function showBraceletsOnly() {
@@ -726,8 +975,102 @@ let isMenuOpen = false;
 
 
 
+  function addToWishlist(button) {
+    // Check login
+    if (!localStorage.getItem('user_email')) {
+      alert("Please sign in to add items to wishlist.");
+      setTimeout(showHome, 1500);
+      return;
+    }
+  
+    const card = button.closest('.product-card');
+    const name = card.querySelector('h3')?.textContent.trim();
+    const img = card.querySelector('img')?.src;
+    const price = card.querySelector('strong')?.textContent;
+  
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+  
+    // Check if already in wishlist
+    const index = wishlist.findIndex(item => item.name === name);
+  
+    if (index === -1) {
+      // Add to wishlist
+      wishlist.push({ name, img, price });
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      button.textContent = '❤️';
+      alert("This item has been added to your wishlist");
+    } else {
+      // Remove from wishlist
+      wishlist.splice(index, 1);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      button.textContent = '♡';
+      alert("This item has been removed from your wishlist");
+    }
+  }
+  
+  
+  
+  function showWishlist() {
+    document.getElementById('homeSections').style.display = 'none';
+    document.getElementById('watches-section').style.display = 'none';
+    document.getElementById('wishlist-section').style.display = 'block';
+  
+    const wishlistContainer = document.getElementById('wishlistItems');
+    wishlistContainer.innerHTML = ''; // Clear previous
+  
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+  
+    if (wishlist.length === 0) {
+      wishlistContainer.innerHTML = "<p>No items in your wishlist.</p>";
+      return;
+    }
+  
+    wishlist.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.title}">
+        <h3>${item.title}</h3>
+        <p>${item.desc}</p>
+        <p><strong>${item.price}</strong></p>
+        <button onclick="addToCart('${item.title}')">+ Add to Cart</button>
+      `;
+      wishlistContainer.appendChild(card);
+    });
+  }
+  
+
+  function loadWishlist() {
+    const container = document.getElementById("wishlistItems");
+    container.innerHTML = ""; // Clear old items
+  
+    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
+  
+    wishlist.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.name}" />
+        <h3>${item.name}</h3>
+        <p><strong>${item.price}</strong></p>
+        <button onclick="addToCart('${item.name}')">+ Add to Cart</button>
+      `;
+      container.appendChild(card);
+    });
+  }
   
 
   </script>
 </body>
+<!-- Wishlist Section -->
+<div id="wishlist-section" style="display:none;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin: 8px 15px;">
+    <h2 style="color: white; font-weight: bold;">My Wishlist</h2>
+    <button class="close-main-btn" onclick="showHome()" style="font-size: 1.3rem;">❌ Back</button>
+  </div>
+  <div class="products-container" id="wishlistItems"></div>
+</div>
+
+
+
 </html>
