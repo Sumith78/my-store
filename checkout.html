@@ -3,243 +3,156 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Your Cart</title>
+  <title>Checkout Page</title>
   <style>
     * {
       box-sizing: border-box;
     }
 
     body {
+      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f8;
-      margin: 0;
-      padding: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.7rem 1rem;
+      background-color: rgb(11, 65, 39);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 80px;
     }
 
     .container {
-      max-width: 800px;
-      margin: 50px auto;
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
       padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       color: #333;
-      font-size: 2rem;
     }
 
-    .cart-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 1rem;
-      border-bottom: 1px solid #eee;
-    }
-
-    .item-info {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      flex: 1;
-    }
-
-    .item-info img {
-      width: 60px;
-      height: 60px;
-      border-radius: 6px;
-      object-fit: cover;
-    }
-
-    .item-name {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #444;
-    }
-
-    .remove-btn {
-      background-color: #ff4d4d;
-      color: #fff;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s ease-in-out;
-      white-space: nowrap;
-    }
-
-    .remove-btn:hover {
-      background-color: #e63946;
-    }
-
-    .empty {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #777;
-      margin-top: 50px;
-    }
-
-    .total {
-      text-align: right;
-      font-size: 1.2rem;
-      margin-top: 1.5rem;
-      font-weight: bold;
-      color: #222;
-    }
-
-    .checkout-btn,
-    .back-btn {
+    label {
       display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, textarea {
       width: 100%;
-      margin-top: 1rem;
-      padding: 12px;
+      padding: 0.75rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
       font-size: 1rem;
-      text-align: center;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .checkbox-container input {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
       border: none;
       border-radius: 6px;
-      font-weight: bold;
       cursor: pointer;
-      box-sizing: border-box;
     }
 
-    .checkout-btn {
-      background: linear-gradient(to right, #28a745, #218838);
-      color: white;
-    }
-
-    .checkout-btn:hover {
-      background: linear-gradient(to right, #218838, #1e7e34);
-    }
-
-    .back-btn {
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-    }
-
-    .back-btn:hover {
-      background-color: #0056b3;
-    }
-
-    @media screen and (max-width: 600px) {
-      .container {
-        margin: 20px;
-        padding: 1rem;
-      }
-
-      .item-info {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .item-name {
-        font-size: 1rem;
-      }
-
-      .remove-btn {
-        width: 100%;
-        text-align: center;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-      }
-
-      .checkout-btn, .back-btn {
-        font-size: 0.95rem;
-        padding: 10px;
-      }
-
-      .total {
-        text-align: center;
-        margin-top: 1rem;
-      }
+    .save-btn:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
+
+  <header>
+    <h1>🧾 Checkout Page</h1>
+  </header>
+
   <div class="container">
-    <h2>🛒 Your Cart</h2>
-    <div id="cartContainer"></div>
-    <div class="total" id="totalPrice">Total: ₹0</div>
-    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
-    <a class="back-btn" href="index.html">← Back to Home</a>
+    <h2>Enter Delivery Details</h2>
+
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Enter your full name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+
+    <label for="contact">Contact Number</label>
+    <input type="tel" id="contact" placeholder="Enter your phone number" required>
+
+    <label for="currentAddress">Current Address</label>
+    <textarea id="currentAddress" rows="4" placeholder="Enter your current address..."></textarea>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="sameAddress" onchange="toggleAddress()">
+      <label for="sameAddress">Same as Current Address</label>
+    </div>
+
+    <label for="permanentAddress">Permanent Address</label>
+    <textarea id="permanentAddress" rows="3" placeholder="Enter your permanent address" required></textarea>
+
+    <button class="save-btn" onclick="saveDetails()">Save Details</button>
   </div>
 
   <script>
-    const productData = {
-      "Classic Watch": { price: 4299, image: "https://via.placeholder.com/60?text=Watch" },
-      "Silver Bracelet": { price: 2199, image: "https://via.placeholder.com/60?text=Bracelet" },
-      "Men Trousers": { price: 1499, image: "https://via.placeholder.com/60?text=Trousers" },
-      "Kids Toy Set": { price: 889, image: "https://via.placeholder.com/60?text=Toy" },
-    };
+    function toggleAddress() {
+      const checkbox = document.getElementById('sameAddress');
+      const current = document.getElementById('currentAddress');
+      const permanent = document.getElementById('permanentAddress');
 
-    function isUserLoggedIn() {
-      return localStorage.getItem('user_email');
+      if (checkbox.checked) {
+        permanent.value = current.value;
+        permanent.readOnly = true;
+      } else {
+        permanent.value = '';
+        permanent.readOnly = false;
+      }
     }
 
-    if (!isUserLoggedIn()) {
-      alert('Please sign in to access your cart.');
-      window.location.href = 'auth.html';
-    }
+    function saveDetails() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const currentAddress = document.getElementById('currentAddress').value.trim();
+      const permanentAddress = document.getElementById('permanentAddress').value.trim();
 
-    const cartContainer = document.getElementById('cartContainer');
-    const totalPriceDiv = document.getElementById('totalPrice');
-    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-
-    function renderCart() {
-      cartContainer.innerHTML = '';
-      let total = 0;
-
-      if (cartItems.length === 0) {
-        cartContainer.innerHTML = '<p class="empty">Your cart is currently empty 🛍️</p>';
-        totalPriceDiv.textContent = "Total: ₹0";
+      if (!name || !email || !contact || !currentAddress || !permanentAddress) {
+        alert("Please fill in all required fields.");
         return;
       }
 
-      cartItems.forEach((item, index) => {
-        const name = item.name || "Unknown Product";
-        const price = item.price || 0;
-        total += price;
+      localStorage.setItem('checkoutDetails', JSON.stringify({
+        name, email, contact, currentAddress, permanentAddress
+      }));
 
-        let image = productData[name]?.image || "https://via.placeholder.com/60";
-
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <div class="item-info">
-            <img src="${image}" alt="${name}" />
-            <span class="item-name">${name} - ₹${price}</span>
-          </div>
-          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
-        `;
-        cartContainer.appendChild(div);
-      });
-
-      totalPriceDiv.textContent = "Total: ₹" + total;
+      window.location.href = "payment.html";
     }
-
-    function removeItem(index) {
-      const itemRemoved = cartItems.splice(index, 1)[0];
-      localStorage.setItem('cart', JSON.stringify(cartItems));
-      renderCart();
-    }
-
-    function checkout() {
-      if (cartItems.length === 0) {
-        alert("Cart is empty. Add items to checkout.");
-        return;
-      }
-      window.location.href = "checkout.html";
-    }
-
-    renderCart();
   </script>
+
 </body>
 </html>
