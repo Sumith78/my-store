@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checkout Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.7rem 1rem;
+      background-color: rgb(11, 65, 39);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 80px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .checkbox-container input {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .save-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .save-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🧾 Checkout Page</h1>
+  </header>
+
+  <div class="container">
+    <h2>Enter Delivery Details</h2>
+
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Enter your full name" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+
+    <label for="contact">Contact Number</label>
+    <input type="tel" id="contact" placeholder="Enter your phone number" required>
+
+    <label for="currentAddress">Current Address</label>
+    <textarea id="currentAddress" rows="3" placeholder="Enter your current address" required></textarea>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="sameAddress" onchange="toggleAddress()">
+      <label for="sameAddress">Permanent Address same as Current Address</label>
+    </div>
+
+    <label for="permanentAddress">Permanent Address</label>
+    <textarea id="permanentAddress" rows="3" placeholder="Enter your permanent address" required></textarea>
+
+    <button class="save-btn" onclick="saveDetails()">Save Details</button>
+  </div>
+
+  <script>
+    function toggleAddress() {
+      const checkbox = document.getElementById('sameAddress');
+      const current = document.getElementById('currentAddress');
+      const permanent = document.getElementById('permanentAddress');
+
+      if (checkbox.checked) {
+        permanent.value = current.value;
+        permanent.readOnly = true;
+      } else {
+        permanent.value = '';
+        permanent.readOnly = false;
+      }
+    }
+
+    function saveDetails() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const currentAddress = document.getElementById('currentAddress').value.trim();
+      const permanentAddress = document.getElementById('permanentAddress').value.trim();
+
+      if (!name || !email || !contact || !currentAddress || !permanentAddress) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      // Optional: Store in localStorage or pass to backend
+      localStorage.setItem('checkoutDetails', JSON.stringify({
+        name, email, contact, currentAddress, permanentAddress
+      }));
+
+      // Redirect to payment page
+      window.location.href = "payment.html";
+    }
+  </script>
+
+</body>
+</html>

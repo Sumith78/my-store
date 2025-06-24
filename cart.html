@@ -209,12 +209,13 @@
         alert("Cart is empty. Add items to checkout.");
         return;
       }
-      alert("🎉 Order placed successfully!");
-      localStorage.removeItem('cart');
-      window.location.href = "index.html";
+    
+      // Redirect to checkout.html without clearing cart or showing alert
+      window.location.href = "checkout.html";
     }
-
+    
     renderCart();
+    
   </script>
 </body>
 </html>
