@@ -10,24 +10,23 @@
     }
 
     html, body {
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f4f6f8;
+      width: 100%;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
     }
 
     .container {
+      width: 90%;
       max-width: 800px;
       margin: 30px auto;
       background-color: #ffffff;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       padding: 1.5rem 1rem;
+      overflow-wrap: break-word;
     }
 
     h2 {
@@ -71,6 +70,7 @@
       font-weight: 500;
       color: #444;
       flex: 1;
+      word-break: break-word;
     }
 
     .remove-btn {
@@ -137,6 +137,11 @@
 
     .back-btn:hover {
       background-color: #0056b3;
+    }
+
+    /* Make images and text wrap safely */
+    img, button, .item-name {
+      max-width: 100%;
     }
 
     @media screen and (max-width: 768px) {
