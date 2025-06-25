@@ -1196,30 +1196,31 @@ button:hover, .product-card:hover {
         return;
       }
     
-      // Find the price dynamically from the product card
       const allCards = document.querySelectorAll('.product-card');
       let price = 0;
+      let image = "";
     
       allCards.forEach(card => {
         const name = card.querySelector('h3')?.textContent.trim();
         if (name === productName) {
           const priceText = card.querySelector('strong')?.textContent.replace(/[₹,]/g, '') || '0';
           price = parseInt(priceText, 10);
+          image = card.querySelector('img')?.src || "";
         }
       });
     
-      if (price === 0) {
-        alert(`❌ Error: Couldn't find price for ${productName}`);
+      if (price === 0 || !image) {
+        alert(`❌ Error: Couldn't find price or image for ${productName}`);
         return;
       }
     
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.push({ name: productName, price: price });
+      cart.push({ name: productName, price, image });
       localStorage.setItem('cart', JSON.stringify(cart));
       document.getElementById('cartCount').textContent = cart.length;
       alert(`${productName} - ₹${price} added to cart!`);
     }
-
+    
 
     
       function updateCartCount() {

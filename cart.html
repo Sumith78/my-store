@@ -228,7 +228,8 @@
         const price = item.price || 0;
         total += price;
 
-        let image = productData[name]?.image || "https://via.placeholder.com/60";
+        let image = item.image || "https://via.placeholder.com/60";
+
 
         const div = document.createElement('div');
         div.className = 'cart-item';
