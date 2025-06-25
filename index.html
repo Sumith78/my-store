@@ -1301,7 +1301,8 @@ button:hover, .product-card:hover {
       container.innerHTML = '';
   
       if (wishlist.length === 0) {
-        container.innerHTML = "<p>No items in your wishlist.</p>";
+        container.innerHTML = `<p style="color: white; font-size: 1.2rem; text-align: center; margin-top: 2rem;">♡ No items in your wishlist.</p>`;
+
       } else {
         wishlist.forEach(item => {
           const card = document.createElement('div');
@@ -1433,6 +1434,15 @@ button:hover, .product-card:hover {
       alert("📦 Tracking feature coming soon!");
       // Optional: redirect to track-order.html or open modal
     }
+
+    function clearWishlist() {
+      if (confirm("Are you sure you want to clear your entire wishlist?")) {
+        localStorage.removeItem('wishlist');
+        updateWishlistUI();
+        alert("✅ Your wishlist has been cleared.");
+      }
+    }
+    
     
   </script>
   
@@ -1441,14 +1451,20 @@ button:hover, .product-card:hover {
 <!-- Wishlist Section -->
 <!-- Wishlist Section -->
 <div id="wishlist-section" class="category-section" style="display: none;">
-  <div class="section-header">
-    <h2 style="color: white; font-weight: bold;">♡ Wishlist</h2>
-    <button class="close-main-btn" onclick="showHome()">← <span>Back</span></button>
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h2 style="color: white; font-weight: bold; margin: 0;">♡ Wishlist</h2>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <img src="clear.png"
+           onclick="clearWishlist()"
+           style="width: 30px; cursor: pointer;"
+           title="Clear Wishlist" />
+      <button class="close-main-btn" onclick="showHome()">← <span>Back</span></button>
+    </div>
   </div>
-  <div class="products-container" id="wishlistItems"></div>
+
+  <div class="products-container" id="wishlistItems" style="margin-top: 20px;"></div>
 </div>
 
-</div>
 
 
 
