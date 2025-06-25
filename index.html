@@ -744,26 +744,27 @@ button:hover, .product-card:hover {
 
       <div class="vedic-slider">
         <!-- Card 1 -->
-        <div class="vedic-card" onclick="filterProducts('bracelet')">
+        <div class="vedic-card">
           <img src="money.webp" alt="Money Bracelet" />
           <p>
             A Money Bracelet is a spiritual accessory made with crystals, Rudraksha,
             or symbols, believed to attract wealth, abundance, and financial success.
           </p>
-          <div class="shop-now-text" onclick="event.stopPropagation(); showBraceletsOnly()">Shop Now →</div>
+          <div class="shop-now-text" onclick="filterProducts('bracelet')">Shop Now →</div>
         </div>
-
+      
         <!-- Card 2 -->
-        <div class="vedic-card" onclick="filterProducts('bracelet')">
+        <div class="vedic-card">
           <img src="rudraksh.webp" alt="Rudraksha Bracelet" />
           <p>
             A Rudraksha bracelet is a sacred bead accessory believed to bring
             spiritual protection, inner peace, and attract positive energy, health,
             and prosperity.
           </p>
-          <div class="shop-now-text" onclick="event.stopPropagation(); showBraceletsOnly()">Shop Now →</div>
+          <div class="shop-now-text" onclick="filterProducts('bracelet')">Shop Now →</div>
         </div>
       </div>
+      
     </section>
      </div>
 
@@ -988,7 +989,7 @@ button:hover, .product-card:hover {
   <div class="products-container" id="braceletList">
     <div class="product-card" data-tags="bracelet">
       <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-      <img src="braclet_1.jpeg" alt="bracelet" />
+      <img src="Bracelets_Images/braclet_1.jpeg" alt="bracelet" />
       <h3>Silver Bracelet</h3>
       <p>Premium sterling silver bracelet for women.</p>
       <p><strong>₹2,199</strong></p>
@@ -1007,7 +1008,7 @@ button:hover, .product-card:hover {
   <div class="products-container" id="trousersList">
     <div class="product-card" data-tags="trousers">
       <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-      <img src="trouser_1.jpeg" alt="trousers" />
+      <img src="Trouser's_Images/trouser_1.jpeg" alt="trousers" />
       <h3>Men's Trousers</h3>
       <p>Comfortable and stylish trousers for men.</p>
       <p><strong>₹1,499</strong></p>
@@ -1025,7 +1026,7 @@ button:hover, .product-card:hover {
   <div class="products-container" id="kidsList">
     <div class="product-card" data-tags="kids">
       <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-      <img src="teddy_1.jpeg" alt="kids" />
+      <img src="Kids_Zone_Images/teddy_1.jpeg" alt="kids" />
       <h3>Kids Toy Set</h3>
       <p>Fun and safe toy set for kids aged 3-8.</p>
       <p><strong>₹889</strong></p>
