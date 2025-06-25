@@ -1217,7 +1217,8 @@ button:hover, .product-card:hover {
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
       cart.push({ name: productName, price, image });
       localStorage.setItem('cart', JSON.stringify(cart));
-      document.getElementById('cartCount').textContent = cart.length;
+      updateCartCount(); // this will do both update + hide/show
+
       alert(`${productName} - ₹${price} added to cart!`);
     }
     
@@ -1423,6 +1424,10 @@ button:hover, .product-card:hover {
       closeMenu();
     }
   });
+
+
+  window.addEventListener('DOMContentLoaded', updateCartCount);
+
 
     function trackOrder() {
       alert("📦 Tracking feature coming soon!");
