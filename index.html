@@ -32,6 +32,7 @@
 }
 
 
+/* Heart Button */
 .heart-btn {
   background: none;
   border: none;
@@ -40,17 +41,16 @@
   top: 10px;
   right: 10px;
   cursor: pointer;
+  color: #e60023;
+  transition: transform 0.2s ease;
+}
+
+.heart-btn:hover {
+  transform: scale(1.2);
 }
 
 
-.product-card {
-  position: relative;
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 220px;
-}
+
 
 
 
@@ -262,35 +262,66 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 1rem;
-      padding: 1rem;
+      padding: 2rem 1.5rem;
     }
+    
 
     .product-card {
+      position: relative;
       background: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
       padding: 1rem;
-      width: 300px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      display: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 240px;
+      flex: 1 1 200px;
+      display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s ease;
     }
-
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    
     .product-card h3 {
-      margin: 0.5rem 0;
+      font-size: 1rem;
+      margin: 0.8rem 0 0.4rem;
+      text-align: center;
     }
-
+    
+    .product-card p {
+      font-size: 0.9rem;
+      text-align: center;
+      color: #333;
+      margin: 0.3rem 0;
+    }
+    
     .product-card button {
-      padding: 0.5rem;
-      margin-top: 1rem;
+      margin-top: auto;
       background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      border-radius: 58px;
       cursor: pointer;
-      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
     }
+    
+    .product-card button:hover {
+      background-color: #218838;
+    }
+    
+    
 
     .cart {
       position: fixed;
@@ -431,8 +462,31 @@
   z-index: 10;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  margin-top: 5px;
+}
 
+.close-main-btn {
+  background-color: #ffcc00; /* golden yellow */
+  color: #0b4127; /* matches your dark green theme */
+  border: none;
+  padding: 8px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
+.close-main-btn:hover {
+  background-color: #f2b400;
+  transform: scale(1.05);
+}
 
 
 
@@ -523,11 +577,14 @@
      </div>
 
   <!-- FULL-PAGE PRODUCT SECTION -->
-<div id="watches-section" class="category-section" style="display: none;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin: 5px 5px;">
-    <h2 style="color: white; font-weight: bold;"></h2>
-    <button class="close-main-btn" onclick="showHome()" style="font-size: 1.3rem;">❌ Back</button>
-  </div>  
+  <div id="watches-section" class="category-section" style="display: none;">
+    <div class="section-header">
+      <h2 style="color: white; font-weight: bold;">Watch Collection's</h2>
+      <button class="close-main-btn" onclick="showHome()">← Back</button>
+    </div>
+  </div>
+  
+  
   
 
   <!-- Main Product Container -->
@@ -536,7 +593,7 @@
     <!-- Watch 1 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch_1_.jpg" alt="Minimalist Dress Watch" />
+  <img src="Watch_Images/Minimalist_Dress_Watch.jpeg" alt="Minimalist Dress Watch" />
   <h3>Minimalist Dress Watch</h3>
   <p>Ultra-thin quartz watch with brown leather strap for formal wear.</p>
   <p><strong>₹3,899</strong></p>
@@ -546,7 +603,7 @@
 <!-- Watch 2 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch_2.jpeg" alt="Black Steel Chrono" />
+  <img src="Watch_Images/Black_Steel_Chrono.webp" alt="Black Steel Chrono" />
   <h3>Black Steel Chrono</h3>
   <p>Bold chronograph with black stainless steel strap and matte dial.</p>
   <p><strong>₹4,499</strong></p>
@@ -556,7 +613,7 @@
 <!-- Watch 3 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch_3.webp" alt="Casual Blue Dial Watch" />
+  <img src="Watch_Images/Casual_Blue_Dial_Watch.webp" alt="Casual Blue Dial Watch" />
   <h3>Casual Blue Dial Watch</h3>
   <p>Trendy blue dial watch perfect for everyday styling.</p>
   <p><strong>₹2,999</strong></p>
@@ -566,7 +623,7 @@
 <!-- Watch 4 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="linjer-classic-watch-38-gunmetal-black-1-front.webp" alt="Rose Gold Elegance" />
+  <img src="Watch_Images/Rose_Gold_Elegance.webp" alt="Rose Gold Elegance" />
   <h3>Rose Gold Elegance</h3>
   <p>Elegant women's watch with rose gold mesh strap and white dial.</p>
   <p><strong>₹5,299</strong></p>
@@ -576,7 +633,7 @@
 <!-- Watch 5 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch_5.png" alt="Analog Sports Watch" />
+  <img src="Watch_Images/Analog_Sports_Watch.jpg" alt="Analog Sports Watch" />
   <h3>Analog Sports Watch</h3>
   <p>Shock-resistant analog watch with silicone band and water resistance.</p>
   <p><strong>₹3,499</strong></p>
@@ -586,7 +643,7 @@
 <!-- Watch 6 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch6.jpg" alt="Classic Roman Dial" />
+  <img src="Watch_Images/Classic_Roman_Dial.jpg" alt="Classic Roman Dial" />
   <h3>Classic Roman Dial</h3>
   <p>Traditional analog watch featuring Roman numerals and black strap.</p>
   <p><strong>₹2,199</strong></p>
@@ -596,7 +653,7 @@
 <!-- Watch 7 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch7.jpg" alt="Smartwatch Touchscreen" />
+  <img src="Watch_Images/Smartwatch_Touchscreen.webp" alt="Smartwatch Touchscreen" />
   <h3>Smartwatch Touchscreen</h3>
   <p>Feature-rich smartwatch with heart rate and fitness tracking.</p>
   <p><strong>₹6,999</strong></p>
@@ -606,7 +663,7 @@
 <!-- Watch 8 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch8.jpg" alt="Vintage Brown Leather" />
+  <img src="Watch_Images/Vintage_Brown_Leather.jpg" alt="Vintage Brown Leather" />
   <h3>Vintage Brown Leather</h3>
   <p>Retro-inspired analog watch with premium brown leather strap.</p>
   <p><strong>₹4,099</strong></p>
@@ -616,7 +673,7 @@
 <!-- Watch 9 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch9.jpg" alt="Titan Slimline" />
+  <img src="Watch_Images/Titan_Slimline.webp" alt="Titan Slimline" />
   <h3>Titan Slimline</h3>
   <p>Lightweight and elegant slimline watch for business attire.</p>
   <p><strong>₹5,899</strong></p>
@@ -626,7 +683,7 @@
 <!-- Watch 10 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch10.jpg" alt="Blue Sports Dial" />
+  <img src="Watch_Images/Blue Sports Dial.webp" alt="Blue Sports Dial" />
   <h3>Blue Sports Dial</h3>
   <p>Sporty chronograph with blue dial and luminous markers.</p>
   <p><strong>₹3,799</strong></p>
@@ -636,7 +693,7 @@
 <!-- Watch 11 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch11.jpg" alt="Mesh Strap Smartwatch" />
+  <img src="Watch_Images/Mesh_Strap_Smartwatch.webp" alt="Mesh Strap Smartwatch" />
   <h3>Mesh Strap Smartwatch</h3>
   <p>Elegant smartwatch with stainless steel mesh band and OLED display.</p>
   <p><strong>₹5,499</strong></p>
@@ -646,7 +703,7 @@
 <!-- Watch 12 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch12.jpg" alt="Luxe Black Dial" />
+  <img src="Watch_Images/Luxe_Black_Dial.webp" alt="Luxe Black Dial" />
   <h3>Luxe Black Dial</h3>
   <p>Premium luxury watch with matte black dial and leather strap.</p>
   <p><strong>₹6,299</strong></p>
@@ -656,7 +713,7 @@
 <!-- Watch 13 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch13.jpg" alt="Classic Dual Time" />
+  <img src="Watch_Images/watch_2.jpeg" alt="Classic Dual Time" />
   <h3>Classic Dual Time</h3>
   <p>Dual time zone functionality with vintage silver bezel.</p>
   <p><strong>₹4,749</strong></p>
@@ -666,7 +723,7 @@
 <!-- Watch 14 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch14.jpg" alt="Titan Rose Chronograph" />
+  <img src="Watch_Images/watch_1_.jpg" alt="Titan Rose Chronograph" />
   <h3>Titan Rose Chronograph</h3>
   <p>Elegant chronograph with rose gold accents and white dial.</p>
   <p><strong>₹7,599</strong></p>
@@ -676,7 +733,7 @@
 <!-- Watch 15 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch15.jpg" alt="All Black Digital Watch" />
+  <img src="Watch_Images/All_Black_Digital_Watch.webp" alt="All Black Digital Watch" />
   <h3>All Black Digital Watch</h3>
   <p>Durable digital watch with backlight and stopwatch features.</p>
   <p><strong>₹2,299</strong></p>
@@ -686,7 +743,7 @@
 <!-- Watch 16 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch16.jpg" alt="Formal Leather Strap" />
+  <img src="Watch_Images/Formal_Leather_Strap.webp" alt="Formal Leather Strap" />
   <h3>Formal Leather Strap</h3>
   <p>Business-class watch with date display and black leather finish.</p>
   <p><strong>₹3,299</strong></p>
@@ -696,7 +753,7 @@
 <!-- Watch 17 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch17.jpg" alt="Gold Link Watch" />
+  <img src="Watch_Images/Gold_Link_Watch.webp" alt="Gold Link Watch" />
   <h3>Gold Link Watch</h3>
   <p>Luxurious gold-tone bracelet watch for formal evenings.</p>
   <p><strong>₹8,199</strong></p>
@@ -706,7 +763,7 @@
 <!-- Watch 18 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch18.jpg" alt="Digital Outdoor Watch" />
+  <img src="Watch_Images/Digital_Outdoor_Watch.jpg" alt="Digital Outdoor Watch" />
   <h3>Digital Outdoor Watch</h3>
   <p>Rugged watch with digital compass, altimeter & barometer.</p>
   <p><strong>₹4,799</strong></p>
@@ -716,7 +773,7 @@
 <!-- Watch 19 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch19.jpg" alt="White Dial Leather Watch" />
+  <img src="Watch_Images/White_Dial_Leather_Watch.jpg" alt="White Dial Leather Watch" />
   <h3>White Dial Leather Watch</h3>
   <p>Minimalist white dial with brown genuine leather strap.</p>
   <p><strong>₹3,199</strong></p>
@@ -726,12 +783,13 @@
 <!-- Watch 20 -->
 <div class="product-card" data-tags="watch">
   <button class="heart-btn" onclick="addToWishlist(this)">♡</button>
-  <img src="watch20.jpg" alt="Dual Tone Steel Watch" />
+  <img src="Watch_Images/Dual_Tone__Steel_Watch.webp" alt="Dual Tone Steel Watch" />
   <h3>Dual Tone Steel Watch</h3>
   <p>Elegant two-tone stainless steel watch with scratch-proof glass.</p>
   <p><strong>₹5,899</strong></p>
   <button onclick="addToCart('Dual Tone Steel Watch')">+ Add to Cart</button>
 </div>
+
 
 
 
