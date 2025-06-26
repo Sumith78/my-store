@@ -12,6 +12,8 @@
       background: #f8f9fa;
     }
 
+
+    
     .profile-card {
       position: absolute;
       top: 70px;
@@ -247,10 +249,10 @@ button:hover, .product-card:hover {
 .heart-btn {
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1rem;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 5px;
+  right: 3px;
   cursor: pointer;
   color: #e60023;
   transition: transform 0.2s ease;
@@ -1088,9 +1090,8 @@ button:hover, .product-card:hover {
 </div>
 
 
-  <div class="cart" onclick="showCart()">
-    🛒 <span id="cartCount">0</span>
-  </div>
+
+
 
   <script>
     let isMenuOpen = false;
@@ -1277,21 +1278,25 @@ button:hover, .product-card:hover {
     
 
     
-      function updateCartCount() {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const count = cart.length;
-        const badge = document.getElementById('cart-count');
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.length;
     
-        if (count > 0) {
-          badge.textContent = count;
-          badge.style.display = 'inline-block';
-        } else {
-          badge.style.display = 'none';
-        }
-      }
+      // Update all elements with id='cart-count'
+      const badgeById = document.querySelectorAll('#cart-count');
+      badgeById.forEach(badge => {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'inline-block' : 'none';
+      });
     
-      // Call once when the page loads
-      updateCartCount();
+      // Update the floating cart with class='cart-count'
+      const floatingCount = document.querySelectorAll('.cart-count');
+      floatingCount.forEach(el => {
+        el.textContent = count;
+        el.style.display = count > 0 ? 'inline-block' : 'none';
+      });
+    }
+    
   
     
     
@@ -1348,13 +1353,25 @@ button:hover, .product-card:hover {
     
 
     function showHome() {
+      // Hide all category sections (like bracelet, watches, etc.)
+      document.querySelectorAll('.category-section').forEach(section => {
+        section.style.display = 'none';
+      });
+    
+      // Show home sections
       document.getElementById('homeSections').style.display = 'block';
-      document.getElementById('watches-section').style.display = 'none';
-      document.getElementById('wishlist-section').style.display = 'none';
-  
+    
+      // Optionally hide other sections like wishlist and search
+      const wishlist = document.getElementById('wishlist-section');
+      if (wishlist) wishlist.style.display = 'none';
+    
+      const search = document.getElementById('searchContainer');
+      if (search) search.style.display = 'none';
+    
+      // Hide all product cards in case they were left visible from search
       document.querySelectorAll('.product-card').forEach(p => p.style.display = 'none');
     }
-  
+    
     function addToWishlist(button) {
       if (!localStorage.getItem('user_email')) {
         alert("Please sign in to add items to wishlist.");
@@ -1563,12 +1580,18 @@ button:hover, .product-card:hover {
       }
     }
     
+
+    
     
 
     
     
   </script>
   
+
+  <div class="cart" onclick="showCart()">
+    🛒 <span class="cart-count">0</span>
+  </div>
 </body>
 <!-- Wishlist Section -->
 <!-- Wishlist Section -->
