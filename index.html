@@ -315,7 +315,7 @@ button:hover, .product-card:hover {
     }
 
     .cart-icon:hover {
-      transform: scale(1.2);
+      transform: scale(1.3);
       color: #ffc107;
     }
 
@@ -466,6 +466,11 @@ button:hover, .product-card:hover {
       font-size: 18px;
       cursor: pointer;
       margin-left: 8px;
+    }
+
+    .search-icon:hover {
+      transform: scale(1.3);
+      color: #ffc107;
     }
 
     .products-container {
@@ -1112,31 +1117,32 @@ button:hover, .product-card:hover {
       const isVisible = window.getComputedStyle(box).display === "block";
     
       if (isVisible) {
-        // Close the search box and reset state
         box.style.display = "none";
         input.value = "";
     
-        // Hide all product sections
+        document.removeEventListener('click', handleOutsideSearchClick);
+    
+        // hide other stuff...
         ['watches-section', 'bracelet-section', 'trousers-section', 'kids-section'].forEach(id => {
           document.getElementById(id).style.display = 'none';
         });
-    
-        // Hide wishlist if it exists
         const wishlist = document.getElementById('wishlist-section');
         if (wishlist) wishlist.style.display = 'none';
-    
-        // Show home
         document.getElementById('homeSections').style.display = 'block';
-    
-        // Hide suggestion box if present
         const suggestionBox = document.getElementById('suggestionBox');
         if (suggestionBox) suggestionBox.style.display = 'none';
+    
       } else {
-        // Open the search box
         box.style.display = "block";
         input.focus();
+    
+        setTimeout(() => {
+          document.addEventListener('click', handleOutsideSearchClick);
+        }, 0); // allow toggle click to finish
       }
     }
+
+    
     
   
     function searchProducts() {
@@ -1557,6 +1563,8 @@ button:hover, .product-card:hover {
       }
     }
     
+    
+
     
     
   </script>
