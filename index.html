@@ -12,6 +12,44 @@
       background: #f8f9fa;
     }
 
+    .profile-card {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      width: 220px;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      z-index: 1000;
+    }
+    
+    .profile-pic {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.5rem;
+    }
+    
+    .profile-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    
+    .profile-card p {
+      margin: 0.2rem 0 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+
 
     .menu-close-wrapper {
       display: flex;
@@ -684,9 +722,11 @@ button:hover, .product-card:hover {
         <img src="search (1).png" alt="Search" width="32" height="32">
       </button>
     
-      <a href="auth.html" class="signin-icon" title="Sign In">
+      <a href="#" class="signin-icon" title="Sign In" onclick="handleUserProfile()">
         <img src="user.png" alt="User" width="30" height="30">
       </a>
+      
+      
       <button class="cart-icon" onclick="showCart()">
         🛒
         <span id="cart-count" class="cart-badge">0</span>
@@ -716,9 +756,16 @@ button:hover, .product-card:hover {
       <a href="#" onclick="filterProducts('kids')"><span>🧒</span>Kids Zone</a>
       <a href="#" onclick="showWishlist()"><span>❤️</span>My Wishlist</a>
       <a href="#" onclick="trackOrder()"><span>📦</span>Track Order</a> <!-- ✅ NEW LINK -->
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')"><span>📝</span>Sign Up</a>
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')"><span>🔐</span>Sign In</a>
-      <button onclick="logoutUser()">Logout</button>
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')" id="signupLink">
+        <span>📝</span>Sign Up
+      </a>
+      
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')" id="signinLink">
+        <span>🔐</span>Sign In
+      </a>
+      
+      <button onclick="logoutUser()" id="logoutBtn">Logout</button>
+      
     </div>
     
 
@@ -1254,7 +1301,46 @@ button:hover, .product-card:hover {
       alert('Logged out successfully!');
       window.location.href = 'auth.html';
     }
+
+    function updateMenuOptions() {
+      const isLoggedIn = localStorage.getItem('user_email') !== null;
+      const signUpLink = document.querySelector("a[onclick*='auth_view',*'signup']");
+      const signInLink = document.querySelector("a[onclick*='auth_view',*'signin']");
+      const logoutBtn = document.querySelector(".menu-dropdown button[onclick='logoutUser()']");
+    
+      if (signUpLink) signUpLink.style.display = isLoggedIn ? 'none' : 'block';
+      if (signInLink) signInLink.style.display = isLoggedIn ? 'none' : 'block';
+      if (logoutBtn) logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
+    }
+    
+    // Call this once page loads
+    window.onload = function () {
+      updateMenuOptions();
+    
+      // Also show user info if logged in
+      displayUserCard();
+    };
+    
   
+
+    function toggleProfileCard() {
+      const card = document.getElementById('userProfileCard');
+      card.classList.toggle('hidden');
+    }
+    
+    function displayUserCard() {
+      const email = localStorage.getItem('user_email');
+      const name = localStorage.getItem('user_name');
+    
+      if (email && name) {
+        document.getElementById('profileName').textContent = name;
+        document.getElementById('profileEmail').textContent = email;
+        document.getElementById('userProfileCard').classList.add('hidden'); // Initially hidden
+      }
+    }
+
+    
+
     function showHome() {
       document.getElementById('homeSections').style.display = 'block';
       document.getElementById('watches-section').style.display = 'none';
@@ -1442,6 +1528,35 @@ button:hover, .product-card:hover {
         alert("✅ Your wishlist has been cleared.");
       }
     }
+
+    function updateMenuVisibility() {
+      const isLoggedIn = localStorage.getItem('user_email') !== null;
+    
+      const signUp = document.getElementById('signupLink');
+      const signIn = document.getElementById('signinLink');
+      const logout = document.getElementById('logoutBtn');
+    
+      if (signUp) signUp.style.display = isLoggedIn ? 'none' : 'block';
+      if (signIn) signIn.style.display = isLoggedIn ? 'none' : 'block';
+      if (logout) logout.style.display = isLoggedIn ? 'block' : 'none';
+    }
+
+    
+    window.onload = function () {
+      updateMenuVisibility();
+    };
+    
+
+    function handleUserProfile() {
+      const isLoggedIn = localStorage.getItem('user_email');
+      if (isLoggedIn) {
+        window.location.href = 'profile.html'; // ✅ your new profile page
+      } else {
+        localStorage.setItem('auth_view', 'signin');
+        window.location.href = 'auth.html';
+      }
+    }
+    
     
     
   </script>
