@@ -261,6 +261,30 @@
     }
 
     renderCart();
+
+    fetch("footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer-placeholder").innerHTML = data;
+    });
+
+    function openPolicy() {
+      const modal = document.getElementById("policyModal");
+      if (modal) modal.style.display = "block";
+    }
+  
+    function acceptPolicy() {
+      const checkbox = document.getElementById("policyCheck");
+      if (!checkbox.checked) {
+        alert("Please agree to the privacy policy before continuing.");
+        return;
+      }
+      document.getElementById("policyModal").style.display = "none";
+      window.location.href = "index.html";
+    }
   </script>
+
+  <div id="footer-placeholder"></div>
+
 </body>
 </html>
