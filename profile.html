@@ -174,21 +174,45 @@
       background: none;
       border: none;
       cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
     }
-  
-    .search-icon img {
-      width: 32px;
-      height: 32px;
+    
+    .search-icon:hover {
+      transform: scale(1.2);
+      filter: brightness(1.2);
     }
-  
+    
+    .search-icon,
     .cart-icon {
-      position: relative;
-      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: none;
       border: none;
       cursor: pointer;
-      color: white;
+      padding: 0;
+      width: 36px;
+      height: 36px;
     }
+    
+    .search-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    
+    .cart-icon {
+      font-size: 28px;
+      color: white;
+      transition: transform 0.2s ease;
+    }
+    
+    .cart-icon:hover,
+    .search-icon:hover {
+      transform: scale(1.15);
+    }
+    
   
     .cart-badge {
       position: absolute;
@@ -235,7 +259,61 @@
       cursor: pointer;
       margin-left: 8px;
     }
+
+
+    .edit-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      padding: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+
+    .search-container {
+      position: absolute;
+      top: 16px;
+      right: 0;
+      width: 240px;
+      background: white;
+      padding: 6px 8px 8px; /* More balanced spacing */
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 1001;
+    }
+    
+    .search-container input {
+      width: 220px;
+      padding: 10px 38px 10px 14px; /* space from left + right for icon */
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    
+    .search-container .close-btn {
+      position: absolute;
+      top: 13px;
+      right: 4px;
+      font-size: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+    }
+    
+    
   </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 </head>
 <body>
 
@@ -246,22 +324,33 @@
     </div>
     
     <div class="menu-right">
-      <button class="search-icon" onclick="toggleSearch()">
-        <img src="search (1).png" alt="Search" width="32" height="32">
-      </button>
-  
+      <div class="search-wrapper" style="position: relative;">
+        <button class="search-icon" onclick="toggleSearch(event)">
+          <img src="search (1).png" alt="Search" width="32" height="32">
+        </button>
+      
+        <div id="searchContainer" class="search-container">
+          <button class="close-btn" onclick="toggleSearch(event)">✖</button>
+          <input type="text" id="searchInput" placeholder="Search products..." onkeyup="handleSearch(event)">
+        </div>
+      </div>
+      
+    
       <button class="cart-icon" onclick="showCart()">
         🛒
         <span id="cart-count" class="cart-badge">0</span>
       </button>
     </div>
   </div>
+    
   
 
   <div class="profile-section">
     <div class="profile-pic-wrapper">
-      <img src="profile.jpg" alt="User" class="profile-pic" id="profileImage" />
-      <label for="profileUpload" class="edit-icon">✏️</label>
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" id="profileImage" class="profile-pic" />
+
+      <label for="profileUpload" class="edit-icon"><i class="fas fa-pen"></i></label>
+
       <input type="file" id="profileUpload" accept="image/*" onchange="uploadProfilePic()" />
     </div>
     <div class="user-details">
@@ -288,40 +377,116 @@
     function goBack() {
       window.history.back();
     }
-
-    function toggleSearch() {
-      const searchBox = document.getElementById('searchContainer');
-      if (searchBox) {
-        searchBox.style.display = searchBox.style.display === 'block' ? 'none' : 'block';
+  
+    function toggleSearch(event) {
+      event.stopPropagation(); // prevent body click from triggering
+  
+      const container = document.getElementById('searchContainer');
+      const isVisible = container.style.display === 'block';
+      container.style.display = isVisible ? 'none' : 'block';
+  
+      if (!isVisible) {
+        document.addEventListener('click', closeSearchOnOutsideClick);
+      } else {
+        document.removeEventListener('click', closeSearchOnOutsideClick);
       }
     }
-    
-
-    
-    
-    function showCart() {
-      window.location.href = 'cart.html'; // Or wherever your cart lives
+  
+    function closeSearchOnOutsideClick(e) {
+      const searchWrapper = document.querySelector('.search-wrapper');
+      if (!searchWrapper.contains(e.target)) {
+        document.getElementById('searchContainer').style.display = 'none';
+        document.removeEventListener('click', closeSearchOnOutsideClick);
+      }
     }
-    
+  
+    function handleSearch(event) {
+      if (event.key === 'Enter') {
+        const query = document.getElementById("searchInput").value.trim();
+        if (query) {
+          window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+        }
+      }
+    }
+    function showCart() {
+      window.location.href = 'cart.html';
+    }
+  
 
+    function uploadProfilePic() {
+      const fileInput = document.getElementById("profileUpload");
+      const file = fileInput.files[0];
+  
+      if (file) {
+        const reader = new FileReader();
+  
+        reader.onload = function (e) {
+          const imageUrl = e.target.result;
+          document.getElementById("profileImage").src = imageUrl;
+          localStorage.setItem("user_profile", imageUrl);
+        };
+  
+        reader.readAsDataURL(file);
+      }
+    }
     function loadUserProfile() {
       const name = localStorage.getItem("user_name") || "John Doe";
       const email = localStorage.getItem("user_email") || "example@gmail.com";
       const mobile = localStorage.getItem("user_mobile") || "+91XXXXXXXXXX";
       const profile = localStorage.getItem("user_profile");
-
+  
       document.getElementById("profileName").textContent = name;
       document.getElementById("profileEmail").textContent = email;
       document.getElementById("mobileNumber").value = mobile;
       document.getElementById("emailInput").value = email;
-
+  
+      const profileImage = document.getElementById("profileImage");
       if (profile) {
-        document.getElementById("profileImage").src = profile;
+        profileImage.src = profile;
+      } else {
+        profileImage.src = "default-user.png"; // your default image path
       }
     }
+  
+    window.onload = loadUserProfile;
+  
 
+  
+
+    
+
+    // 🔧 Allow user to edit the field
+    function editField(field) {
+      if (field === 'mobile') {
+        document.getElementById("mobileNumber").disabled = false;
+        document.getElementById("mobileNumber").focus();
+      } else if (field === 'email') {
+        document.getElementById("emailInput").disabled = false;
+        document.getElementById("emailInput").focus();
+      }
+    }
+  
+    // 💾 Save updated values on submit
+    document.querySelector(".submit-btn").addEventListener("click", () => {
+      const updatedMobile = document.getElementById("mobileNumber").value;
+      const updatedEmail = document.getElementById("emailInput").value;
+  
+      localStorage.setItem("user_mobile", updatedMobile);
+      localStorage.setItem("user_email", updatedEmail);
+  
+      document.getElementById("profileEmail").textContent = updatedEmail;
+  
+      document.getElementById("mobileNumber").disabled = true;
+      document.getElementById("emailInput").disabled = true;
+  
+      alert("Profile updated successfully ✅");
+    });
+  
     window.onload = loadUserProfile;
   </script>
 
+
+
+  
 </body>
 </html>
