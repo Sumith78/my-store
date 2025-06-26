@@ -279,6 +279,7 @@
     </div>
 
     <button class="btn green-btn" onclick="placeOrder()">Place the Order</button>
+
   </div>
 
   <!-- Add Address Popup -->
@@ -358,6 +359,9 @@
         }
       }
     
+      // ✅ Clear cart
+      localStorage.removeItem('cart');
+    
       const celebration = document.createElement('div');
       celebration.className = 'celebration';
       celebration.style.color = 'green';
@@ -381,6 +385,7 @@
         window.location.href = "index.html";
       }, 4000);
     }
+    
     
     
 
