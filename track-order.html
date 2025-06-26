@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Track Your Orders</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .order {
+      border-bottom: 1px solid #ddd;
+      padding: 16px 0;
+    }
+
+    .order:last-child {
+      border: none;
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .order-details {
+      margin-top: 8px;
+    }
+
+    .product {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .product img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: green;
+    }
+
+    .estimated {
+      font-weight: bold;
+      color: #444;
+    }
+
+    .print-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      float: right;
+      margin-top: 20px;
+    }
+
+    .print-btn:hover {
+      background-color: #0056b3;
+    }
+
+    @media screen and (max-width: 600px) {
+      .product {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .order-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .print-btn {
+        width: 100%;
+        float: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📦 Track Your Orders</h1>
+  <div id="ordersList"></div>
+  <button class="print-btn" onclick="window.print()">🖨️ Print Order Summary</button>
+</div>
+
+<script>
+  const email = localStorage.getItem('user_email') || "guest@example.com";
+  const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  const userOrders = orders.filter(order => order.email === email);
+  const ordersList = document.getElementById('ordersList');
+
+  if (userOrders.length === 0) {
+    ordersList.innerHTML = "<p>No orders found for this email.</p>";
+  } else {
+    userOrders.reverse().forEach((order, index) => {
+      const div = document.createElement("div");
+      div.className = "order";
+      div.innerHTML = `
+        <div class="order-header">
+          <div><strong>Order #${index + 1}</strong></div>
+          <div>Placed on: ${new Date(order.date).toDateString()}</div>
+        </div>
+        <div class="order-details">
+          ${order.items.map(item => `
+            <div class="product">
+              <img src="${item.image}" alt="${item.name}">
+              <div>
+                <div><strong>${item.name}</strong></div>
+                <div>Price: ₹${item.price}</div>
+              </div>
+            </div>
+          `).join('')}
+          <div class="estimated">📅 Delivery by: ${order.estimatedDelivery}</div>
+          <div class="status">🚚 Status: <strong>Out for Delivery</strong></div>
+        </div>
+      `;
+      ordersList.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>

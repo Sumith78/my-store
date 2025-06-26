@@ -1539,10 +1539,10 @@ button:hover, .product-card:hover {
   window.addEventListener('DOMContentLoaded', updateCartCount);
 
 
-    function trackOrder() {
-      alert("📦 Tracking feature coming soon!");
-      // Optional: redirect to track-order.html or open modal
-    }
+  function trackOrder() {
+    window.location.href = "track-order.html";
+  }
+  
 
     function clearWishlist() {
       if (confirm("Are you sure you want to clear your entire wishlist?")) {

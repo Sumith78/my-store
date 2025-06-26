@@ -358,6 +358,18 @@
           return;
         }
       }
+
+      // Save the order to localStorage
+let orders = JSON.parse(localStorage.getItem('orders')) || [];
+const email = JSON.parse(localStorage.getItem('checkoutDetails'))?.email || "guest@example.com";
+const order = {
+  email,
+  date: new Date().toISOString(),
+  estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
+  items: JSON.parse(localStorage.getItem('cart')) || [],
+};
+orders.push(order);
+localStorage.setItem('orders', JSON.stringify(orders));
     
       // ✅ Clear cart
       localStorage.removeItem('cart');
