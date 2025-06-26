@@ -11,10 +11,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh; /* Changed from height: 100vh */
       margin: 0;
+      padding: 1rem; /* Add padding to avoid edge overflow */
+      overflow-x: hidden; /* Prevent horizontal scrolling */
     }
-
+    
     .card {
       position: relative;
       background: white;
@@ -24,7 +26,9 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       width: 100%;
       max-width: 400px;
+      box-sizing: border-box; /* Important for consistent sizing */
     }
+    
 
     /* Close icon styles */
     .close-icon {
