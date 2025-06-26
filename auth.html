@@ -5,85 +5,135 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Authentication</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  
+    * {
+      box-sizing: border-box;
+    }
+  
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      margin: 0;
+      padding: 1rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh; /* Changed from height: 100vh */
-      margin: 0;
-      padding: 1rem; /* Add padding to avoid edge overflow */
-      overflow-x: hidden; /* Prevent horizontal scrolling */
+      min-height: 100vh;
     }
-    
+  
     .card {
-      position: relative;
       background: white;
-      padding: 2rem;
-      padding-top: 2.5rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem 2rem;
+      border-radius: 15px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 400px;
-      box-sizing: border-box; /* Important for consistent sizing */
+      max-width: 420px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
-
-    /* Close icon styles */
+  
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+    }
     .close-icon {
       position: absolute;
       top: 10px;
       right: 15px;
-      font-size: 18px;
-      color: #888;
-      cursor: pointer;
-      background: none;
-      border: none;
-      font-weight: bold;
+      font-size: 22px !important;  /* Increased from 18px */
+      font-family: Arial, sans-serif !important;
+      font-weight: bold !important;
+      line-height: 1 !important;
+      padding: 0 !important;
+      border: none !important;
+      background: none !important;
+      color: #888 !important;
+      cursor: pointer !important;
+      width: auto !important;
+      height: auto !important;
     }
-
+    
     .close-icon:hover {
-      color: red;
+      color: red !important;
     }
-
+    
+    
+    
+  
     .card h2 {
       text-align: center;
-      margin-bottom: 1rem;
+      color: #333;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
     }
-
+  
     .card input {
       width: 100%;
-      padding: 0.6rem;
-      margin: 0.4rem 0;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
     }
-
+  
+    .card input:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+  
     .card button {
-   
-      padding: 0.7rem;
-      background-color: #28a745;
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(to right, #6c63ff, #846bff);
       color: white;
+      font-size: 1rem;
+      font-weight: 600;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
-      margin-top: 0.5rem;
+      margin-top: 1rem;
+      transition: background 0.3s, transform 0.2s;
     }
-
+  
+    .card button:hover {
+      background: linear-gradient(to right, #5a55e3, #7463ff);
+      transform: scale(1.02);
+    }
+  
     .card a {
       display: block;
       text-align: center;
-      margin-top: 0.5rem;
-      color: #007bff;
+      margin-top: 1rem;
+      color: #6c63ff;
       text-decoration: none;
-      cursor: pointer;
+      font-size: 0.95rem;
+      cursor: pointer; /* This makes it show the finger pointer */
+      transition: color 0.3s;
     }
-
+    
+    .card a:hover {
+      color: #4a42d4;
+    }
+    
+  
     .hidden {
       display: none;
     }
+  
+    @media (max-width: 480px) {
+      .card {
+        padding: 2rem 1.2rem;
+      }
+  
+      .card input,
+      .card button {
+        font-size: 0.95rem;
+      }
+    }
   </style>
+  
 </head>
 <body>
 
