@@ -25,9 +25,16 @@
     .back-btn-icon {
       position: absolute;
       left: 1rem;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       cursor: pointer;
+      transition: transform 0.3s ease, color 0.3s ease;
     }
+    
+    .back-btn-icon:hover {
+      
+      color: #ffc107;
+    }
+    
     .title { font-size: 1.3rem; font-weight: bold; }
 
     main {
@@ -358,6 +365,20 @@ button {
   color: red;
   transform: scale(1.4);
 }
+
+/* ⬇️ New: Empty cart styling */
+.empty {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #555;
+  text-align: center;
+  padding: 2rem;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 
   </style>
