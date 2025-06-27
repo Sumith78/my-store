@@ -24,7 +24,7 @@
       cursor: pointer;
     }
     
-    /* This wrapper lets us position the count relative to the icon only */
+    /* Wrapper for icon + count */
     .cart-icon-wrapper {
       position: relative;
       font-size: 1.8rem;
@@ -32,7 +32,7 @@
       line-height: 1;
     }
     
-    /* Position the count above the 🛒 icon */
+    /* Count badge - top right of icon */
     .cart-count {
       position: absolute;
       top: -0.6rem;
@@ -48,15 +48,19 @@
       text-align: center;
     }
     
-  
+    /* Mobile-specific spacing */
     @media (max-width: 600px) {
       .cart {
-        font-size: 0.9rem;
-        bottom: 0.8rem;
-        right: 0.8rem;
+        bottom: 2rem; /* more spacing from bottom */
+        right: 2rem;  /* more spacing from right */
+        padding: 0.7rem;
+      }
+    
+      .cart-icon-wrapper {
+        font-size: 1.5rem; /* slightly smaller on mobile */
       }
     }
-
+    
     
     .profile-card {
       position: absolute;
