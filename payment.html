@@ -5,21 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Payment Gateway</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      width: 100%;
-      overflow-x: hidden;
       font-family: Arial, sans-serif;
       background-color: #f7f9fa;
     }
-
     header {
-      background-color: rgb(11, 65, 39);
+      background-color: #0b4127;
       color: white;
       padding: 1rem;
       font-size: 1.5rem;
@@ -27,66 +21,108 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      text-align: center;
+    }
+    
+
+    @media(max-width: 480px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        font-size: 1.2rem;
+      }
+    
+      #countdown {
+        font-size: 10px;
+        margin-top: 6px;
+        text-align: center;
+      }
     }
 
-    #countdown {
-      font-size: 1rem;
-      font-weight: normal;
-      white-space: nowrap;
-    }
-
+    
+    
     .container {
-      width: 90%;
       max-width: 800px;
       margin: 30px auto;
       padding: 20px;
       background-color: white;
       border-radius: 8px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      overflow-wrap: break-word;
     }
 
-    h3 {
-      color: #222;
+    .section-title {
+      font-size: 1.3rem;
       margin-bottom: 10px;
-    }
-
-    .option-section {
-      margin-bottom: 30px;
+      font-weight: bold;
+      color: #222;
     }
 
     .card {
       border: 1px solid #ddd;
-      padding: 15px;
       border-radius: 6px;
-      margin-top: 10px;
-      margin-bottom: 20px; /* 👈 add this */
+      padding: 20px;
+      margin-bottom: 20px;
       background-color: #f8f8f8;
     }
 
     .upi-image {
-      max-width: 100%;
-      height: auto;
-      margin: 10px 0;
       display: block;
+      margin: 0 auto;
+      width: 150px;
+      height: 150px;
     }
 
-    label {
+    #upiId {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .radio-group label {
       display: block;
-      margin-bottom: 10px;
+      margin: 10px 0;
     }
 
     input[type="radio"],
     input[type="checkbox"] {
       margin-right: 10px;
+      transform: scale(1.1);
     }
 
-    .address-options {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .add-address-btn {
+      float: right;
+      background-color: #007bff;
+      color: white;
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .address-options label {
+      display: block;
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      font-size: 0.95rem;
+      color: #333;
+      text-align: left;
+      word-wrap: break-word;
+    }
+
+    .address-options label:last-child {
+      border-bottom: none;
+    }
+
+    .checkbox-section {
+      margin-top: 15px;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
 
     .popup {
@@ -96,56 +132,40 @@
       transform: translate(-50%, -50%);
       background: white;
       padding: 30px;
-      width: 90%;
       max-width: 400px;
+      width: 90%;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      z-index: 1000;
       display: none;
-      z-index: 1001;
     }
 
-    .popup h3 {
-      text-align: center;
-      margin-top: 0;
-      font-size: 1.4rem;
-      color: #333;
-    }
-
-    .popup input,
-    .popup textarea {
-      display: block;
+    .popup input, .popup textarea {
       width: 100%;
-      margin: 12px 0;
-      padding: 12px;
+      padding: 10px;
+      margin: 10px 0;
       font-size: 1rem;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
 
     .btn {
-      padding: 10px 16px;
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
       border: none;
       border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      box-sizing: border-box;
-    }
-
-    .green-btn {
       background-color: green;
       color: white;
-      width: 100%;
-      margin-top: 20px;
+      cursor: pointer;
     }
 
-    .add-address {
-      background-color: #007bff;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 4px;
-      margin-bottom: 10px;
+    .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 1.2rem;
       cursor: pointer;
-      display: inline-block;
     }
 
     .celebration {
@@ -155,81 +175,51 @@
       width: 100vw;
       height: 100vh;
       background: white;
-      z-index: 2000;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       font-size: 2rem;
       font-weight: bold;
       color: green;
       text-align: center;
-      padding: 20px;
-      box-sizing: border-box;
-      word-break: break-word;
+      z-index: 2000;
     }
-    
-    @media screen and (max-width: 600px) {
-      .celebration {
-        font-size: 1.5rem;
-        padding: 16px;
-      }
-    }
-    
 
-    .emoji {
-      position: fixed;
-      top: -2rem;
-      font-size: 2rem;
-      animation: fall linear;
-      z-index: 2001;
-      pointer-events: none;
-    }
-    
-    @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-    
-
-    @media screen and (max-width: 480px) {
+    @media(max-width: 480px) {
       header {
         flex-direction: column;
         font-size: 1.2rem;
       }
-
-      #countdown {
-        margin-top: 8px;
-        font-size: 1rem;
-      }
-
-      .btn {
-        font-size: 0.95rem;
-        padding: 10px;
-      }
     }
 
-    .close-popup {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      font-size: 1.2rem;
-      color: #888;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 1002;
+    .address-options label span {
+      display: block;
+      margin-left: 28px; /* align with radio button text */
+      text-align: left;
+      word-wrap: break-word;
     }
     
-    .close-popup:hover {
-      color: #e74c3c;
+    .checkbox-section {
+      margin: 10px 0 0 28px; /* indent to align with the addresses */
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
     }
 
+
+    .success-text {
+      font-size: 2.5rem;
+      animation: pulse 1s infinite;
+      color: green;
+      text-align: center;
+      margin: 0 auto;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
     .emoji {
       position: fixed;
       top: -2rem;
@@ -245,158 +235,170 @@
         opacity: 1;
       }
       100% {
-        transform: translateY(100vh) rotate(360deg);
+        transform: translateY(100vh) rotate(720deg);
         opacity: 0;
       }
     }
-    
     
   </style>
 </head>
 <body>
   <header>
-    💳 Payment Gateway 
+    💳 Payment Gateway
     <span id="countdown">⏳ 05:00</span>
   </header>
 
   <div class="container">
-    <div class="option-section">
-      <h3>Select Payment Method</h3>
+    <div class="section-title">Select Payment Method</div>
+    <div class="card">
       <label><input type="radio" name="payment" value="upi" checked> UPI (Scanner)</label>
-      <div class="card" id="upiSection">
-        <img src="QR.png" alt="Scan QR" class="upi-image" />
-        <p><strong>UPI ID:</strong> 9739170288@ybl</p>
+      <div id="upiSection">
+        <img src="QR.png" alt="Scan QR" class="upi-image">
+        <div id="upiId">9739170288@ybl</div>
       </div>
-
       <label><input type="radio" name="payment" value="cod"> Cash on Delivery (COD)</label>
-      <div class="card" id="codSection" style="display: none;">
-        <div class="add-address" onclick="togglePopup()">+ Add New Address</div>
-        <div class="address-options">
-          <label><input type="radio" name="address" value="checkoutAddress" checked> <span id="checkoutAddress">No address found</span></label>
-        </div>
-        <label><input type="checkbox" id="sameDelivery"> Deliver on selected address</label>
+    </div>
+
+    <div class="section-title">
+      Delivery Address
+      <button class="add-address-btn" onclick="togglePopup()">+ Add New Address</button>
+    </div>
+
+    <div class="card">
+      <div class="address-options" id="addressOptions">
+        <label><input type="radio" name="address" value="checkoutAddress" checked>
+          <span id="checkoutAddress">No address found</span>
+        </label>
+      </div>
+      <div class="checkbox-section" id="cbSection">
+        <label><input type="checkbox" id="sameDelivery"> Deliver to this address</label>
       </div>
     </div>
 
-    <button class="btn green-btn" onclick="placeOrder()">Place the Order</button>
-
+    <button class="btn" onclick="placeOrder()">Place the Order</button>
   </div>
 
-  <!-- Add Address Popup -->
   <div class="popup" id="popup">
     <span class="close-popup" onclick="closePopup()">✖</span>
     <h3>Add New Address</h3>
-  
-    <input type="text" id="newName" placeholder="Full Name" />
-    <input type="text" id="newContact" placeholder="Mobile Number" />
-    <textarea id="newAddress" placeholder="Current Address" rows="4"></textarea>
-    <button class="btn green-btn" onclick="saveNewAddress()">Save Details</button>
+    <input type="text" id="newName" placeholder="Full Name">
+    <input type="text" id="newContact" placeholder="Mobile Number">
+    <textarea id="newAddress" placeholder="Full Address" rows="4"></textarea>
+    <button class="btn" onclick="saveNewAddress()">Save Details</button>
   </div>
 
-  <!-- Failure Screen -->
-  <div id="failureScreen" class="celebration" style="display: none;">
-    ❌ Payment Failed
-  </div>
-
-  <!-- Success Screen -->
+  <!-- Success Celebration Screen -->
 <div id="successScreen" class="celebration" style="display: none;">
-  🎉 Order Placed Successfully! 🎉
+  <h1 class="success-text">🎉 Order Placed Successfully! 🎉</h1>
 </div>
 
 
+
+<!--failed payment-->
+
+<!-- Failure Screen -->
+<div id="failureScreen" class="celebration" style="display: none; color: red;">
+  ❌ Payment Failed
+</div>
+
+
+
   <script>
-    // Refresh detection
-    if (performance.navigation.type === 1) {
-      document.body.innerHTML = '';
-      const failDiv = document.createElement('div');
-      failDiv.className = 'celebration';
-      failDiv.style.color = 'red';
-      failDiv.innerText = '❌ Payment Failed';
-      document.body.appendChild(failDiv);
-      setTimeout(() => {
-        window.location.href = "checkout.html";
-      }, 3000);
-    }
 
-    // Handle COD visibility
-    const codSection = document.getElementById('codSection');
-    document.querySelectorAll('input[name="payment"]').forEach(el => {
-      el.addEventListener('change', () => {
-        codSection.style.display = el.value === 'cod' ? 'block' : 'none';
-      });
-    });
 
-    // Popup toggle
+    // Detect if user refreshes the page (refresh = payment failed)
+if (performance.navigation.type === 1) {
+  document.body.innerHTML = '';
+  const failDiv = document.createElement('div');
+  failDiv.className = 'celebration';
+  failDiv.style.color = 'red';
+  failDiv.innerText = '❌ Payment Failed';
+  document.body.appendChild(failDiv);
+  setTimeout(() => {
+    window.location.href = "checkout.html";
+  }, 3000);
+}
+
+    const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails')) || {};
+    document.getElementById('checkoutAddress').textContent =
+      `${checkoutData.name || 'Your Name'}\n${checkoutData.currentAddress || 'Your Address'}`;
+
     function togglePopup() {
       document.getElementById('popup').style.display = 'block';
+    }
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
     }
 
     function saveNewAddress() {
       const name = document.getElementById('newName').value.trim();
       const contact = document.getElementById('newContact').value.trim();
       const address = document.getElementById('newAddress').value.trim();
+
       if (!name || !contact || !address) {
-        alert("Please fill all fields");
+        alert("Please complete all fields.");
         return;
       }
 
-      const fullAddress = `${name}<br>${contact}<br>${address}`;
+      const formatted = `${name.replace(/\b\w/g, c => c.toUpperCase())}<br>${contact}<br>${address.replace(/\b\w/g, c => c.toUpperCase())}`;
       const radio = document.createElement('label');
-      radio.innerHTML = `<input type="radio" name="address" value="${fullAddress}"> <span>${fullAddress}</span>`;
-      document.querySelector('.address-options').appendChild(radio);
-      document.getElementById('popup').style.display = 'none';
+      radio.innerHTML = `<input type="radio" name="address" value="${formatted}"> <span>${formatted}</span>`;
+      const container = document.getElementById('addressOptions');
+      container.appendChild(radio);
+      closePopup();
     }
 
+    document.querySelectorAll('input[name="payment"]').forEach(el => {
+      el.addEventListener('change', () => {
+        document.getElementById('cbSection').style.display = 'none';
+        setTimeout(() => document.getElementById('cbSection').style.display = 'block', 200);
+      });
+    });
+
     function placeOrder() {
-      const selectedPayment = document.querySelector('input[name="payment"]:checked');
-      if (!selectedPayment) return alert("Please select a payment method.");
+      const pay = document.querySelector('input[name="payment"]:checked');
+      const addr = document.querySelector('input[name="address"]:checked');
+      const check = document.getElementById('sameDelivery');
     
-      const paymentMode = selectedPayment.value === 'cod' ? 'COD' : 'UPI';
-      localStorage.setItem('paymentMode', paymentMode);
-    
-      let deliveryAddress = "No address selected";
-    
-      if (selectedPayment.value === 'cod') {
-        const selectedAddress = document.querySelector('input[name="address"]:checked');
-        if (!selectedAddress || !document.getElementById('sameDelivery').checked) {
-          alert("Please select address and check delivery confirmation.");
-          return;
-        }
-        deliveryAddress = selectedAddress.nextElementSibling.innerHTML;
+      if (!pay) {
+        alert("Please select a payment method.");
+        return;
+      }
+      if (!addr || !check.checked) {
+        alert("Please select or add an address and confirm delivery.");
+        return;
       }
     
-      // ✅ Save selected delivery address
-      localStorage.setItem('deliveryAddress', deliveryAddress);
-    
-      let orders = JSON.parse(localStorage.getItem('orders')) || [];
-      const email = JSON.parse(localStorage.getItem('checkoutDetails'))?.email || "guest@example.com";
+      const paymentMode = pay.value.toUpperCase();
+      const deliveryAddress = addr.nextElementSibling.innerHTML;
     
       const order = {
-        email,
+        email: checkoutData.email || 'guest@example.com',
         date: new Date().toISOString(),
         estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
         items: JSON.parse(localStorage.getItem('cart')) || [],
         paymentMode,
+        deliveryAddress
       };
     
+      let orders = JSON.parse(localStorage.getItem('orders')) || [];
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
-    
-      // Clear cart
       localStorage.removeItem('cart');
     
-      // Show animation
-      const celebration = document.createElement('div');
-      celebration.className = 'celebration';
-      celebration.style.color = 'green';
-      celebration.innerText = '🎉 Order Placed Successfully!';
-      document.body.innerHTML = '';
-      document.body.appendChild(celebration);
+      // Hide payment form
+      document.querySelector('.container').style.display = 'none';
     
+      // Show celebration screen
+      const successDiv = document.getElementById('successScreen');
+      successDiv.style.display = 'flex';
+    
+      // Emoji Rain 🎉
+      const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
       for (let i = 0; i < 60; i++) {
         const emoji = document.createElement('div');
         emoji.className = 'emoji';
-        emoji.textContent = Math.random() > 0.5 ? '🎉' : '🎊';
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         emoji.style.left = `${Math.random() * 100}%`;
         emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
         emoji.style.animationDelay = `${Math.random()}s`;
@@ -404,86 +406,32 @@
         setTimeout(() => emoji.remove(), 4000);
       }
     
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 4000);
+      // Redirect after 4 seconds
+      setTimeout(() => window.location.href = 'index.html', 4000);
     }
     
-    
-    
-    
-
-    // Countdown timer
-    let countdownTime = 5 * 60;
-    let timerStarted = false;
-
-    function startCountdown() {
-      if (timerStarted) return;
-      timerStarted = true;
-      updateCountdown();
-    }
-
+    let countdownTime = 300, timerStarted = false;
     function updateCountdown() {
-      const minutes = String(Math.floor(countdownTime / 60)).padStart(2, '0');
-      const seconds = String(countdownTime % 60).padStart(2, '0');
-      document.getElementById("countdown").textContent = `⏳ ${minutes}:${seconds} remaining`;
-
+      const m = String(Math.floor(countdownTime / 60)).padStart(2, '0'),
+            s = String(countdownTime % 60).padStart(2, '0');
+      document.getElementById("countdown").textContent = `⏳ ${m}:${s} remaining`;
       if (countdownTime <= 0) {
-        document.body.innerHTML = '';
-        const failDiv = document.createElement('div');
-        failDiv.className = 'celebration';
-        failDiv.style.color = 'red';
-        failDiv.innerText = '❌ Payment Failed';
-        document.body.appendChild(failDiv);
-        setTimeout(() => {
-          window.location.href = "checkout.html";
-        }, 3000);
+        alert("Time expired. Redirecting...");
+        window.location.href = "checkout.html";
       } else {
         countdownTime--;
         setTimeout(updateCountdown, 1000);
       }
     }
-
-    document.body.addEventListener('click', startCountdown);
-    document.body.addEventListener('touchstart', startCountdown);
-
-    // Load checkout details
-    const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails'));
-    const nameLine = checkoutData?.name || "Name not found";
-    const addressLine = checkoutData?.currentAddress || "Address not found";
-    document.getElementById('checkoutAddress').textContent = `${nameLine}\n${addressLine}`;
-
-
-
-    function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-    }
-    
-
-
-    fetch("footer.html")
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById("footer-placeholder").innerHTML = data;
-    });
-
-    function openPolicy() {
-      const modal = document.getElementById("policyModal");
-      if (modal) modal.style.display = "block";
-    }
-  
-    function acceptPolicy() {
-      const checkbox = document.getElementById("policyCheck");
-      if (!checkbox.checked) {
-        alert("Please agree to the privacy policy before continuing.");
-        return;
+    document.body.addEventListener('click', function once() {
+      if (!timerStarted) {
+        timerStarted = true;
+        updateCountdown();
       }
-      document.getElementById("policyModal").style.display = "none";
-      window.location.href = "index.html";
-    }
-  </script>
+    }, { once: true });
 
-  <!--footer-->
-  <div id="footer-placeholder"></div>
+
+    
+  </script>
 </body>
 </html>

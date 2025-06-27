@@ -258,16 +258,19 @@
       const orders = JSON.parse(localStorage.getItem("orders")) || [];
       const addressData = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
       const latestOrder = orders.slice(-1)[0];
-  
+    
       const companyName = "Mahaveer Enterprises";
       const email = latestOrder.email;
       const paymentMode = latestOrder.paymentMode || "N/A";
-      const address = localStorage.getItem("deliveryAddress") || "No address available";
-
+    
+      const rawAddress = localStorage.getItem("deliveryAddress");
+      const address = rawAddress 
+        || `${addressData.name || "Name not found"}<br>${addressData.currentAddress || "Address not found"}`;
+    
       const orderDate = new Date(latestOrder.date);
       const today = new Date();
       const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
-  
+    
       const steps = [
         { name: "Order Placed", icon: "✔" },
         { name: "Packed", icon: "📦" },
@@ -275,20 +278,20 @@
         { name: "Out for Delivery", icon: "📍" },
         { name: "Delivered", icon: "✅" }
       ];
-  
+    
       const statusHTML = steps.map((step, i) => {
         return `<li>${diffDays >= i ? '✅' : '⬜'} ${step.name}</li>`;
       }).join('');
-  
+    
       const itemsHTML = latestOrder.items.map(item => `
         <li class="item">
           <img src="${item.image || 'https://via.placeholder.com/50'}" />
           ${item.name} — ₹${item.price}
         </li>
       `).join('');
-  
+    
       const choice = confirm("Click OK to Print, or Cancel to Download PDF");
-  
+    
       if (choice) {
         const w = window.open();
         w.document.write(`
@@ -296,21 +299,29 @@
             <head>
               <title>Order Summary</title>
               <style>
-                body { font-family: Arial, sans-serif; padding: 30px; }
-                h2 { text-align: center; color: #074c63; }
-                .section { margin-bottom: 25px; }
-                ul { padding-left: 20px; }
-                .item { margin-bottom: 10px; }
-                img { width: 50px; height: 50px; object-fit: cover; vertical-align: middle; margin-right: 10px; border-radius: 8px; }
-                .label { font-weight: bold; color: #333; }
-                .company { text-align: center; font-weight: bold; font-size: 1.2rem; color: #444; margin-bottom: 1rem; }
-                hr { margin: 20px 0; border: none; border-top: 1px solid #ccc; }
-              </style>
+  body { font-family: Arial, sans-serif; padding: 30px; }
+  h2 { text-align: center; color: #074c63; }
+  .section { margin-bottom: 25px; }
+  ul { padding-left: 20px; }
+  .item { margin-bottom: 10px; }
+  img { width: 50px; height: 50px; object-fit: cover; vertical-align: middle; margin-right: 10px; border-radius: 8px; }
+  .label { font-weight: bold; color: #333; }
+  hr { margin: 20px 0; border: none; border-top: 1px solid #ccc; }
+
+  @media print {
+    @page {
+      margin: 0;
+    }
+    body {
+      margin: 0;
+    }
+  }
+</style>
+
             </head>
             <body>
-              <div class="company">${companyName}</div>
-              <h2>Order Summary</h2>
-  
+              <h2>${companyName} - Order Summary</h2>
+    
               <div class="section"><span class="label">Email:</span> ${email}</div>
               <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
               <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
@@ -318,14 +329,14 @@
               <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
               
               <hr>
-  
+    
               <div class="section">
                 <span class="label">Order Status:</span>
                 <ul>${statusHTML}</ul>
               </div>
-  
+    
               <hr>
-  
+    
               <div class="section">
                 <span class="label">Items Ordered:</span>
                 <ul>${itemsHTML}</ul>
@@ -339,34 +350,35 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         let y = 10;
-  
+    
         doc.setFontSize(16);
-        doc.text("Order Summary", 80, y); y += 10;
-  
+        doc.text(`${companyName} - Order Summary`, 10, y); y += 10;
+    
         doc.setFontSize(12);
-        doc.text(`Company: ${companyName}`, 10, y); y += 8;
         doc.text(`Email: ${email}`, 10, y); y += 8;
-        doc.text(`Delivery Address: ${address}`, 10, y); y += 8;
+        doc.text(`Delivery Address: ${address.replace(/<br>/g, ', ')}`, 10, y); y += 8;
         doc.text(`Ordered on: ${orderDate.toDateString()}`, 10, y); y += 8;
         doc.text(`Estimated delivery: ${latestOrder.estimatedDelivery}`, 10, y); y += 8;
         doc.text(`Payment Mode: ${paymentMode}`, 10, y); y += 12;
-  
+    
         doc.text("Order Status:", 10, y); y += 8;
         steps.forEach((step, i) => {
           doc.text(`${diffDays >= i ? '✅' : '⬜'} ${step.name}`, 12, y);
           y += 8;
         });
-  
+    
         y += 5;
         doc.text("Items:", 10, y); y += 8;
         latestOrder.items.forEach(item => {
           doc.text(`- ${item.name} — ₹${item.price}`, 12, y);
           y += 8;
         });
-  
+    
         doc.save("Order_Summary.pdf");
       }
     }
+
+    
   </script>
 </body>
 </html>
