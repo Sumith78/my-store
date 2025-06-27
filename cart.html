@@ -337,10 +337,22 @@ button {
 }
 
 .heart {
+  font-size: 1rem;         /* 👈 Make it same size as text */
+  vertical-align: middle;  /* 👈 Align it properly with text */
+  margin-right: 6px;       /* 👈 Space between heart and "Wishlist" */
   transition: transform 0.3s ease, color 0.3s ease;
-  font-size: 1.1rem;
-  display: inline-block;
 }
+@media screen and (max-width: 600px) {
+  .heart {
+    font-size: 0.95rem;
+  }
+
+  .wishlist-btn {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+  }
+}
+
 
 .wishlist-btn.added .heart {
   color: red;
@@ -426,9 +438,10 @@ button {
           <div style="height: 10px;"></div>
   
           <div class="item-actions">
-            <button class="wishlist-btn ${isInWishlist ? 'added' : ''}" id="wishlist-btn-${index}" onclick="addToWishlist(${index})">
-              <span class="heart">${isInWishlist ? '❤️' : '🤍'}</span> Wishlist
-            </button>
+          <button class="wishlist-btn ${isInWishlist ? 'added' : ''}" id="wishlist-btn-${index}" onclick="addToWishlist(${index})">
+  <span class="heart">${isInWishlist ? '❤️' : '🤍'}</span> Wishlist
+</button>
+
             <button class="buy-now-btn" onclick="buyNow(${index})">Buy This Now</button>
             <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
           </div>
