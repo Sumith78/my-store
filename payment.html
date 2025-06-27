@@ -351,9 +351,10 @@
       const selectedPayment = document.querySelector('input[name="payment"]:checked');
       if (!selectedPayment) return alert("Please select a payment method.");
     
-      // Save selected payment mode to localStorage (COD or UPI)
       const paymentMode = selectedPayment.value === 'cod' ? 'COD' : 'UPI';
       localStorage.setItem('paymentMode', paymentMode);
+    
+      let deliveryAddress = "No address selected";
     
       if (selectedPayment.value === 'cod') {
         const selectedAddress = document.querySelector('input[name="address"]:checked');
@@ -361,27 +362,30 @@
           alert("Please select address and check delivery confirmation.");
           return;
         }
+        deliveryAddress = selectedAddress.nextElementSibling.innerHTML;
       }
     
-      // Save the order to localStorage
+      // ✅ Save selected delivery address
+      localStorage.setItem('deliveryAddress', deliveryAddress);
+    
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
       const email = JSON.parse(localStorage.getItem('checkoutDetails'))?.email || "guest@example.com";
+    
       const order = {
         email,
         date: new Date().toISOString(),
         estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
         items: JSON.parse(localStorage.getItem('cart')) || [],
-        paymentMode: selectedPayment.value.toUpperCase() // <-- Add this line
+        paymentMode,
       };
-      
-      
+    
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
     
-    
-      // ✅ Clear cart
+      // Clear cart
       localStorage.removeItem('cart');
     
+      // Show animation
       const celebration = document.createElement('div');
       celebration.className = 'celebration';
       celebration.style.color = 'green';
@@ -389,7 +393,6 @@
       document.body.innerHTML = '';
       document.body.appendChild(celebration);
     
-      // 🎊 Emoji Confetti Animation
       for (let i = 0; i < 60; i++) {
         const emoji = document.createElement('div');
         emoji.className = 'emoji';
@@ -405,6 +408,7 @@
         window.location.href = "index.html";
       }, 4000);
     }
+    
     
     
     
