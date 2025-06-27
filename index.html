@@ -14,17 +14,17 @@
 
     .cart {
       position: fixed;
-      bottom: 1rem;
-      right: 1rem;
+      bottom: 3rem;   /* 👈 Moved up from the screen edge */
+      right: 1.2rem;
       background-color: #0b4127;
       border-radius: 50%;
       padding: 0.8rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      z-index: 9999;
+      z-index: 9999;   /* stays on top */
       cursor: pointer;
     }
     
-    /* Wrapper for icon + count */
+    /* Cart icon and count wrapper */
     .cart-icon-wrapper {
       position: relative;
       font-size: 1.8rem;
@@ -32,7 +32,7 @@
       line-height: 1;
     }
     
-    /* Count badge - top right of icon */
+    /* Red badge above cart icon */
     .cart-count {
       position: absolute;
       top: -0.6rem;
@@ -48,18 +48,19 @@
       text-align: center;
     }
     
-    /* Mobile-specific spacing */
+    /* Responsive adjustment for smaller screens */
     @media (max-width: 600px) {
       .cart {
-        bottom: 2rem; /* more spacing from bottom */
-        right: 2rem;  /* more spacing from right */
+        bottom: 4rem;   /* 👈 Extra spacing for mobile UI */
+        right: 1.5rem;
         padding: 0.7rem;
       }
     
       .cart-icon-wrapper {
-        font-size: 1.5rem; /* slightly smaller on mobile */
+        font-size: 1.6rem;
       }
     }
+    
     
     
     .profile-card {
