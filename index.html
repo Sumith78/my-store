@@ -1345,7 +1345,7 @@ button:hover, .product-card:hover {
       cart.push({ name: productName, price, image });
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount(); // this will do both update + hide/show
-      triggerCartBounce(); // 👈 call the bounce function here
+      triggerCartBounce();
 
       alert(`${productName} - ₹${price} added to cart!`);
     }
@@ -1694,6 +1694,23 @@ button:hover, .product-card:hover {
     
     
   </script>
+
+
+  <!-- Wishlist Section -->
+<div id="wishlist-section" class="category-section" style="display: none;">
+  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <h2 style="color: white; font-weight: bold; margin: 0;">♡ Wishlist</h2>
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <img src="clear.png"
+           onclick="clearWishlist()"
+           style="width: 30px; cursor: pointer;"
+           title="Clear Wishlist" />
+      <button class="close-main-btn" onclick="showHome()">← <span>Back</span></button>
+    </div>
+  </div>
+
+  <div class="products-container" id="wishlistItems" style="margin-top: 20px;"></div>
+</div>
   
 <!--Cart below-->
 <div class="cart" onclick="showCart()">
@@ -1710,23 +1727,8 @@ button:hover, .product-card:hover {
   <div id="footer-placeholder"></div>
 
 </body>
-<!-- Wishlist Section -->
-<!-- Wishlist Section -->
-<!-- Wishlist Section -->
-<div id="wishlist-section" class="category-section" style="display: none;">
-  <div class="section-header" style="display: flex; justify-content: space-between; align-items: center;">
-    <h2 style="color: white; font-weight: bold; margin: 0;">♡ Wishlist</h2>
-    <div style="display: flex; align-items: center; gap: 20px;">
-      <img src="clear.png"
-           onclick="clearWishlist()"
-           style="width: 30px; cursor: pointer;"
-           title="Clear Wishlist" />
-      <button class="close-main-btn" onclick="showHome()">← <span>Back</span></button>
-    </div>
-  </div>
 
-  <div class="products-container" id="wishlistItems" style="margin-top: 20px;"></div>
-</div>
+
 
 
 
