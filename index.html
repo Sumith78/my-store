@@ -71,6 +71,20 @@
   }
 }
 
+
+@keyframes cartBounce {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.2); }
+  40%  { transform: scale(0.9); }
+  60%  { transform: scale(1.1); }
+  80%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+.cart.bounce {
+  animation: cartBounce 0.6s ease;
+}
+
     
     
     .profile-card {
@@ -1331,6 +1345,7 @@ button:hover, .product-card:hover {
       cart.push({ name: productName, price, image });
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount(); // this will do both update + hide/show
+      triggerCartBounce(); // 👈 call the bounce function here
 
       alert(`${productName} - ₹${price} added to cart!`);
     }
@@ -1662,6 +1677,20 @@ button:hover, .product-card:hover {
       window.location.href = "index.html";
     }
 
+
+    function triggerCartBounce() {
+      const cart = document.querySelector('.cart');
+      if (!cart) return;
+    
+      cart.classList.remove('bounce'); // reset if it already had bounce
+      void cart.offsetWidth; // force reflow to restart animation
+      cart.classList.add('bounce');
+    
+      setTimeout(() => {
+        cart.classList.remove('bounce');
+      }, 600); // same as animation duration
+    }
+    
     
     
   </script>
@@ -1672,6 +1701,8 @@ button:hover, .product-card:hover {
     🛒
     <span class="cart-count">1</span>
   </div>
+</div>
+
 </div>
 
 
