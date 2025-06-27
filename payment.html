@@ -351,6 +351,10 @@
       const selectedPayment = document.querySelector('input[name="payment"]:checked');
       if (!selectedPayment) return alert("Please select a payment method.");
     
+      // Save selected payment mode to localStorage (COD or UPI)
+      const paymentMode = selectedPayment.value === 'cod' ? 'COD' : 'UPI';
+      localStorage.setItem('paymentMode', paymentMode);
+    
       if (selectedPayment.value === 'cod') {
         const selectedAddress = document.querySelector('input[name="address"]:checked');
         if (!selectedAddress || !document.getElementById('sameDelivery').checked) {
@@ -358,18 +362,22 @@
           return;
         }
       }
-
+    
       // Save the order to localStorage
-let orders = JSON.parse(localStorage.getItem('orders')) || [];
-const email = JSON.parse(localStorage.getItem('checkoutDetails'))?.email || "guest@example.com";
-const order = {
-  email,
-  date: new Date().toISOString(),
-  estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
-  items: JSON.parse(localStorage.getItem('cart')) || [],
-};
-orders.push(order);
-localStorage.setItem('orders', JSON.stringify(orders));
+      let orders = JSON.parse(localStorage.getItem('orders')) || [];
+      const email = JSON.parse(localStorage.getItem('checkoutDetails'))?.email || "guest@example.com";
+      const order = {
+        email,
+        date: new Date().toISOString(),
+        estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
+        items: JSON.parse(localStorage.getItem('cart')) || [],
+        paymentMode: selectedPayment.value.toUpperCase() // <-- Add this line
+      };
+      
+      
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+    
     
       // ✅ Clear cart
       localStorage.removeItem('cart');

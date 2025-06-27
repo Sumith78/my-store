@@ -1344,32 +1344,41 @@ button:hover, .product-card:hover {
       }
     
       let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.push({ name: productName, price, image });
+      const index = cart.findIndex(item => item.name === productName);
+    
+      if (index === -1) {
+        cart.push({ name: productName, price, image, quantity: 1 });
+      } else {
+        cart[index].quantity += 1; // 🔁 increment quantity
+      }
+    
       localStorage.setItem('cart', JSON.stringify(cart));
-      updateCartCount(); // this will do both update + hide/show
+      updateCartCount();
       triggerCartBounce();
-
-      alert(`${productName} - ₹${price} added to cart!`);
+      alert(`${productName} added to cart!`);
     }
     
 
     
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const count = cart.length;
+      let totalQuantity = 0;
     
-      // Update all elements with id='cart-count'
-      const badgeById = document.querySelectorAll('#cart-count');
-      badgeById.forEach(badge => {
-        badge.textContent = count;
-        badge.style.display = count > 0 ? 'inline-block' : 'none';
+      cart.forEach(item => {
+        totalQuantity += item.quantity || 1;
       });
     
-      // Update the floating cart with class='cart-count'
+      // Update cart count on badge
+      const badgeById = document.querySelectorAll('#cart-count');
+      badgeById.forEach(badge => {
+        badge.textContent = totalQuantity;
+        badge.style.display = totalQuantity > 0 ? 'inline-block' : 'none';
+      });
+    
       const floatingCount = document.querySelectorAll('.cart-count');
       floatingCount.forEach(el => {
-        el.textContent = count;
-        el.style.display = count > 0 ? 'inline-block' : 'none';
+        el.textContent = totalQuantity;
+        el.style.display = totalQuantity > 0 ? 'inline-block' : 'none';
       });
     }
     
