@@ -166,19 +166,20 @@
   
 
   <div class="container">
+    
     <h2>Enter Delivery Details</h2>
 
     <label for="name">Full Name</label>
-    <input type="text" id="name" placeholder="Enter your full name" required>
+    <input type="text" id="name" placeholder="Enter your full name">
 
     <label for="email">Email</label>
-    <input type="email" id="email" placeholder="Enter your email" required>
+    <input type="email" id="email" placeholder="Enter your email">
 
     <label for="contact">Contact Number</label>
-    <input type="tel" id="contact" placeholder="Enter your phone number" required>
+    <input type="tel" id="contact" placeholder="Enter your phone number">
 
     <label for="currentAddress">Current Address</label>
-    <textarea id="currentAddress" rows="4" placeholder="Enter your current address" required></textarea>
+    <textarea id="currentAddress" rows="4" placeholder="Enter your current address"></textarea>
 
     <div class="checkbox-container">
       <input type="checkbox" id="sameAddress" onchange="toggleAddress()">
@@ -212,24 +213,48 @@
       }
     }
 
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    
+    function isValidPhone(phone) {
+      return /^\d{10}$/.test(phone);
+    }
+    
     function saveDetails() {
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
       const contact = document.getElementById('contact').value.trim();
       const currentAddress = document.getElementById('currentAddress').value.trim();
       const permanentAddress = document.getElementById('permanentAddress').value.trim();
-
-      if (!name || !email || !contact || !currentAddress || !permanentAddress) {
-        alert("Please fill in all required fields.");
+    
+      if (name.length < 3) {
+        alert("Please enter a valid full name (at least 3 characters).");
         return;
       }
-
+    
+      if (!isValidEmail(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+    
+      if (!isValidPhone(contact)) {
+        alert("Please enter a valid 10-digit phone number.");
+        return;
+      }
+    
+      if (!currentAddress || !permanentAddress) {
+        alert("Please enter both current and permanent addresses.");
+        return;
+      }
+    
       localStorage.setItem('checkoutDetails', JSON.stringify({
         name, email, contact, currentAddress, permanentAddress
       }));
-
+    
       window.location.href = "payment.html";
     }
+    
 
     fetch("footer.html")
     .then(res => res.text())

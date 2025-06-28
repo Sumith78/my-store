@@ -367,7 +367,7 @@ button:hover, .product-card:hover {
 
     .logo-img {
       max-height: 80px;
-      max-width: 200px;
+      max-width: 400px;
       width: auto;
       object-fit: contain;
     }
@@ -782,6 +782,518 @@ button:hover, .product-card:hover {
 }
 
 
+.logo-img {
+  width: 190px;
+  height: 93.52px;
+  transition: all 0.3s ease;
+}
+
+/* When scrolled */
+.logo-shrink {
+  width: 120px; /* Shrunk size */
+  height: 60px;
+}
+
+
+/* Main container hidden by default */
+.modern-search-wrapper {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  z-index: 1000;
+  display: none;
+}
+
+/* Styled search bar */
+.modern-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #0f3b2e; /* Dark green */
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
+
+/* Input */
+.modern-search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: white;
+  padding: 8px 10px;
+}
+
+/* Placeholder color */
+.modern-search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Search button */
+.modern-search-bar .search-btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+  margin-left: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Close button */
+.modern-search-bar .close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.modern-search-bar .close-btn:hover {
+  transform: rotate(90deg);
+}
+
+
+@media (max-width: 600px) {
+  .modern-search-bar {
+    padding: 8px 12px;
+    border-radius: 30px;
+  }
+
+  .modern-search-wrapper {
+    width: 95%;
+    top: 50px;
+  }
+
+  .modern-search-bar input {
+    font-size: 14px;
+  }
+}
+
+
+.menu-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.menu-right button,
+.menu-right a {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.menu-right img {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease;
+}
+
+.menu-right img:hover {
+  transform: scale(1.2);
+}
+
+.modern-search-wrapper {
+  position: fixed;
+  top: 80px; /* Just below header */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  background-color: #0f3b2e;
+  padding: 20px;
+  display: none;
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.modern-search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #0f3b2e;
+  border: 2px solid white;
+  border-radius: 50px;
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.modern-search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+}
+
+.modern-search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1); /* makes it white */
+  margin-left: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+  .modern-search-wrapper {
+    width: 95%;
+    padding: 16px;
+    top: 70px;
+  }
+
+  .modern-search-bar input {
+    font-size: 14px;
+  }
+
+  .close-btn {
+    font-size: 20px;
+    margin-left: 6px;
+  }
+}
+
+
+
+/* Overlay that matches header width/height */
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* same as header */
+  background-color: #0f3b2e;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+/* Search bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 80%;
+  max-width: 800px;
+  background-color: #0f3b2e;
+  border: 2px solid white;
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+
+/* Input */
+.search-bar input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: white;
+  padding: 6px 10px;
+}
+
+/* Floating label */
+.search-bar label {
+  position: absolute;
+  left: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.7);
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.2s ease;
+}
+
+/* Float on focus or if text exists */
+.search-bar input:focus + label,
+.search-bar input:not(:placeholder-shown) + label {
+  top: 8px;
+  font-size: 12px;
+  color: #fff;
+}
+
+/* Search icon */
+.search-icon-btn img {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+  margin-left: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Close button inside bar */
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  margin-left: 12px;
+  cursor: pointer;
+}
+
+
+#searchOverlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #003322;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-search-bar {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  max-width: 800px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  background-color: #003322;
+  position: relative;
+}
+
+#searchInput {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+}
+
+.floating-label {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.floating {
+  top: 10px;
+  font-size: 12px;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+#closeSearchBtn {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  font-size: 24px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10000;
+  display: none;
+}
+
+
+#searchContainer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #003322;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Make sure ✕ is visible */
+#closeSearchBtn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+
+#searchContainer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-color: #003322;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px; /* For breathing space on both sides */
+  box-sizing: border-box;
+}
+
+.modern-search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  background-color: #003322;
+  position: relative;
+}
+
+.floating-label {
+  position: absolute;
+  left: 25px;
+  color: #ccc;
+  pointer-events: none;
+  transition: 0.2s ease;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.floating {
+  top: 8px;
+  font-size: 12px;
+  color: #fff;
+}
+
+#searchContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(11, 65, 39);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+
+.modern-search-bar {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  max-width: 800px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  padding: 10px 20px;
+  background-color:rgb(11, 65, 39);;
+  position: relative;
+}
+
+#searchInput {
+  flex: 1;
+  background: rgb(11, 65, 39);;
+  border: none;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  padding-left: 10px;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+#closeSearchBtn {
+  position: absolute;
+  right: 15px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#closeSearchBtn {
+  position: absolute;
+  right: -40px; /* push it OUTSIDE the input box */
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10000;
+  display: block; /* Show it as needed */
+  transition: transform 0.2s ease;
+}
+
+
+
+
 
 
 
@@ -790,71 +1302,80 @@ button:hover, .product-card:hover {
 
 <body>
   <header>
-  
-
-
+    <!-- LEFT MENU ICON -->
     <div class="menu-left">
       <button class="menu-button" onclick="toggleMenu()">☰</button>
     </div>
-
+  
+    <!-- BRAND LOGO -->
     <div class="brand">
       <img src="WhatsApp Image 2025-06-23 at 17.03.47_9950cd83.jpg" alt="Mahaveer Enterprises Logo" class="logo-img" />
     </div>
-
+  
+    <!-- RIGHT SIDE ICONS -->
     <div class="menu-right">
-      <button class="search-icon" onclick="toggleSearch()">
-        <img src="search (1).png" alt="Search" width="32" height="32">
-      </button>
-    
+      <!-- SEARCH ICON BUTTON -->
+      <!-- Search Toggle Icon -->
+<div class="search-toggle-icon" onclick="toggleSearch()">
+  <img src="search (1).png" alt="Search Icon"  class="icon"/>
+</div>
+  
+      <!-- SIGN IN ICON -->
       <a href="#" class="signin-icon" title="Sign In" onclick="handleUserProfile()">
-        <img src="user.png" alt="User" width="30" height="30">
+        <img src="user.png" alt="User" width="28" height="28"  class="icon"/>
       </a>
-      
-      
-      <button class="cart-icon" onclick="showCart()">
+  
+      <!-- CART ICON -->
+      <button class="cart-icon" onclick="showCart()" title="Cart"  class="icon">  
         🛒
         <span id="cart-count" class="cart-badge">0</span>
       </button>
-      
     </div>
+  
+    <!-- ONLY ONE SEARCH WRAPPER -->
+   <!-- Search Overlay -->
+<!-- SEARCH OVERLAY -->
+<!-- Search Bar Container -->
+<div id="searchContainer">
+  <div class="modern-search-bar">
+    <label class="floating-label" id="searchLabel">Search</label>
+    <input
+      type="text"
+      id="searchInput"
+      oninput="searchProducts()"
+      onfocus="floatLabel()"
+      onblur="unfloatLabel()"
+    />
+    <img src="search (1).png" class="search-icon" onclick="searchProducts()" />
 
-    <div class="search-container" id="searchContainer">
-      <input type="text" id="searchInput" placeholder="Search products..." onkeyup="searchProducts()" />
-      
-      <button class="close-btn" onclick="toggleSearch()">❌</button>
-    </div>
+    <!-- CROSS button: placed inside for alignment but styled to float right -->
+    <button id="closeSearchBtn" onclick="toggleSearch()">✕</button>
+  </div>
+</div>
 
-   
 
+  
+    <!-- DROPDOWN MENU -->
     <div class="menu-dropdown" id="menuDropdown">
-
-
       <div class="menu-close-wrapper">
         <span class="menu-close-icon" onclick="toggleMenu()">✕</span>
       </div>
-      
-      
+  
       <a href="#" onclick="filterProducts('watch')"><span>⌚</span>Watches</a>
       <a href="#" onclick="filterProducts('bracelet')"><span>🧿</span>Bracelets</a>
       <a href="#" onclick="filterProducts('trousers')"><span>👖</span>Men Trousers</a>
       <a href="#" onclick="filterProducts('kids')"><span>🧒</span>Kids Zone</a>
       <a href="#" onclick="showWishlist()"><span>❤️</span>My Wishlist</a>
-      <a href="#" onclick="trackOrder()"><span>📦</span>Track Order</a> <!-- ✅ NEW LINK -->
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')" id="signupLink">
-        <span>📝</span>Sign Up
-      </a>
-      
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')" id="signinLink">
-        <span>🔐</span>Sign In
-      </a>
-      
-      <button onclick="logoutUser()" id="logoutBtn">Logout</button>
-      
+      <a href="#" onclick="trackOrder()"><span>📦</span>Track Order</a>
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')"><span>📝</span>Sign Up</a>
+      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')"><span>🔐</span>Sign In</a>
+      <button onclick="logoutUser()">Logout</button>
     </div>
-    
-
+  
+    <!-- MENU OVERLAY -->
     <div id="menuOverlay" class="menu-overlay"></div>
   </header>
+  
 
 <div class="main-content-wrapper">
 
@@ -1188,30 +1709,30 @@ button:hover, .product-card:hover {
       }
     });
   
+    let isSearchOpen = false;
+
     function toggleSearch() {
       const box = document.getElementById("searchContainer");
       const input = document.getElementById("searchInput");
-      
-      const isVisible = window.getComputedStyle(box).display === "block";
+      const closeBtn = document.getElementById("closeSearchBtn");
+    
+      const isVisible = window.getComputedStyle(box).display === "flex";
     
       if (isVisible) {
         box.style.display = "none";
+        if (closeBtn) closeBtn.style.display = "none";
         input.value = "";
+        unfloatLabel();
     
-        // Hide all product cards
         document.querySelectorAll('.product-card').forEach(p => p.style.display = 'none');
-    
-        // Show home section
         const home = document.getElementById('homeSections');
         if (home) home.style.display = 'block';
     
-        // Hide all category sections
         ['watches-section', 'bracelet-section', 'trousers-section', 'kids-section'].forEach(id => {
           const section = document.getElementById(id);
           if (section) section.style.display = 'none';
         });
     
-        // Hide wishlist and suggestions
         const wishlist = document.getElementById('wishlist-section');
         if (wishlist) wishlist.style.display = 'none';
     
@@ -1220,10 +1741,10 @@ button:hover, .product-card:hover {
     
         document.removeEventListener('click', handleOutsideSearchClick);
       } else {
-        box.style.display = "block";
+        box.style.display = "flex";
+        if (closeBtn) closeBtn.style.display = "inline-block";
         input.focus();
     
-        // Close on outside click
         setTimeout(() => {
           document.addEventListener('click', handleOutsideSearchClick);
         }, 0);
@@ -1231,7 +1752,31 @@ button:hover, .product-card:hover {
     }
     
     
+    function handleOutsideSearchClick(e) {
+      const container = document.getElementById("searchContainer");
+      const input = document.getElementById("searchInput");
+      const toggleButton = document.querySelector(".search-icon");
     
+      if (!container.contains(e.target) && !toggleButton.contains(e.target)) {
+        toggleSearch();
+      }
+    }
+    
+    function floatLabel() {
+      const label = document.getElementById('searchLabel');
+      label.classList.add('floating');
+    }
+    
+    function unfloatLabel() {
+      const input = document.getElementById('searchInput');
+      const label = document.getElementById('searchLabel');
+      if (input.value.trim() === "") {
+        label.classList.remove('floating');
+      }
+    }
+    
+        
+
   
     function searchProducts() {
       const input = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -1477,6 +2022,7 @@ button:hover, .product-card:hover {
     
       const search = document.getElementById('searchContainer');
       if (search) search.style.display = 'none';
+
     
       // Hide all product cards in case they were left visible from search
       document.querySelectorAll('.product-card').forEach(p => p.style.display = 'none');
@@ -1754,6 +2300,17 @@ button:hover, .product-card:hover {
         }
       }
     });
+
+
+    window.addEventListener("scroll", function () {
+      const logo = document.querySelector(".logo-img");
+      if (window.scrollY > 50) {
+        logo.classList.add("logo-shrink");
+      } else {
+        logo.classList.remove("logo-shrink");
+      }
+    });
+  
   </script>
 
 

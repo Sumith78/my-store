@@ -372,64 +372,62 @@ if (performance.navigation.type === 1) {
       });
     });
 
+
+
     function placeOrder() {
-      const pay = document.querySelector('input[name="payment"]:checked');
-      const addr = document.querySelector('input[name="address"]:checked');
-      const check = document.getElementById('sameDelivery');
-    
-      if (!pay) {
-        alert("Please select a payment method.");
-        return;
-      }
-      if (!addr || !check.checked) {
-        alert("Please select or add an address and confirm delivery.");
-        return;
-      }
-    
-      const paymentMode = pay.value.toUpperCase();
-      const deliveryAddress = addr.nextElementSibling.innerHTML;
-    
-      const order = {
-        email: checkoutData.email || 'guest@example.com',
-        date: new Date().toISOString(),
-        estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
-        items: JSON.parse(localStorage.getItem('checkoutItem')) || [],
+  const pay = document.querySelector('input[name="payment"]:checked');
+  const addr = document.querySelector('input[name="address"]:checked');
+  const check = document.getElementById('sameDelivery');
 
-        paymentMode,
-        deliveryAddress
-      };
-    
-      let orders = JSON.parse(localStorage.getItem('orders')) || [];
-      orders.push(order);
-      localStorage.setItem('orders', JSON.stringify(orders));
-      localStorage.removeItem('cart');
-      localStorage.removeItem('isBuyNow');
- // ✅ Clear the flag
+  if (!pay) {
+    alert("Please select a payment method.");
+    return;
+  }
+  if (!addr || !check.checked) {
+    alert("Please select or add an address and confirm delivery.");
+    return;
+  }
 
-    
-      // Hide payment form
-      document.querySelector('.container').style.display = 'none';
-    
-      // Show celebration screen
-      const successDiv = document.getElementById('successScreen');
-      successDiv.style.display = 'flex';
-    
-      // Emoji Rain 🎉
-      const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
-      for (let i = 0; i < 60; i++) {
-        const emoji = document.createElement('div');
-        emoji.className = 'emoji';
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.left = `${Math.random() * 100}%`;
-        emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
-        emoji.style.animationDelay = `${Math.random()}s`;
-        document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 4000);
-      }
-    
-      // Redirect after 4 seconds
-      setTimeout(() => window.location.href = 'index.html', 2000);
-    }
+  const paymentMode = pay.value.toUpperCase();
+  const deliveryAddress = addr.nextElementSibling.innerHTML;
+
+  const orderItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
+
+  const order = {
+    email: checkoutData.email || 'guest@example.com',
+    date: new Date().toISOString(),
+    estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
+    items: orderItems,
+    paymentMode,
+    deliveryAddress
+  };
+
+  let orders = JSON.parse(localStorage.getItem('orders')) || [];
+  orders.push(order);
+  localStorage.setItem('orders', JSON.stringify(orders));
+  localStorage.removeItem('cart');
+  localStorage.removeItem('isBuyNow');
+
+  // ✅ Hide form & show celebration
+  document.querySelector('.container').style.display = 'none';
+  document.getElementById('successScreen').style.display = 'flex';
+
+  const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
+  for (let i = 0; i < 60; i++) {
+    const emoji = document.createElement('div');
+    emoji.className = 'emoji';
+    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = `${Math.random() * 100}%`;
+    emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
+    emoji.style.animationDelay = `${Math.random()}s`;
+    document.body.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 4000);
+  }
+
+  // ✅ Redirect to homepage
+  setTimeout(() => window.location.href = 'index.html', 4000);
+}
+
     
     let countdownTime = 300, timerStarted = false;
     function updateCountdown() {
