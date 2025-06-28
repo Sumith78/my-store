@@ -548,27 +548,33 @@ button {
   }
   
   function addToWishlist(index) {
-  const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-  const item = cartItems[index];
+    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    const item = cartItems[index];
+  
+    // ✅ Ensure item has an image; if not, set a placeholder
+    if (!item.image) {
+      const imgElement = document.querySelectorAll('.cart-item img')[index];
+      item.image = imgElement ? imgElement.src : 'https://via.placeholder.com/60';
+    }
+  
+    const alreadyInWishlist = wishlist.some(w => w.name === item.name);
+    if (!alreadyInWishlist) {
+      wishlist.push({ name: item.name, img: item.image, price: `₹${item.price}` });
 
-  const alreadyInWishlist = wishlist.some(w => w.name === item.name);
-  if (!alreadyInWishlist) {
-    wishlist.push(item);
-    localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    alert("Item added to wishlist!");
-  } else {
-    alert("Item already in wishlist.");
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      alert("Item added to wishlist!");
+    } else {
+      alert("Item already in wishlist.");
+    }
+  
+    // Animate heart + turn it red
+    const btn = document.getElementById(`wishlist-btn-${index}`);
+    if (btn) {
+      btn.classList.add('added');
+      const heartSpan = btn.querySelector('.heart');
+      if (heartSpan) heartSpan.innerText = '❤️';
+    }
   }
-
-  // Animate heart + turn it red
-  const btn = document.getElementById(`wishlist-btn-${index}`);
-  if (btn) {
-    btn.classList.add('added');
-    const heartSpan = btn.querySelector('.heart');
-    if (heartSpan) heartSpan.innerText = '❤️';
-  }
-}
-
   
     
   

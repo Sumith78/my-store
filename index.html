@@ -1528,7 +1528,8 @@ button:hover, .product-card:hover {
           card.className = 'product-card';
           card.innerHTML = `
             <button class="heart-btn" onclick="removeFromWishlist('${item.name}')">❤️</button>
-            <img src="${item.img}" alt="${item.name}" />
+            <img src="${item.img || item.image}" alt="${item.name}" />
+
             <h3>${item.name}</h3>
             <p><strong>${item.price}</strong></p>
             <button onclick="addToCart('${item.name}')">+ Add to Cart</button>
