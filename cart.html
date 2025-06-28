@@ -573,11 +573,13 @@ button {
     
   
 
-  function buyNow(index) {
-    const item = cartItems[index];
-    localStorage.setItem('checkoutItem', JSON.stringify([item]));
-    window.location.href = 'checkout.html';
-  }
+function buyNow(index) {
+  const item = cartItems[index];
+  localStorage.setItem('checkoutItem', JSON.stringify([item]));
+  localStorage.setItem('isBuyNow', 'true'); // 🚩 Flag for Buy Now
+  window.location.href = 'checkout.html';
+}
+
 
   function checkout() {
     if (cartItems.length === 0) {
@@ -595,7 +597,8 @@ button {
   
     // ✅ Save to localStorage
     localStorage.setItem('checkoutItem', JSON.stringify(cartItems));
-    localStorage.setItem('totalAmount', total); // 💰 Save total price
+localStorage.setItem('isBuyNow', 'false'); // Let payment page know this is not a buy-now flow
+ // 💰 Save total price
   
     // ✅ Proceed to checkout page
     window.location.href = "checkout.html";

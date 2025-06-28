@@ -207,9 +207,20 @@
 
     .form-section {
       padding: 1.5rem 2rem;
-      max-width: 600px;
-      margin: auto;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+      box-sizing: border-box;
     }
+    
+
+    @media (max-width: 480px) {
+      .form-section {
+        padding: 1rem;
+      }
+    }
+    
+    
 
     .form-group {
       margin-bottom: 1.2rem;
@@ -266,12 +277,32 @@
       display: none;
     }
 
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    main {
+      flex: 1;
+      display: block;
+    }
+    
+    
     
 
     
   </style>
 </head>
 <body>
+
+  <main>
+
   <!-- Use your existing HTML body content here, no change needed -->
 
 
@@ -535,6 +566,7 @@
       window.location.href = "index.html";
     }
 </script>
+</main>
 
 <!--footer-->
 <div id="footer-placeholder"></div>

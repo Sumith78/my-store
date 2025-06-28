@@ -554,7 +554,7 @@ button:hover, .product-card:hover {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1rem;
+      gap: 0.1rem;
       padding: 2rem 1.5rem;
     }
     
@@ -780,6 +780,8 @@ button:hover, .product-card:hover {
   background-color: #f2b400;
   transform: scale(1.05);
 }
+
+
 
 
 
@@ -1189,35 +1191,45 @@ button:hover, .product-card:hover {
     function toggleSearch() {
       const box = document.getElementById("searchContainer");
       const input = document.getElementById("searchInput");
-    
+      
       const isVisible = window.getComputedStyle(box).display === "block";
     
       if (isVisible) {
         box.style.display = "none";
         input.value = "";
     
-        document.removeEventListener('click', handleOutsideSearchClick);
+        // Hide all product cards
+        document.querySelectorAll('.product-card').forEach(p => p.style.display = 'none');
     
-        // hide other stuff...
+        // Show home section
+        const home = document.getElementById('homeSections');
+        if (home) home.style.display = 'block';
+    
+        // Hide all category sections
         ['watches-section', 'bracelet-section', 'trousers-section', 'kids-section'].forEach(id => {
-          document.getElementById(id).style.display = 'none';
+          const section = document.getElementById(id);
+          if (section) section.style.display = 'none';
         });
+    
+        // Hide wishlist and suggestions
         const wishlist = document.getElementById('wishlist-section');
         if (wishlist) wishlist.style.display = 'none';
-        document.getElementById('homeSections').style.display = 'block';
+    
         const suggestionBox = document.getElementById('suggestionBox');
         if (suggestionBox) suggestionBox.style.display = 'none';
     
+        document.removeEventListener('click', handleOutsideSearchClick);
       } else {
         box.style.display = "block";
         input.focus();
     
+        // Close on outside click
         setTimeout(() => {
           document.addEventListener('click', handleOutsideSearchClick);
-        }, 0); // allow toggle click to finish
+        }, 0);
       }
     }
-
+    
     
     
   
@@ -1413,8 +1425,21 @@ button:hover, .product-card:hover {
     window.onload = function () {
       updateMenuOptions();
     
-      // Also show user info if logged in
+      // Show user info if logged in
       displayUserCard();
+    
+      // ✅ Escape key closes the search box and resets results
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') toggleSearch();
+        });
+      }
+    
+      // Additional setup
+      updateCartCount();
+      updateWishlistUI();
+      syncHeartIcons();
     };
     
   
@@ -1557,18 +1582,25 @@ button:hover, .product-card:hover {
       });
     }
   
-    window.onload = () => {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      document.getElementById('cartCount').textContent = cart.length;
-  
-      if (!localStorage.getItem('user_email')) {
-        const logoutBtn = document.querySelector('button[onclick="logoutUser()"]');
-        if (logoutBtn) logoutBtn.style.display = 'none';
-      }
-  
+    window.onload = function () {
+      updateMenuOptions();
       updateWishlistUI();
+      updateMenuVisibility();
+      displayUserCard();
       syncHeartIcons();
+      updateCartCount();
+    
+      // ✅ Add this Escape key listener here
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            toggleSearch();
+          }
+        });
+      }
     };
+    
 
 
 
@@ -1710,6 +1742,17 @@ button:hover, .product-card:hover {
     
     
     
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        const searchBox = document.getElementById("searchContainer");
+        const isVisible = window.getComputedStyle(searchBox).display === "block";
+  
+        if (isVisible) {
+          toggleSearch();
+        }
+      }
+    });
   </script>
 
 
@@ -1744,10 +1787,6 @@ button:hover, .product-card:hover {
   <div id="footer-placeholder"></div>
 
 </body>
-
-
-
-
 
 
 
