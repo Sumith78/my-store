@@ -1225,27 +1225,28 @@ button:hover, .product-card:hover {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-
 .modern-search-bar {
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 90%;
   max-width: 800px;
   border: 2px solid #fff;
   border-radius: 50px;
   padding: 10px 20px;
-  background-color:rgb(11, 65, 39);;
+  background-color: rgb(11, 65, 39);
   position: relative;
+  flex-wrap: wrap;
 }
 
 #searchInput {
-  flex: 1;
-  background: rgb(11, 65, 39);;
+  flex: 1 1 auto;
+  background: rgb(11, 65, 39);
   border: none;
   color: white;
   font-size: 16px;
   outline: none;
-  padding-left: 10px;
+  padding: 10px;
+  min-width: 0;
 }
 
 .search-icon {
@@ -1253,18 +1254,7 @@ button:hover, .product-card:hover {
   height: 24px;
   cursor: pointer;
   margin-left: 10px;
-}
-
-#closeSearchBtn {
-  position: absolute;
-  right: 15px;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
 }
 
 .icon {
@@ -1274,11 +1264,12 @@ button:hover, .product-card:hover {
   cursor: pointer;
   display: inline-block;
   vertical-align: middle;
+  flex-shrink: 0;
 }
 
 #closeSearchBtn {
   position: absolute;
-  right: -40px; /* push it OUTSIDE the input box */
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -1287,13 +1278,52 @@ button:hover, .product-card:hover {
   font-size: 24px;
   cursor: pointer;
   z-index: 10000;
-  display: block; /* Show it as needed */
+  display: block;
   transition: transform 0.2s ease;
 }
 
+/* Responsive tweaks for mobile and tablet */
+@media (max-width: 768px) {
+  .modern-search-bar {
+    flex-direction: row;
+    padding: 8px 16px;
+    border-radius: 30px;
+  }
 
+  #searchInput {
+    font-size: 14px;
+    padding: 8px;
+  }
 
+  .search-icon, .icon, #closeSearchBtn {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    margin-left: 8px;
+  }
 
+  #closeSearchBtn {
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-search-bar {
+    width: 95%;
+    padding: 6px 12px;
+  }
+
+  #searchInput {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .search-icon, .icon, #closeSearchBtn {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+  }
+}
 
 
 
