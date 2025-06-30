@@ -1357,6 +1357,43 @@ button:hover, .product-card:hover {
 }
 
 
+.suggestion-box {
+  list-style: none;
+  margin: 4px 0 0 0;
+  padding: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  border: none;
+  border-radius: 15px;
+  background: #fff;
+  position: absolute;
+  top: 65px;
+  left: 0;
+  z-index: 999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+
+/* Each suggestion item */
+.suggestion-box li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  color: #333; /* 👈 Ensure the text is visible */
+}
+
+.suggestion-box li:hover {
+  background-color: #f2f2f2;
+}
+
+
+
+
+
+
   </style>
 </head>
 
@@ -1398,6 +1435,8 @@ button:hover, .product-card:hover {
 <!-- Search Bar Container -->
 <div id="searchContainer">
   <div class="modern-search-bar">
+   
+
     <label class="floating-label" id="searchLabel">Search</label>
     <input
       type="text"
@@ -1407,6 +1446,9 @@ button:hover, .product-card:hover {
       onblur="unfloatLabel()"
     />
     <img src="search (1).png" class="search-icon" onclick="searchProducts()" />
+
+    <!-- ✅ Suggestion box now immediately after search bar -->
+  <ul id="suggestionBox" class="suggestion-box"></ul>
 
     <!-- CROSS button: placed inside for alignment but styled to float right -->
     <button id="closeSearchBtn" onclick="toggleSearch()">✕</button>
@@ -1427,10 +1469,13 @@ button:hover, .product-card:hover {
       <a href="#" onclick="filterProducts('kids')"><span>🧒</span>Kids Zone</a>
       <a href="#" onclick="showWishlist()"><span>❤️</span>My Wishlist</a>
       <a href="#" onclick="trackOrder()"><span>📦</span>Track Order</a>
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signup')"><span>📝</span>Sign Up</a>
-      <a href="auth.html" onclick="localStorage.setItem('auth_view', 'signin')"><span>🔐</span>Sign In</a>
-      <button onclick="logoutUser()">Logout</button>
-    </div>
+      <a href="auth.html" id="signupLink" onclick="localStorage.setItem('auth_view', 'signup')">
+        <span>📝</span>Sign Up
+      </a>
+      <a href="auth.html" id="signinLink" onclick="localStorage.setItem('auth_view', 'signin')">
+        <span>🔐</span>Sign In
+      </a>
+      <button id="logoutBtn" onclick="logoutUser()">Logout</button>
   
     <!-- MENU OVERLAY -->
     <div id="menuOverlay" class="menu-overlay"></div>
@@ -1840,58 +1885,85 @@ button:hover, .product-card:hover {
   
     function searchProducts() {
       const input = document.getElementById('searchInput').value.trim().toLowerCase();
+      const suggestionBox = document.getElementById('suggestionBox');
     
-      const sections = [
-        'watches-section',
-        'bracelet-section',
-        'trousers-section',
-        'kids-section'
-      ];
+      // All product names
+      const productNames = Array.from(document.querySelectorAll('.product-card h3')).map(el =>
+        el.textContent.trim()
+      );
     
-      const homeSections = document.getElementById('homeSections');
-      const wishlistSection = document.getElementById('wishlist-section');
+      // Filter suggestions
+      const suggestions = productNames.filter(name =>
+        name.toLowerCase().includes(input)
+      );
     
-      let anyMatch = false;
+      // Clear old suggestions
+      suggestionBox.innerHTML = '';
     
-      // Hide all sections by default
-      sections.forEach(id => {
-        document.getElementById(id).style.display = 'none';
-        const cards = document.querySelectorAll(`#${id} .product-card`);
-        cards.forEach(card => card.style.display = 'none'); // Hide all cards initially
-      });
-    
-      wishlistSection.style.display = 'none';
-      homeSections.style.display = 'none';
-    
-      if (input === "") {
-        // Reset to home if search is empty
-        homeSections.style.display = "block";
+      if (input === '') {
+        suggestionBox.style.display = 'none';
+        showHome();
         return;
       }
     
+      if (suggestions.length === 0) {
+        suggestionBox.style.display = 'none';
+        return;
+      }
+    
+      // Show suggestions
+      suggestions.forEach(name => {
+        const li = document.createElement('li');
+        li.textContent = name;
+        li.onclick = () => {
+          document.getElementById('searchInput').value = name;
+          suggestionBox.style.display = 'none';
+          floatLabel();
+          triggerSearchByName(name); // trigger search using selected name
+        };
+        suggestionBox.appendChild(li);
+      });
+    
+      suggestionBox.style.display = 'block';
+    }
+    
+    
+
+    function triggerSearchByName(productName) {
+      const lowerName = productName.toLowerCase();
+    
+      const sections = ['watches-section', 'bracelet-section', 'trousers-section', 'kids-section'];
+      let anyMatch = false;
+    
+      // Hide all
+      sections.forEach(id => {
+        document.getElementById(id).style.display = 'none';
+        const cards = document.querySelectorAll(`#${id} .product-card`);
+        cards.forEach(card => card.style.display = 'none');
+      });
+    
+      document.getElementById('homeSections').style.display = 'none';
+    
+      // Show matching
       sections.forEach(id => {
         const cards = document.querySelectorAll(`#${id} .product-card`);
-        let sectionHasMatch = false;
+        let sectionMatch = false;
     
         cards.forEach(card => {
           const name = card.querySelector('h3')?.textContent.toLowerCase();
-          const desc = card.querySelector('p')?.textContent.toLowerCase();
-    
-          if (name.includes(input) || desc.includes(input)) {
+          if (name.includes(lowerName)) {
             card.style.display = 'flex';
-            sectionHasMatch = true;
+            sectionMatch = true;
             anyMatch = true;
           }
         });
     
-        if (sectionHasMatch) {
-          document.getElementById(id).style.display = 'block';
-        }
+        if (sectionMatch) document.getElementById(id).style.display = 'block';
       });
     
       if (!anyMatch) {
         alert("No products found!");
-        homeSections.style.display = 'block';
+        document.getElementById('homeSections').style.display = 'block';
       }
     }
     
