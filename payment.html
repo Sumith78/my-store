@@ -384,58 +384,88 @@ if (performance.navigation.type === 1) {
 
 
     function placeOrder() {
-  const pay = document.querySelector('input[name="payment"]:checked');
-  const addr = document.querySelector('input[name="address"]:checked');
-  const check = document.getElementById('sameDelivery');
-
-  if (!pay) {
-    alert("Please select a payment method.");
-    return;
-  }
-  if (!addr || !check.checked) {
-    alert("Please select or add an address and confirm delivery.");
-    return;
-  }
-
-  const paymentMode = pay.value.toUpperCase();
-  const deliveryAddress = addr.nextElementSibling.innerHTML;
-
-  const orderItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
-
-  const order = {
-    email: checkoutData.email || 'guest@example.com',
-    date: new Date().toISOString(),
-    estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
-    items: orderItems,
-    paymentMode,
-    deliveryAddress
-  };
-
-  let orders = JSON.parse(localStorage.getItem('orders')) || [];
-  orders.push(order);
-  localStorage.setItem('orders', JSON.stringify(orders));
-  localStorage.removeItem('cart');
-  localStorage.removeItem('isBuyNow');
-
-  // ✅ Hide form & show celebration
-  document.querySelector('.container').style.display = 'none';
-  document.getElementById('successScreen').style.display = 'flex';
-
-  const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
-  for (let i = 0; i < 60; i++) {
-    const emoji = document.createElement('div');
-    emoji.className = 'emoji';
-    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-    emoji.style.left = `${Math.random() * 100}%`;
-    emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
-    emoji.style.animationDelay = `${Math.random()}s`;
-    document.body.appendChild(emoji);
-    setTimeout(() => emoji.remove(), 4000);
-  }
-
-  // ✅ Redirect to homepage
-  setTimeout(() => window.location.href = 'index.html', 4000);
-}
+      const pay = document.querySelector('input[name="payment"]:checked');
+      const addr = document.querySelector('input[name="address"]:checked');
+      const check = document.getElementById('sameDelivery');
+    
+      if (!pay) {
+        alert("Please select a payment method.");
+        return;
+      }
+      if (!addr || !check.checked) {
+        alert("Please select or add an address and confirm delivery.");
+        return;
+      }
+    
+      const paymentMode = pay.value.toUpperCase();
+      const deliveryAddress = addr.nextElementSibling.innerHTML;
+    
+      const orderItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
+      const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails')) || {};
+    
+      const order = {
+        email: checkoutData.email || 'guest@example.com',
+        name: checkoutData.name || 'Customer',
+        date: new Date().toISOString(),
+        estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
+        items: orderItems,
+        paymentMode,
+        deliveryAddress
+      };
+    
+      let orders = JSON.parse(localStorage.getItem('orders')) || [];
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+      localStorage.removeItem('cart');
+      localStorage.removeItem('isBuyNow');
+    
+      // ✅ Email Content
+      const emailMessage = `
+        <h3>Dear ${checkoutData.name || 'Customer'},</h3>
+        <p>Thank you for shopping with <strong>Mahaveer Enterprises</strong>!</p>
+        <p>Here is your order summary:</p>
+        <ul>
+          ${order.items.map(item => `<li>${item.name} - ₹${item.price} x ${item.qty || item.quantity || 1}</li>`).join('')}
+        </ul>
+        <p><strong>Payment Mode:</strong> ${paymentMode}</p>
+        <p><strong>Delivery Address:</strong><br>${deliveryAddress}</p>
+        <p>Estimated Delivery Date: <strong>${order.estimatedDelivery}</strong></p>
+        <br>
+        <p>Warm regards,<br>Mahaveer Enterprises</p>
+      `;
+    
+      // ✅ Send confirmation email
+      fetch("send-email.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `email=${encodeURIComponent(order.email)}&message=${encodeURIComponent(emailMessage)}`
+      })
+      .then(res => res.text())
+      .then(response => console.log("✅ Email status:", response))
+      .catch(err => console.error("❌ Email failed:", err));
+    
+      // ✅ Hide form & show celebration
+      document.querySelector('.container').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'flex';
+    
+      const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
+      for (let i = 0; i < 60; i++) {
+        const emoji = document.createElement('div');
+        emoji.className = 'emoji';
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = `${Math.random() * 100}%`;
+        emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
+        emoji.style.animationDelay = `${Math.random()}s`;
+        document.body.appendChild(emoji);
+        setTimeout(() => emoji.remove(), 4000);
+      }
+    
+      // ✅ Redirect to homepage
+      setTimeout(() => window.location.href = 'index.html', 4000);
+    }
+    
 
     
     let countdownTime = 300, timerStarted = false;

@@ -145,84 +145,77 @@
       }
     }
 
-    .status-timeline-wrapper {
-      overflow-x: auto;
-      padding: 1rem;
-    }
+    
+   
     
     .timeline {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
       min-width: max-content;
       
     }
     
-    .status-step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 60px;
+
+    .timeline-wrapper {
       position: relative;
-      top:20px;
+      height: 40px;
+      margin: 40px ;
     }
-    
-    .circle {
+  
+    .progress-line {
+      position: absolute;
+      top: 18px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background-color: #ccc;
+      border-radius: 10px;
+      z-index: 1;
+    }
+  
+    .progress-fill {
+      position: absolute;
+      top: 25px;
+      left: 0;
+      height: 6px;
+      background-color: #074c63;
+      border-radius: 3px;
+      z-index: 2;
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+  
+    .timeline-step {
+      position: absolute;
+      top: 5px;
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background-color: #ccc;
+      background: #ccc;
       color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      text-align: center;
+      line-height: 32px;
       font-size: 16px;
-      z-index: 2;
+      z-index: 3;
+      transition: background-color 0.4s ease;
     }
-    
-    .label {
-      margin-top: 4px;
-      font-size: 13px;
-      color: #888;
+  
+    .timeline-step.active {
+      background: #074c63;
     }
-    
-    .status-step.active .circle {
-      background-color: #074c63;
-    }
-    
-    .status-step.active .label {
-      color: #074c63;
-      font-weight: bold;
-    }
-    
-    .status-step.popup::after {
-      content: 'Current';
+  
+    .timeline-label {
       position: absolute;
-      top: -24px;
-      left: 50%;
+      top: 42px;
       transform: translateX(-50%);
-      font-size: 11px;
-      background: #e0f0ff;
-      color: #074c63;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: bold;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
     }
-    
-    .connector {
-      height: 6px;
-      width: 50px;
-      
-      background-color: #ccc;
-      border-radius: 10px;
-      
-    }
-    
-    .connector.active {
-      background-color: #074c63;
-    }
-    
 
+    
   </style>
 </head>
 <body>
@@ -274,13 +267,13 @@
           <div style="text-align:right!;"><strong>Estimated delivery</strong><br>by ${latestOrder.estimatedDelivery} ${paymentTag}</div>
         </div>
     
-        <!-- ✅ Scrollable Status Card -->
-      <div style="background:#f1f1f1; border-radius:12px; padding:1rem 1.2rem; margin-bottom:1.5rem; overflow-x: auto;">
-  <div class="status-bar" style="display:flex; gap:1.2rem; flex-wrap:nowrap; min-width:max-content;">
-    ${getStatusSteps(latestOrder.date)}
-  </div>
-</div>
-
+        <!-- ✅ Progress Timeline Card -->
+        <div style="background:#f1f1f1; border-radius:12px; padding:1rem 1.2rem; margin-bottom:2rem;">
+          <div class="timeline-wrapper">
+            <div class="progress-line"></div>
+            <div class="progress-fill" id="progressFill"></div>
+            <!-- Circles and labels will be injected here -->
+          </div>
         </div>
     
         <div class="summary" style="text-align:left;">
@@ -302,9 +295,43 @@
       `;
     
       document.getElementById("orderContainer").innerHTML = content;
+      createProgressTimeline(latestOrder.date);
     }
     
-
+  
+    function createProgressTimeline(orderDateStr) {
+      const steps = ["✔", "📦", "🚚", "📍", "✅"];
+      const labels = ["Order Placed", "Packed", "Shipped", "Out for Delivery", "Delivered"];
+      const total = steps.length;
+      const orderDate = new Date(orderDateStr);
+      const today = new Date();
+      const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
+      const container = document.querySelector(".timeline-wrapper");
+      const gapPercent = 100 / (total - 1);
+  
+      // Add circles and labels
+      steps.forEach((icon, i) => {
+        const leftPercent = i * gapPercent;
+  
+        const circle = document.createElement("div");
+        circle.className = "timeline-step" + (diffDays >= i ? " active" : "");
+        circle.style.left = `calc(${leftPercent}% - 16px)`;
+        circle.innerHTML = icon;
+        container.appendChild(circle);
+  
+        const label = document.createElement("div");
+        label.className = "timeline-label";
+        label.style.left = `${leftPercent}%`;
+        label.innerText = labels[i];
+        container.appendChild(label);
+      });
+  
+      // Fill line
+      const progress = document.getElementById("progressFill");
+      const fillPercent = Math.min((diffDays / (total - 1)) * 100, 100);
+      progress.style.width = `${fillPercent}%`;
+    }
+  
     renderTrackOrder();
 
 
@@ -334,13 +361,25 @@
       const addressData = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
       const latestOrder = orders.slice(-1)[0];
     
-      const companyName = "Mahaveer Enterprises";
+      const companyName = "MAHAVEER ENTERPRISES";
+      const gstin = "29GHUPS1629Q1ZZ";
+      const customerName = addressData.name || "Customer Name not found";
+
       const email = latestOrder.email;
       const paymentMode = latestOrder.paymentMode || "N/A";
     
-      const rawAddress = localStorage.getItem("deliveryAddress");
-      const address = rawAddress 
-        || `${addressData.name || "Name not found"}<br>${addressData.currentAddress || "Address not found"}`;
+      // ✅ Construct full delivery address
+      let address = "";
+      if (addressData.deliveryAddress) {
+        address = addressData.deliveryAddress;
+      } else {
+        address = `
+          ${addressData.name || "Name not found"}<br>
+          ${addressData.currentAddress || "Address not found"}<br>
+          ${addressData.city || ""} ${addressData.state || ""} ${addressData.pincode || ""}<br>
+          ${addressData.phone || ""}
+        `.trim();
+      }
     
       const orderDate = new Date(latestOrder.date);
       const today = new Date();
@@ -368,58 +407,145 @@
       const choice = confirm("Click OK to Print, or Cancel to Download PDF");
     
       if (choice) {
-        const w = window.open();
-        w.document.write(`
-          <html>
-            <head>
-              <title>Order Summary</title>
-              <style>
-  body { font-family: Arial, sans-serif; padding: 30px; }
-  h2 { text-align: center; color: #074c63; }
-  .section { margin-bottom: 25px; }
-  ul { padding-left: 20px; }
-  .item { margin-bottom: 10px; }
-  img { width: 50px; height: 50px; object-fit: cover; vertical-align: middle; margin-right: 10px; border-radius: 8px; }
-  .label { font-weight: bold; color: #333; }
-  hr { margin: 20px 0; border: none; border-top: 1px solid #ccc; }
+       const w = window.open();
+w.document.write(`
+  <html>
+    <head>
+      <title>Order Summary</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          padding: 30px;
+          font-size: 14px;
+          color: #333;
+        }
 
-  @media print {
-    @page {
-      margin: 0;
-    }
-    body {
-      margin: 0;
-    }
-  }
-</style>
+        .header {
+          border-bottom: 2px solid #000;
+          padding-bottom: 10px;
+          margin-bottom: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
 
-            </head>
-            <body>
-              <h2>${companyName} - Order Summary</h2>
-    
-              <div class="section"><span class="label">Email:</span> ${email}</div>
-              <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
-              <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
-              <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
-              <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
-              
-              <hr>
-    
-              <div class="section">
-                <span class="label">Order Status:</span>
-                <ul>${statusHTML}</ul>
-              </div>
-    
-              <hr>
-    
-              <div class="section">
-                <span class="label">Items Ordered:</span>
-                <ul>${itemsHTML}</ul>
-              </div>
-            </body>
-          </html>
-        `);
-        w.document.close();
+        .header .title {
+          flex-grow: 1;
+          text-align: center;
+          font-size: 16px;
+          color: #074c63;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .gstin {
+          font-size: 10px;
+          color: #444;
+          white-space: nowrap;
+        }
+
+        .section-title {
+          text-align: center;
+          font-size: 14px;
+          font-weight: bold;
+          text-decoration: underline;
+          margin-bottom: 20px;
+        }
+
+        .section { margin-bottom: 25px; }
+        ul { padding-left: 20px; }
+        .item { margin-bottom: 12px; }
+        img {
+          width: 50px;
+          height: 50px;
+          object-fit: cover;
+          vertical-align: middle;
+          margin-right: 10px;
+          border-radius: 8px;
+        }
+        img::after {
+          content: "📦";
+        }
+
+        .label { font-weight: bold; color: #333; }
+        hr { margin: 20px 0; border: none; border-top: 1px solid #ccc; }
+
+        .footer {
+          position: fixed;
+          bottom: 20px;
+          left: 30px;
+          font-size: 10px;
+          color: #555;
+        }
+
+        .page-break {
+          page-break-before: always;
+          margin-top: 60px;
+        }
+
+        @media print {
+          @page {
+            margin: 0;
+          }
+          body {
+            margin: 0.8in;
+          }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="gstin">GSTIN: ${gstin}</div>
+        <div class="title">${companyName}</div>
+        <div style="width: 60px;"></div>
+      </div>
+
+      <div class="section-title">Track Order - Summary</div>
+
+     <div class="section"><span class="label">Customer Name:</span> ${customerName}</div>
+<div class="section"><span class="label">Customer Email:</span> ${email}</div>
+
+      <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
+      <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
+      <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
+      <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
+
+      <hr>
+
+      <div class="section">
+        <span class="label">Order Status:</span>
+        <ul>${statusHTML}</ul>
+      </div>
+
+      <hr>
+
+      <div class="section">
+        <span class="label">Items Ordered:</span>
+        <ul>
+          ${
+            latestOrder.items.map((item, index) => `
+              ${index > 0 && index % 10 === 0 ? '<div class="page-break"></div>' : ''}
+              <li class="item">
+                <img src="${item.image}" onerror="this.src='https://via.placeholder.com/50'" />
+                ${item.name} — ₹${item.price}
+              </li>
+            `).join('')
+          }
+        </ul>
+      </div>
+
+      <div class="footer">GSTIN: ${gstin}</div>
+    </body>
+  </html>
+`);
+w.document.close();
+
+// Delay print to ensure images load
+setTimeout(() => {
+  w.print();
+}, 1000);
+
         w.print();
       } else {
         const { jsPDF } = window.jspdf;
@@ -427,10 +553,17 @@
         let y = 10;
     
         doc.setFontSize(16);
-        doc.text(`${companyName} - Order Summary`, 10, y); y += 10;
+        doc.text(`${companyName}`, 105, y, null, null, 'center'); y += 6;
+        doc.setFontSize(10);
+        doc.text(`GSTIN: ${gstin}`, 180, 10, null, null, 'right'); y += 6;
+    
+        doc.setFontSize(14);
+        doc.text("Track Order - Summary", 105, y, null, null, 'center'); y += 10;
     
         doc.setFontSize(12);
-        doc.text(`Email: ${email}`, 10, y); y += 8;
+        doc.text(`Customer Name: ${customerName}`, 10, y); y += 8;
+doc.text(`Customer Email: ${email}`, 10, y); y += 8;
+
         doc.text(`Delivery Address: ${address.replace(/<br>/g, ', ')}`, 10, y); y += 8;
         doc.text(`Ordered on: ${orderDate.toDateString()}`, 10, y); y += 8;
         doc.text(`Estimated delivery: ${latestOrder.estimatedDelivery}`, 10, y); y += 8;
@@ -438,49 +571,19 @@
     
         doc.text("Order Status:", 10, y); y += 8;
         steps.forEach((step, i) => {
-          doc.text(`${diffDays >= i ? '✅' : '⬜'} ${step.name}`, 12, y);
-          y += 8;
+          doc.text(`${diffDays >= i ? '✅' : '⬜'} ${step.name}`, 12, y); y += 8;
         });
     
         y += 5;
         doc.text("Items:", 10, y); y += 8;
         latestOrder.items.forEach(item => {
-          doc.text(`- ${item.name} — ₹${item.price}`, 12, y);
-          y += 8;
+          doc.text(`- ${item.name} — ₹${item.price}`, 12, y); y += 8;
         });
     
+        doc.setFontSize(10);
+        doc.text(`GSTIN: ${gstin}`, 10, 285);
         doc.save("Order_Summary.pdf");
       }
-    }
-
-    function getStatusSteps(dateStr) {
-      const orderDate = new Date(dateStr);
-      const today = new Date();
-      const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
-    
-      const steps = ["✔", "📦", "🚚", "📍", "✅"];
-      const labels = ["Order Placed", "Packed", "Shipped", "Out for Delivery", "Delivered"];
-    
-      let html = '<div class="timeline">';
-    
-      for (let i = 0; i < steps.length; i++) {
-        const isActive = diffDays >= i;
-        const isCurrent = diffDays === i;
-    
-        html += `
-          <div class="status-step ${isActive ? 'active' : ''} ${isCurrent ? 'popup' : ''}">
-            <div class="circle">${steps[i]}</div>
-            <div class="label">${labels[i]}</div>
-          </div>
-        `;
-    
-        if (i < steps.length - 1) {
-          html += `<div class="connector ${diffDays > i ? 'active' : ''}"></div>`;
-        }
-      }
-    
-      html += '</div>';
-      return html;
     }
     
     
