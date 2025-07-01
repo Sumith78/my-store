@@ -19,7 +19,10 @@
     }
 
     header {
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       background-color: rgb(11, 65, 39);
       color: white;
       padding: 1rem;
@@ -27,7 +30,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 1000;
     }
+    
     
     .back-btn-icon {
       position: absolute;
@@ -50,17 +55,18 @@
       flex: 1;
     }
     
-
     .container {
       width: 90%;
       max-width: 600px;
-      margin: 2rem auto;
+      margin: 80px auto 2rem; /* 👈 top margin added */
       background: white;
       padding: 2rem;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       overflow-wrap: break-word;
     }
+    
+    
 
     h2 {
       text-align: center;

@@ -5,14 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Track Order</title>
   <style>
+
+
     * {
       box-sizing: border-box;
     }
+
+
     body {
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       background-color: #f4f6f8;
     }
+
+    
     header {
       background-color: #074c63;
       color: white;
@@ -20,28 +26,28 @@
       text-align: center;
       font-size: 1.6rem;
       font-weight: bold;
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
     }
+    
 
+   
+    
 
     .container {
       width: 95%;
-      max-width: 800px; /* increased width for desktop */
-      margin: 2rem auto;
+      max-width: 800px;
+      margin: 90px auto 2rem auto; /* push content below fixed header */
       background-color: white;
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     
-    .status-bar {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: nowrap;        /* ✅ Forces single row */
-  white-space: nowrap;
-  scroll-behavior: smooth;
-  min-height: 100px;
-}
+    
 
 .status-bar::-webkit-scrollbar {
   height: 6px;
@@ -64,17 +70,7 @@
       font-weight: bold;
       color: #074c63;
     }
-    .circle {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background-color: #ccc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 auto 0.5rem;
-      color: white;
-    }
+
     .status-step.active .circle {
       background-color: #074c63;
     }
@@ -148,6 +144,85 @@
         text-align: center;
       }
     }
+
+    .status-timeline-wrapper {
+      overflow-x: auto;
+      padding: 1rem;
+    }
+    
+    .timeline {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: max-content;
+      
+    }
+    
+    .status-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 60px;
+      position: relative;
+      top:20px;
+    }
+    
+    .circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #ccc;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      z-index: 2;
+    }
+    
+    .label {
+      margin-top: 4px;
+      font-size: 13px;
+      color: #888;
+    }
+    
+    .status-step.active .circle {
+      background-color: #074c63;
+    }
+    
+    .status-step.active .label {
+      color: #074c63;
+      font-weight: bold;
+    }
+    
+    .status-step.popup::after {
+      content: 'Current';
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      background: #e0f0ff;
+      color: #074c63;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    
+    .connector {
+      height: 6px;
+      width: 50px;
+      
+      background-color: #ccc;
+      border-radius: 10px;
+      
+    }
+    
+    .connector.active {
+      background-color: #074c63;
+    }
+    
+
   </style>
 </head>
 <body>
@@ -196,7 +271,7 @@
     
         <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; margin-bottom:2.5rem;">
           <div><strong>Ordered on</strong><br>${orderDate.toDateString()}</div>
-          <div style="text-align:right;"><strong>Estimated delivery</strong><br>by ${latestOrder.estimatedDelivery} ${paymentTag}</div>
+          <div style="text-align:right!;"><strong>Estimated delivery</strong><br>by ${latestOrder.estimatedDelivery} ${paymentTag}</div>
         </div>
     
         <!-- ✅ Scrollable Status Card -->
@@ -378,6 +453,36 @@
       }
     }
 
+    function getStatusSteps(dateStr) {
+      const orderDate = new Date(dateStr);
+      const today = new Date();
+      const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
+    
+      const steps = ["✔", "📦", "🚚", "📍", "✅"];
+      const labels = ["Order Placed", "Packed", "Shipped", "Out for Delivery", "Delivered"];
+    
+      let html = '<div class="timeline">';
+    
+      for (let i = 0; i < steps.length; i++) {
+        const isActive = diffDays >= i;
+        const isCurrent = diffDays === i;
+    
+        html += `
+          <div class="status-step ${isActive ? 'active' : ''} ${isCurrent ? 'popup' : ''}">
+            <div class="circle">${steps[i]}</div>
+            <div class="label">${labels[i]}</div>
+          </div>
+        `;
+    
+        if (i < steps.length - 1) {
+          html += `<div class="connector ${diffDays > i ? 'active' : ''}"></div>`;
+        }
+      }
+    
+      html += '</div>';
+      return html;
+    }
+    
     
   </script>
 </body>
