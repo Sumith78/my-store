@@ -326,6 +326,12 @@
 </div>
 
 
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+  emailjs.init("yWquru6Fki6Lvx0je"); // ✅ YOUR_USER_ID
+</script>
+
+
 
   <script>
 
@@ -399,13 +405,10 @@ if (performance.navigation.type === 1) {
     
       const paymentMode = pay.value.toUpperCase();
       const deliveryAddress = addr.nextElementSibling.innerHTML;
-    
       const orderItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
-      const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails')) || {};
     
       const order = {
         email: checkoutData.email || 'guest@example.com',
-        name: checkoutData.name || 'Customer',
         date: new Date().toISOString(),
         estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
         items: orderItems,
@@ -413,40 +416,53 @@ if (performance.navigation.type === 1) {
         deliveryAddress
       };
     
+      // ✅ Build HTML for message_html using table-based structure
+      let totalAmount = 0;
+      let emailMessage = ``;
+    
+      order.items.forEach(item => {
+        const itemTotal = Number(item.price) * Number(item.qty);
+        totalAmount += itemTotal;
+    
+        emailMessage += `
+          <table style="width: 100%; border-collapse: collapse">
+            <tr style="vertical-align: top">
+              <td style="padding: 24px 8px 0 4px">
+                <img style="height: 64px" height="64px" src="${item.image}" alt="${item.name}" />
+              </td>
+              <td style="padding: 24px 8px 0 8px; width: 100%">
+                <div><strong>${item.name}</strong></div>
+                <div style="font-size: 14px; color: #888; padding-top: 4px">QTY: ${item.qty}</div>
+              </td>
+              <td style="padding: 24px 4px 0 0; white-space: nowrap">
+                <strong>₹${item.price}</strong>
+              </td>
+            </tr>
+          </table>
+        `;
+      });
+    
+      emailjs.send("service_v1avwdt", "template_0pm6m3o", {
+        email: order.email,
+        order_date: new Date(order.date).toDateString(),
+        delivery_date: order.estimatedDelivery,
+        payment_mode: order.paymentMode,
+        delivery_address: order.deliveryAddress,
+        total_amount: totalAmount,
+        user_name: checkoutData.name || "Guest",
+        message_html: emailMessage
+      })
+      .then(() => console.log("✅ Confirmation email sent."))
+      .catch(err => console.error("❌ EmailJS error:", err));
+    
+      // ✅ Store order locally
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
       orders.push(order);
       localStorage.setItem('orders', JSON.stringify(orders));
       localStorage.removeItem('cart');
       localStorage.removeItem('isBuyNow');
     
-      // ✅ Email Content
-      const emailMessage = `
-        <h3>Dear ${checkoutData.name || 'Customer'},</h3>
-        <p>Thank you for shopping with <strong>Mahaveer Enterprises</strong>!</p>
-        <p>Here is your order summary:</p>
-        <ul>
-          ${order.items.map(item => `<li>${item.name} - ₹${item.price} x ${item.qty || item.quantity || 1}</li>`).join('')}
-        </ul>
-        <p><strong>Payment Mode:</strong> ${paymentMode}</p>
-        <p><strong>Delivery Address:</strong><br>${deliveryAddress}</p>
-        <p>Estimated Delivery Date: <strong>${order.estimatedDelivery}</strong></p>
-        <br>
-        <p>Warm regards,<br>Mahaveer Enterprises</p>
-      `;
-    
-      // ✅ Send confirmation email
-      fetch("send-email.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `email=${encodeURIComponent(order.email)}&message=${encodeURIComponent(emailMessage)}`
-      })
-      .then(res => res.text())
-      .then(response => console.log("✅ Email status:", response))
-      .catch(err => console.error("❌ Email failed:", err));
-    
-      // ✅ Hide form & show celebration
+      // ✅ Show success animation
       document.querySelector('.container').style.display = 'none';
       document.getElementById('successScreen').style.display = 'flex';
     
@@ -466,7 +482,6 @@ if (performance.navigation.type === 1) {
       setTimeout(() => window.location.href = 'index.html', 4000);
     }
     
-
     
     let countdownTime = 300, timerStarted = false;
     function updateCountdown() {

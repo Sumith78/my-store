@@ -364,11 +364,9 @@
       const companyName = "MAHAVEER ENTERPRISES";
       const gstin = "29GHUPS1629Q1ZZ";
       const customerName = addressData.name || "Customer Name not found";
-
-      const email = latestOrder.email;
-      const paymentMode = latestOrder.paymentMode || "N/A";
+      const email = latestOrder?.email || "guest@example.com";
+      const paymentMode = latestOrder?.paymentMode || "N/A";
     
-      // ✅ Construct full delivery address
       let address = "";
       if (addressData.deliveryAddress) {
         address = addressData.deliveryAddress;
@@ -397,163 +395,132 @@
         return `<li>${diffDays >= i ? '✅' : '⬜'} ${step.name}</li>`;
       }).join('');
     
-      const itemsHTML = latestOrder.items.map(item => `
-        <li class="item">
-          <img src="${item.image || 'https://via.placeholder.com/50'}" />
-          ${item.name} — ₹${item.price}
-        </li>
-      `).join('');
+      const itemsHTML = latestOrder.items.map((item, index) => {
+        const pageBreak = index > 0 && index % 10 === 0 ? '<div class="page-break"></div>' : '';
+        return `
+          ${pageBreak}
+          <li class="item">
+            <img src="${item.image || 'https://via.placeholder.com/50'}" />
+            ${item.name} — ₹${item.price}
+          </li>
+        `;
+      }).join('');
     
       const choice = confirm("Click OK to Print, or Cancel to Download PDF");
     
       if (choice) {
-       const w = window.open();
-w.document.write(`
-  <html>
-    <head>
-      <title>Order Summary</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          padding: 30px;
-          font-size: 14px;
-          color: #333;
-        }
-
-        .header {
-          border-bottom: 2px solid #000;
-          padding-bottom: 10px;
-          margin-bottom: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .header .title {
-          flex-grow: 1;
-          text-align: center;
-          font-size: 16px;
-          color: #074c63;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .gstin {
-          font-size: 10px;
-          color: #444;
-          white-space: nowrap;
-        }
-
-        .section-title {
-          text-align: center;
-          font-size: 14px;
-          font-weight: bold;
-          text-decoration: underline;
-          margin-bottom: 20px;
-        }
-
-        .section { margin-bottom: 25px; }
-        ul { padding-left: 20px; }
-        .item { margin-bottom: 12px; }
-        img {
-          width: 50px;
-          height: 50px;
-          object-fit: cover;
-          vertical-align: middle;
-          margin-right: 10px;
-          border-radius: 8px;
-        }
-        img::after {
-          content: "📦";
-        }
-
-        .label { font-weight: bold; color: #333; }
-        hr { margin: 20px 0; border: none; border-top: 1px solid #ccc; }
-
-        .footer {
-          position: fixed;
-          bottom: 20px;
-          left: 30px;
-          font-size: 10px;
-          color: #555;
-        }
-
-        .page-break {
-          page-break-before: always;
-          margin-top: 60px;
-        }
-
-        @media print {
-          @page {
-            margin: 0;
-          }
-          body {
-            margin: 0.8in;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <div class="gstin">GSTIN: ${gstin}</div>
-        <div class="title">${companyName}</div>
-        <div style="width: 60px;"></div>
-      </div>
-
-      <div class="section-title">Track Order - Summary</div>
-
-     <div class="section"><span class="label">Customer Name:</span> ${customerName}</div>
-<div class="section"><span class="label">Customer Email:</span> ${email}</div>
-
-      <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
-      <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
-      <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
-      <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
-
-      <hr>
-
-      <div class="section">
-        <span class="label">Order Status:</span>
-        <ul>${statusHTML}</ul>
-      </div>
-
-      <hr>
-
-      <div class="section">
-        <span class="label">Items Ordered:</span>
-        <ul>
-          ${
-            latestOrder.items.map((item, index) => `
-              ${index > 0 && index % 10 === 0 ? '<div class="page-break"></div>' : ''}
-              <li class="item">
-                <img src="${item.image}" onerror="this.src='https://via.placeholder.com/50'" />
-                ${item.name} — ₹${item.price}
-              </li>
-            `).join('')
-          }
-        </ul>
-      </div>
-
-      <div class="footer">GSTIN: ${gstin}</div>
-    </body>
-  </html>
-`);
-w.document.close();
-
-// Delay print to ensure images load
-setTimeout(() => {
-  w.print();
-}, 1000);
-
-        w.print();
+        const w = window.open();
+        w.document.write(`
+          <html>
+            <head>
+              <title>Order Summary</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  padding: 30px;
+                  font-size: 14px;
+                  color: #333;
+                }
+                .header {
+                  border-bottom: 2px solid #000;
+                  padding-bottom: 10px;
+                  margin-bottom: 20px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                }
+                .header .title {
+                  flex-grow: 1;
+                  text-align: center;
+                  font-size: 16px;
+                  color: #074c63;
+                  font-weight: bold;
+                  text-transform: uppercase;
+                  letter-spacing: 1px;
+                }
+                .gstin {
+                  font-size: 10px;
+                  color: #444;
+                  white-space: nowrap;
+                }
+                .section-title {
+                  text-align: center;
+                  font-size: 14px;
+                  font-weight: bold;
+                  text-decoration: underline;
+                  margin-bottom: 20px;
+                }
+                .section { margin-bottom: 25px; }
+                ul { padding-left: 20px; }
+                .item { margin-bottom: 12px; }
+                img {
+                  width: 50px;
+                  height: 50px;
+                  object-fit: cover;
+                  vertical-align: middle;
+                  margin-right: 10px;
+                  border-radius: 8px;
+                }
+                .label { font-weight: bold; color: #333; }
+                .footer {
+                  position: fixed;
+                  bottom: 20px;
+                  left: 30px;
+                  font-size: 10px;
+                  color: #555;
+                }
+                .page-break {
+                  page-break-before: always;
+                  margin-top: 60px;
+                }
+                @media print {
+                  @page { margin: 0; }
+                  body { margin: 0.8in; }
+                }
+              </style>
+            </head>
+            <body>
+              <div class="header">
+                <div class="gstin">GSTIN: ${gstin}</div>
+                <div class="title">${companyName}</div>
+                <div style="width: 60px;"></div>
+              </div>
+    
+              <div class="section-title">Track Order - Summary</div>
+              <div class="section"><span class="label">Customer Name:</span> ${customerName}</div>
+              <div class="section"><span class="label">Customer Email:</span> ${email}</div>
+              <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
+              <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
+              <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
+              <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
+    
+              <hr>
+    
+              <div class="section">
+                <span class="label">Order Status:</span>
+                <ul>${statusHTML}</ul>
+              </div>
+    
+              <hr>
+    
+              <div class="section">
+                <span class="label">Items Ordered:</span>
+                <ul>${itemsHTML}</ul>
+              </div>
+    
+              <div class="footer">GSTIN: ${gstin}</div>
+            </body>
+          </html>
+        `);
+        w.document.close();
+        setTimeout(() => w.print(), 1000);
       } else {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         let y = 10;
     
         doc.setFontSize(16);
-        doc.text(`${companyName}`, 105, y, null, null, 'center'); y += 6;
+        doc.text(companyName, 105, y, null, null, 'center'); y += 6;
         doc.setFontSize(10);
         doc.text(`GSTIN: ${gstin}`, 180, 10, null, null, 'right'); y += 6;
     
@@ -562,8 +529,7 @@ setTimeout(() => {
     
         doc.setFontSize(12);
         doc.text(`Customer Name: ${customerName}`, 10, y); y += 8;
-doc.text(`Customer Email: ${email}`, 10, y); y += 8;
-
+        doc.text(`Customer Email: ${email}`, 10, y); y += 8;
         doc.text(`Delivery Address: ${address.replace(/<br>/g, ', ')}`, 10, y); y += 8;
         doc.text(`Ordered on: ${orderDate.toDateString()}`, 10, y); y += 8;
         doc.text(`Estimated delivery: ${latestOrder.estimatedDelivery}`, 10, y); y += 8;
@@ -585,6 +551,7 @@ doc.text(`Customer Email: ${email}`, 10, y); y += 8;
         doc.save("Order_Summary.pdf");
       }
     }
+    
     
     
   </script>
