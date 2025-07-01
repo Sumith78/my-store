@@ -8,9 +8,13 @@
   <style>
     body {
       margin: 0;
+      padding-top: 80px; /* equal to header height */
       font-family: Arial, sans-serif;
       background: #f8f9fa;
+      overflow-x: hidden;
     }
+    
+    
 
 
     html, body {
@@ -297,17 +301,21 @@ button:hover, .product-card:hover {
     
 
     header {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      height: 80px;
+      background-color: rgb(11, 65, 39);
+      color: white;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.7rem 1rem;
-      background-color: rgb(11, 65, 39);
-      color: white;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      height: 80px;
     }
+    
+    
 
     .main-body-wrapper {
   background-color: rgb(34, 61, 48);
@@ -615,7 +623,7 @@ button:hover, .product-card:hover {
     .cart {
       position: fixed !important;
       bottom: 1rem !important;   /* ✅ Try values like 4rem, 8rem, etc. */
-      right: 0rem !important;
+      right: 1rem !important;
       background-color: #ffc107;
       padding: 1rem;
       border-radius: 50%;
@@ -1382,6 +1390,8 @@ button:hover, .product-card:hover {
 }
 
 
+
+    
 
 
 
