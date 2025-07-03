@@ -211,9 +211,36 @@
     
     
     @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
     }
+    
+    @-webkit-keyframes fall {
+      0% {
+        -webkit-transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        -webkit-transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    
+    .emoji {
+      font-size: 2rem;
+      z-index: 9999;
+      pointer-events: none;
+      animation: fall 3s linear forwards;
+      -webkit-animation: fall 3s linear forwards;
+      will-change: transform;
+    }
+    
     
     /* Responsive Fixes */
     @media screen and (max-width: 480px) {
@@ -465,16 +492,22 @@ if (performance.navigation.type === 1) {
       document.getElementById('successScreen').style.display = 'flex';
     
       const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
-      for (let i = 0; i < 60; i++) {
+      for (let i = 0; i < 40; i++) {
         const emoji = document.createElement('div');
         emoji.className = 'emoji';
         emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.left = `${Math.random() * 100}%`;
-        emoji.style.animationDuration = `${2 + Math.random() * 2}s`;
-        emoji.style.animationDelay = `${Math.random()}s`;
+      
+        emoji.style.left = `${Math.random() * 100}vw`;
+        emoji.style.top = `-${Math.random() * 20}vh`; // Vary top position
+        emoji.style.position = 'fixed';
+        emoji.style.fontSize = '2rem';
+        emoji.style.zIndex = '99999';
+        emoji.style.animation = `fall ${3 + Math.random() * 2}s linear forwards`;
+      
         document.body.appendChild(emoji);
         setTimeout(() => emoji.remove(), 4000);
       }
+      
     
       // ✅ Redirect to homepage
       setTimeout(() => window.location.href = 'index.html', 4000);
