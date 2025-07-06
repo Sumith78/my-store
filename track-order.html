@@ -136,43 +136,14 @@
       margin-bottom: 3rem;
     }
     @media (max-width: 600px) {
-      .timeline-wrapper {
-        overflow-x: auto;
-        padding: 0 10px;
+      .timeline-header div {
+        width: 100%;
+        margin-bottom: 1rem;
       }
-    
-      .timeline-wrapper::-webkit-scrollbar {
-        height: 6px;
-      }
-    
-      .timeline-step,
-      .timeline-label {
-        white-space: nowrap;
-      }
-    
-      .timeline-step {
-        transform: scale(0.85); /* Optional: slightly reduce icon size on mobile */
-      }
-    
-      .timeline-label {
-        font-size: 11px;
-        max-width: 70px;
+      .summary, .status-bar, .action-btn-wrapper {
         text-align: center;
       }
-
-
-      .timeline-wrapper {
-        position: relative;
-        height: 40px;
-        margin: 40px;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
     }
-
-    
-
-
 
     
    
@@ -266,6 +237,27 @@
     }
 
     
+
+    .timeline-scroll {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      padding-bottom: 12px;
+    }
+    
+    .timeline-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .timeline-scroll::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+    
+    .timeline-scroll::-webkit-scrollbar-track {
+      background: #eee;
+    }
+    
   </style>
 </head>
 <body>
@@ -318,13 +310,17 @@
         </div>
     
         <!-- ✅ Progress Timeline Card -->
-        <div style="background:#f1f1f1; border-radius:12px; padding:1rem 1.2rem; margin-bottom:2rem;">
-          <div class="timeline-wrapper">
-            <div class="progress-line"></div>
-            <div class="progress-fill" id="progressFill"></div>
-            <!-- Circles and labels will be injected here -->
-          </div>
-        </div>
+     <!-- ✅ Progress Timeline Card -->
+<div style="background:#f1f1f1; border-radius:12px; padding:1rem 1.2rem; margin-bottom:2rem;">
+  <div class="timeline-scroll">
+    <div class="timeline-wrapper">
+      <div class="progress-line"></div>
+      <div class="progress-fill" id="progressFill"></div>
+      <!-- Circles and labels will be injected here -->
+    </div>
+  </div>
+</div>
+
     
         <div class="summary" style="text-align:left;">
           <h3 style="margin-bottom:1.5rem;">Summary ${paymentTag}</h3>
