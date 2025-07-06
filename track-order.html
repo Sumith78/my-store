@@ -298,7 +298,9 @@
         return;
       }
     
-      const latestOrder = userOrders.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+      const trackOrderId = localStorage.getItem("trackOrderId");
+const latestOrder = userOrders.find(o => o.id === trackOrderId) || userOrders[0];
+
       const orderDate = new Date(latestOrder.date);
     
       const paymentTag = latestOrder.paymentMode === 'COD'
