@@ -236,14 +236,20 @@
       text-align: center;
     }
 
+    .timeline-wrapper {
+      position: relative;
+      height: 40px;
+      margin: 40px;
+      min-width: 600px; /* ✅ Force overflow if screen is narrow */
+    }
     
-
     .timeline-scroll {
       overflow-x: auto;
       overflow-y: hidden;
       scroll-behavior: smooth;
       padding-bottom: 12px;
     }
+    
     
     .timeline-scroll::-webkit-scrollbar {
       height: 6px;
