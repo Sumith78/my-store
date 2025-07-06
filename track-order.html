@@ -162,6 +162,7 @@
       position: relative;
       height: 40px;
       margin: 40px ;
+    
     }
   
     .progress-line {
@@ -177,7 +178,7 @@
   
     .progress-fill {
       position: absolute;
-      top: 25px;
+      top: 18px; /* Match this with .progress-line */
       left: 0;
       height: 6px;
       background-color: #074c63;
@@ -186,6 +187,26 @@
       width: 0%;
       transition: width 0.5s ease-in-out;
     }
+
+    
+
+    .current-label {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      font-weight: bold;
+      color: #074c63;
+      animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+      100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+    }
+    
   
     .timeline-step {
       position: absolute;
@@ -312,19 +333,29 @@
       // Add circles and labels
       steps.forEach((icon, i) => {
         const leftPercent = i * gapPercent;
-  
+      
         const circle = document.createElement("div");
         circle.className = "timeline-step" + (diffDays >= i ? " active" : "");
         circle.style.left = `calc(${leftPercent}% - 16px)`;
         circle.innerHTML = icon;
         container.appendChild(circle);
-  
+      
+        // Label below icon
         const label = document.createElement("div");
         label.className = "timeline-label";
         label.style.left = `${leftPercent}%`;
         label.innerText = labels[i];
         container.appendChild(label);
+      
+        // Add "Current" above the current step
+        if (diffDays === i) {
+          const current = document.createElement("div");
+          current.className = "current-label";
+          current.innerText = "Current";
+          circle.appendChild(current); // Append to icon
+        }
       });
+      
   
       // Fill line
       const progress = document.getElementById("progressFill");
