@@ -413,105 +413,108 @@ if (performance.navigation.type === 1) {
     });
 
 
+function placeOrder() {
+  const pay = document.querySelector('input[name="payment"]:checked');
+  const addr = document.querySelector('input[name="address"]:checked');
+  const check = document.getElementById('sameDelivery');
 
-    function placeOrder() {
-      const pay = document.querySelector('input[name="payment"]:checked');
-      const addr = document.querySelector('input[name="address"]:checked');
-      const check = document.getElementById('sameDelivery');
-    
-      if (!pay) {
-        alert("Please select a payment method.");
-        return;
-      }
-      if (!addr || !check.checked) {
-        alert("Please select or add an address and confirm delivery.");
-        return;
-      }
-    
-      const paymentMode = pay.value.toUpperCase();
-      const deliveryAddress = addr.nextElementSibling.innerHTML;
-      const orderItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
-    
-      const order = {
-        email: checkoutData.email || 'guest@example.com',
-        date: new Date().toISOString(),
-        estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
-        items: orderItems,
-        paymentMode,
-        deliveryAddress
-      };
-    
-      // ✅ Build HTML for message_html using table-based structure
-      let totalAmount = 0;
-      let emailMessage = ``;
-    
-      order.items.forEach(item => {
-        const itemTotal = Number(item.price) * Number(item.qty);
-        totalAmount += itemTotal;
-    
-        emailMessage += `
-          <table style="width: 100%; border-collapse: collapse">
-            <tr style="vertical-align: top">
-              <td style="padding: 24px 8px 0 4px">
-                <img style="height: 64px" height="64px" src="${item.image}" alt="${item.name}" />
-              </td>
-              <td style="padding: 24px 8px 0 8px; width: 100%">
-                <div><strong>${item.name}</strong></div>
-                <div style="font-size: 14px; color: #888; padding-top: 4px">QTY: ${item.qty}</div>
-              </td>
-              <td style="padding: 24px 4px 0 0; white-space: nowrap">
-                <strong>₹${item.price}</strong>
-              </td>
-            </tr>
-          </table>
-        `;
-      });
-    
-      emailjs.send("service_v1avwdt", "template_0pm6m3o", {
-        email: order.email,
-        order_date: new Date(order.date).toDateString(),
-        delivery_date: order.estimatedDelivery,
-        payment_mode: order.paymentMode,
-        delivery_address: order.deliveryAddress,
-        total_amount: totalAmount,
-        user_name: checkoutData.name || "Guest",
-        message_html: emailMessage
-      })
-      .then(() => console.log("✅ Confirmation email sent."))
-      .catch(err => console.error("❌ EmailJS error:", err));
-    
-      // ✅ Store order locally
-      let orders = JSON.parse(localStorage.getItem('orders')) || [];
-      orders.push(order);
-      localStorage.setItem('orders', JSON.stringify(orders));
-      localStorage.removeItem('cart');
-      localStorage.removeItem('isBuyNow');
-    
-      // ✅ Show success animation
-      document.querySelector('.container').style.display = 'none';
-      document.getElementById('successScreen').style.display = 'flex';
-    
-      const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
-      for (let i = 0; i < 40; i++) {
-        const emoji = document.createElement('div');
-        emoji.className = 'emoji';
-        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      
-        emoji.style.left = `${Math.random() * 100}vw`;
-        emoji.style.top = `-${Math.random() * 20}vh`; // Vary top position
-        emoji.style.position = 'fixed';
-        emoji.style.fontSize = '2rem';
-        emoji.style.zIndex = '99999';
-        emoji.style.animation = `fall ${3 + Math.random() * 2}s linear forwards`;
-      
-        document.body.appendChild(emoji);
-        setTimeout(() => emoji.remove(), 4000);
-      }
-      
-    
-      // ✅ Redirect to homepage
-      setTimeout(() => window.location.href = 'index.html', 4000);
-    }
+  if (!pay) {
+    alert("Please select a payment method.");
+    return;
+  }
+  if (!addr || !check.checked) {
+    alert("Please select or add an address and confirm delivery.");
+    return;
+  }
+
+  const paymentMode = pay.value.toUpperCase();
+  const deliveryAddress = addr.nextElementSibling.innerHTML;
+  const orderItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
+
+  // ✅ Generate Unique Order ID
+  const orderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+  const order = {
+    orderId, // ✅ Order ID added
+    email: checkoutData.email || 'guest@example.com',
+    date: new Date().toISOString(),
+    estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),
+    items: orderItems,
+    paymentMode,
+    deliveryAddress
+  };
+
+  let totalAmount = 0;
+  let emailMessage = ``;
+
+  order.items.forEach(item => {
+    const itemTotal = Number(item.price) * Number(item.qty);
+    totalAmount += itemTotal;
+
+    emailMessage += `
+      <table style="width: 100%; border-collapse: collapse">
+        <tr style="vertical-align: top">
+          <td style="padding: 24px 8px 0 4px">
+            <img style="height: 64px" height="64px" src="${item.image}" alt="${item.name}" />
+          </td>
+          <td style="padding: 24px 8px 0 8px; width: 100%">
+            <div><strong>${item.name}</strong></div>
+            <div style="font-size: 14px; color: #888; padding-top: 4px">QTY: ${item.qty}</div>
+          </td>
+          <td style="padding: 24px 4px 0 0; white-space: nowrap">
+            <strong>₹${item.price}</strong>
+          </td>
+        </tr>
+      </table>
+    `;
+  });
+
+  // ✅ Send email with order ID
+  emailjs.send("service_v1avwdt", "template_0pm6m3o", {
+    email: order.email,
+    order_id: orderId, // ✅ include Order ID in Email
+    order_date: new Date(order.date).toDateString(),
+    delivery_date: order.estimatedDelivery,
+    payment_mode: order.paymentMode,
+    delivery_address: order.deliveryAddress,
+    total_amount: totalAmount,
+    user_name: checkoutData.name || "Guest",
+    message_html: emailMessage
+  })
+  .then(() => console.log("✅ Confirmation email sent."))
+  .catch(err => console.error("❌ EmailJS error:", err));
+
+  // ✅ Store order
+  let orders = JSON.parse(localStorage.getItem('orders')) || [];
+  orders.push(order);
+  localStorage.setItem('orders', JSON.stringify(orders));
+  localStorage.setItem('lastOrderId', orderId); // ✅ Save last order ID
+  localStorage.removeItem('cart');
+  localStorage.removeItem('isBuyNow');
+
+  // ✅ Show success animation
+  document.querySelector('.container').style.display = 'none';
+  const successDiv = document.getElementById('successScreen');
+  successDiv.innerHTML += `<p style="font-size: 1.2rem; margin-top: 1rem;">Order ID: <strong>${orderId}</strong></p>`;
+  successDiv.style.display = 'flex';
+
+  // 🎉 Emojis
+  const emojis = ['🎉', '🎊', '✨', '💥', '🎈'];
+  for (let i = 0; i < 40; i++) {
+    const emoji = document.createElement('div');
+    emoji.className = 'emoji';
+    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = `${Math.random() * 100}vw`;
+    emoji.style.top = `-${Math.random() * 20}vh`;
+    emoji.style.animation = `fall ${3 + Math.random() * 2}s linear forwards`;
+    document.body.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 4000);
+  }
+
+  // ✅ Redirect to home after 4s
+  setTimeout(() => window.location.href = 'index.html', 4000);
+}
+
     
     
     let countdownTime = 300, timerStarted = false;
@@ -559,6 +562,7 @@ if (performance.navigation.type === 1) {
     
 
     calculateTotalAmount();
+    
 
 
   </script>

@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <!-- Make sure SweetAlert2 is added for Swal to work -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Authentication</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-  
-    * {
-      box-sizing: border-box;
-    }
-  
+
+    * { box-sizing: border-box; }
+
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #74ebd5, #9face6);
@@ -21,7 +23,7 @@
       align-items: center;
       min-height: 100vh;
     }
-  
+
     .card {
       background: white;
       padding: 2.5rem 2rem;
@@ -32,60 +34,80 @@
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-  
+
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
     }
 
-    
     .close-icon {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 22px !important;  /* Increased from 18px */
-  font-family: Arial, sans-serif !important;
-  font-weight: bold !important;
-  line-height: 1 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: none !important;
-  color: #888 !important;
-  cursor: pointer !important;
-  width: auto !important;
-  height: auto !important;
-}
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px !important;
+      font-family: Arial, sans-serif !important;
+      font-weight: bold !important;
+      line-height: 1 !important;
+      padding: 0 !important;
+      border: none !important;
+      background: none !important;
+      color: #888 !important;
+      cursor: pointer !important;
+      width: auto !important;
+      height: auto !important;
+    }
 
-.close-icon:hover {
-  color: red !important;
-}
+    .close-icon:hover {
+      color: red !important;
+    }
 
-    
-    
-  
     .card h2 {
       text-align: center;
       color: #333;
       margin-bottom: 1.5rem;
       font-weight: 600;
     }
-  
-    .card input {
+
+    .input-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    input[type="password"],
+    input[type="text"],
+    input[type="email"],
+    input[type="number"] {
       width: 100%;
       padding: 0.8rem;
-      margin: 0.5rem 0;
+      padding-right: 40px;
+      margin: 0.3rem 0;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 1rem;
       transition: border-color 0.3s;
     }
-  
-    .card input:focus {
+
+    input:focus {
       border-color: #6c63ff;
       outline: none;
     }
-  
-    .card button {
+
+    .toggle-visibility {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      opacity: 0.6;
+    }
+
+    .toggle-visibility:hover {
+      opacity: 1;
+    }
+
+    button {
       width: 100%;
       padding: 0.9rem;
       background: linear-gradient(to right, #6c63ff, #846bff);
@@ -98,12 +120,12 @@
       margin-top: 1rem;
       transition: background 0.3s, transform 0.2s;
     }
-  
-    .card button:hover {
-      background: linear-gradient(to right, #5a55e3, #7463ff);
+
+    button:hover {
+      background: #5a55e3;
       transform: scale(1.02);
     }
-  
+
     .card a {
       display: block;
       text-align: center;
@@ -111,45 +133,144 @@
       color: #6c63ff;
       text-decoration: none;
       font-size: 0.95rem;
-      transition: color 0.3s;
     }
-  
+
     .card a:hover {
       color: #4a42d4;
     }
-  
+
     .hidden {
       display: none;
     }
-  
-    @media (max-width: 480px) {
-      .card {
-        padding: 2rem 1.2rem;
-      }
-  
-      .card input,
-      .card button {
-        font-size: 0.95rem;
-      }
+
+    .requirements {
+      font-size: 13px;
+      color: #888;
+      margin: 0.5rem 0 -0.2rem 0;
+      padding-left: 10px;
     }
+
+    .requirements li {
+      list-style: none;
+      margin-bottom: 5px;
+    }
+
+    .requirements li::before {
+      content: '❌ ';
+      color: red;
+    }
+
+    .requirements li.valid::before {
+      content: '✅ ';
+      color: green;
+    }
+
+    .match-message {
+      font-size: 13px;
+      color: red;
+      margin-top: -0.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .match-message.valid {
+      color: green;
+    }
+
+
+   /* Disable scroll while loading */
+html.loading,
+body.loading {
+  overflow: hidden;
+}
+
+/* Loader Overlay */
+#loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+
+/* Professional Logo Bounce */
+#loader-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  animation: bounce 1.4s ease-in-out infinite;
+}
+
+/* Subtle bounce */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.05);
+  }
+}
+
+
+
   </style>
-  
 </head>
 <body>
+<!-- LOADER START -->
+<div id="loader-overlay">
+  <img src="loader.png" alt="Loading..." id="loader-logo" />
+</div>
+<!-- LOADER END -->
 
+<!-- 🌟 NEW FLEX CONTAINER TO STACK CARD + GOOGLE BUTTON -->
+<div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+
+  <!-- CARD START -->
   <div class="card">
-    <!-- Clean close icon on top-right -->
     <button class="close-icon" onclick="window.location.href='index.html'">✕</button>
 
     <!-- Sign Up Section -->
     <div id="signupSection">
       <h2>Sign Up</h2>
-      <input type="text" id="signupName" placeholder="Full Name" required />
-      <input type="email" id="signupEmail" placeholder="Email" required />
-      <input type="password" id="signupPassword" placeholder="Password" required />
-      <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
+      <div class="input-container">
+        <input type="text" id="signupName" placeholder="Full Name" required />
+      </div>
+      <div class="input-container">
+        <input type="email" id="signupEmail" placeholder="Email" required />
+      </div>
+      <div class="input-container">
+        <input type="password" id="signupPassword" placeholder="Password" required />
+        <img src="hidden.png" class="toggle-visibility" id="toggleSignupPassword"
+             onclick="toggleVisibility('signupPassword', 'toggleSignupPassword')" />
+      </div>
+
+      <ul id="passwordRequirements" class="requirements hidden">
+        <li id="length">8–12 characters</li>
+        <li id="upper">At least one uppercase letter</li>
+        <li id="lower">At least one lowercase letter</li>
+        <li id="number">At least one number</li>
+        <li id="special">At least one special character</li>
+      </ul>
+
+      <div class="input-container">
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
+        <img src="hidden.png" class="toggle-visibility" id="toggleSignupConfirmPassword"
+             onclick="toggleVisibility('signupConfirmPassword', 'toggleSignupConfirmPassword')" />
+      </div>
+
+      <div id="confirmMessage" class="match-message hidden">Passwords do not match</div>
       <button onclick="signupUser()">Sign Up</button>
       <a onclick="showSection('signinSection')">Already have an account? Sign In</a>
+    </div>
+
+    <!-- OTP Section -->
+    <div id="otpSection" class="hidden">
+      <h2>Verify Email</h2>
+      <p>Enter the 6-digit OTP sent to your email</p>
+      <input type="text" id="otpInput" placeholder="Enter OTP" required />
+ <button id="verifyBtn" onclick="verifyOTP()">Verify & Register</button>
+
     </div>
 
     <!-- Sign In Section -->
@@ -158,98 +279,364 @@
       <input type="email" id="signinEmail" placeholder="Email" required />
       <input type="password" id="signinPassword" placeholder="Password" required />
       <button onclick="signinUser()">Sign In</button>
-      <a onclick="showSection('forgotSection')">Forgot Password?</a>
       <a onclick="showSection('signupSection')">Don't have an account? Sign Up</a>
     </div>
-
-    <!-- Forgot Password Section -->
-    <div id="forgotSection" class="hidden">
-      <h2>Reset Password</h2>
-      <input type="email" id="resetEmail" placeholder="Your registered email" required />
-      <input type="password" id="newPassword" placeholder="New password" required />
-      <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required />
-      <button onclick="resetPassword()">Reset Password</button>
-      <a onclick="showSection('signinSection')">Back to Sign In</a>
-    </div>
   </div>
+  <!-- CARD END -->
+
+  <!-- 🌟 GOOGLE SIGN-IN BUTTON -->
+<!-- GOOGLE SIGN-IN BUTTON -->
+<div style="display: flex; justify-content: center; margin-top: 0rem;">
+  <button onclick="signInWithGoogle()" style="
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  ">
+    <img src="google.svg" alt="Google logo" style="
+      width: 240px;
+      height: 50px;
+      display: block;
+    " />
+  </button>
+</div>
+
+
+
+</div> <!-- END OF FLEX CONTAINER -->
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+
+
+  <!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBi0nzU1HPutrUa63OFWR4vyFlOsNGGvJg",
+    authDomain: "mahaveerauth-d18cd.firebaseapp.com",
+    projectId: "mahaveerauth-d18cd",
+    storageBucket: "mahaveerauth-d18cd.firebasestorage.app",
+    messagingSenderId: "477338276474",
+    appId: "1:477338276474:web:509f61bdb45cd651a6e1c3",
+    measurementId: "G-K4X93YBJH0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+      console.log("Persistence set to LOCAL");
+    })
+    .catch((error) => {
+      console.error("Error setting persistence:", error);
+    });
+
+  // Expose Firebase objects to global window object
+  window.auth = auth;
+  window.db = db;
+  window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+  window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+  window.signInWithPopup = signInWithPopup;
+  window.GoogleAuthProvider = GoogleAuthProvider;
+  window.serverTimestamp = serverTimestamp;
+  window.setDoc = setDoc;
+  window.doc = doc;
+</script>
+
+
+
+<script>
+  (function () {
+    emailjs.init("yWquru6Fki6Lvx0je");
+  })();
+</script>
+
 
   <script>
+ 
+    let generatedOTP = "";
+    let userData = {};
+
     function showSection(id) {
       document.getElementById("signupSection").classList.add("hidden");
       document.getElementById("signinSection").classList.add("hidden");
-      document.getElementById("forgotSection").classList.add("hidden");
+      document.getElementById("otpSection").classList.add("hidden");
       document.getElementById(id).classList.remove("hidden");
     }
 
+    function toggleVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.src = "eye.png";
+      } else {
+        input.type = "password";
+        icon.src = "hidden.png";
+      }
+    }
+
+    function validatePassword(pwd) {
+      return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(pwd);
+    }
+
     function signupUser() {
-      const name = document.getElementById("signupName").value;
-      const email = document.getElementById("signupEmail").value;
-      const password = document.getElementById("signupPassword").value;
-      const confirmPassword = document.getElementById("signupConfirmPassword").value;
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      const confirmPassword = document.getElementById("signupConfirmPassword").value.trim();
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!/^[A-Za-z\s]+$/.test(name)) {
+        alert("Name should only contain letters and spaces.");
+        return;
+      }
+
+      if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        alert("Password does not meet requirements.");
+        return;
+      }
 
       if (password !== confirmPassword) {
         alert("Passwords do not match.");
         return;
       }
 
-      localStorage.setItem("user_name", name);
-      localStorage.setItem("user_email", email);
-      localStorage.setItem("user_pass", password);
+   generatedOTP = ("" + Math.floor(100000 + Math.random() * 900000));
 
-      alert("Sign-up successful! Please sign in.");
-      showSection("signinSection");
+      const expiryTime = new Date(Date.now() + 15 * 60000).toLocaleTimeString();
+
+      userData = { name, email, password };
+
+      emailjs.send("service_v1avwdt", "template_f6corjb", {
+        user_name: name,
+        passcode: generatedOTP,
+        time: expiryTime,
+        email: email
+      })
+      .then(() => {
+        alert("OTP sent to email.");
+        showSection("otpSection");
+      })
+      .catch(err => {
+        alert("Email failed. Check console.");
+        console.error("EMAILJS ERROR:", err);
+      });
+    }
+  // 🔐 OTP Verification and Firebase User Creation
+ async function verifyOTP() {
+  const otpInput = document.getElementById("otpInput");
+  const verifyButton = document.getElementById("verifyBtn"); // add id to your button
+  verifyButton.disabled = true;
+
+  try {
+    const enteredOTP = otpInput.value.trim();
+
+    if (enteredOTP !== generatedOTP) {
+      await Swal.fire({
+        icon: "error",
+        title: "Invalid OTP",
+        text: "Please enter the correct OTP sent to your email.",
+      });
+      window.location.href = "auth.html";
+      return;
     }
 
-    function signinUser() {
-      const email = document.getElementById("signinEmail").value;
-      const password = document.getElementById("signinPassword").value;
+    if (!userData || !userData.email || !userData.password || !userData.name) {
+      throw new Error("User data is missing. Please re-enter your details.");
+    }
 
-      const savedEmail = localStorage.getItem("user_email");
-      const savedPass = localStorage.getItem("user_pass");
+    const { email, password, name } = userData;
 
-      if (email === savedEmail && password === savedPass) {
+    // Create user in Firebase Auth
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+    // Save user data to Firestore
+    await setDoc(doc(db, "users", cred.user.uid), {
+      name,
+      email,
+      createdAt: serverTimestamp(),
+    });
+
+    // Show success popup and then redirect
+    await Swal.fire({
+      icon: "success",
+      title: "Registered Successfully!",
+      text: "Redirecting to homepage...",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
+    window.location.href = "index.html";
+
+  } catch (error) {
+    console.error("Error in verification:", error.message);
+    await Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: error.message,
+    });
+  } finally {
+    verifyButton.disabled = false;
+  }
+}
+
+
+   // 🔐 Firebase Email/Password Sign In
+  function signinUser() {
+    const email = document.getElementById("signinEmail").value;
+    const password = document.getElementById("signinPassword").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
         alert("Login successful!");
-        window.location.href = "index.html";
+        window.location.href = "index.html"; // ✅ change to your dashboard page
+      })
+      .catch(error => {
+        alert("Login failed: " + error.message);
+        console.error("Login error:", error);
+      });
+  }
+
+    // Block numbers in name field
+    document.getElementById("signupName").addEventListener("input", function () {
+      this.value = this.value.replace(/[0-9]/g, '');
+    });
+
+    // Live password validation
+    const passwordInput = document.getElementById("signupPassword");
+    const confirmInput = document.getElementById("signupConfirmPassword");
+    const confirmMsg = document.getElementById("confirmMessage");
+    const passwordReqs = document.getElementById("passwordRequirements");
+
+    passwordInput.addEventListener("input", function () {
+      const val = passwordInput.value;
+      passwordReqs.classList.remove("hidden");
+
+      document.getElementById("length").classList.toggle("valid", val.length >= 8 && val.length <= 12);
+      document.getElementById("upper").classList.toggle("valid", /[A-Z]/.test(val));
+      document.getElementById("lower").classList.toggle("valid", /[a-z]/.test(val));
+      document.getElementById("number").classList.toggle("valid", /\d/.test(val));
+      document.getElementById("special").classList.toggle("valid", /[@$!%*?&]/.test(val));
+
+      if (
+        val.length >= 8 &&
+        val.length <= 12 &&
+        /[A-Z]/.test(val) &&
+        /[a-z]/.test(val) &&
+        /\d/.test(val) &&
+        /[@$!%*?&]/.test(val)
+      ) {
+        passwordReqs.classList.add("hidden");
+      }
+    });
+
+    confirmInput.addEventListener("input", function () {
+      const val = confirmInput.value;
+      const original = passwordInput.value;
+
+      if (val === "") {
+        confirmMsg.classList.add("hidden");
+      } else if (val !== original) {
+        confirmMsg.textContent = "Passwords do not match";
+        confirmMsg.classList.remove("hidden");
+        confirmMsg.classList.remove("valid");
       } else {
-        alert("Invalid credentials or unregistered email. Please sign up.");
-        showSection("signupSection");
+        confirmMsg.textContent = "✅ Passwords match";
+        confirmMsg.classList.add("valid");
+        confirmMsg.classList.remove("hidden");
+        setTimeout(() => confirmMsg.classList.add("hidden"), 1500);
       }
-    }
+    });
 
-    function resetPassword() {
-      const email = document.getElementById("resetEmail").value;
-      const newPass = document.getElementById("newPassword").value;
-      const confirmPass = document.getElementById("confirmNewPassword").value;
+     // 🔐 Google Sign-In via Firebase
+  function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-      const savedEmail = localStorage.getItem("user_email");
+    auth.signInWithPopup(provider)
+      .then(result => {
+        const user = result.user;
+        if (result.additionalUserInfo.isNewUser) {
+          return db.collection("users").doc(user.uid).set({
+            name: user.displayName,
+            email: user.email,
+            createdAt: serverTimestamp()
 
-      if (email !== savedEmail) {
-        alert("This email is not registered. Please sign up.");
-        showSection("signupSection");
-        return;
-      }
-
-      if (newPass !== confirmPass) {
-        alert("Passwords do not match.");
-        return;
-      }
-
-      localStorage.setItem("user_pass", newPass);
-      alert("Password reset successful! Please sign in.");
-      showSection("signinSection");
-    }
-
-    window.onload = () => {
-      const view = localStorage.getItem('auth_view');
-      if (view === 'signin') showSection('signinSection');
-      else if (view === 'forgot') showSection('forgotSection');
-      else showSection('signupSection');
-      localStorage.removeItem('auth_view');
-    }
+          });
+        }
+      })
+      .then(() => {
+        window.location.href = "index.html"; // ✅ change to your dashboard page
+      })
+      .catch(error => {
+        alert("Google Sign-In failed: " + error.message);
+        console.error("Google error:", error);
+      });
+  }
 
 
-    
-  </script>
+    // Wait for full content load
+  window.addEventListener("load", function () {
+    const loader = document.getElementById("loader-overlay");
+
+    setTimeout(() => {
+      loader.style.transition = "opacity 0.6s ease";
+      loader.style.opacity = "0";
+
+      setTimeout(() => {
+        loader.style.display = "none";
+        document.documentElement.classList.remove("loading");
+        document.body.classList.remove("loading");
+      }, 600);
+    }, 500); // Delay to allow bounce to run
+  });
+
+
+  function sendOTP(userEmail, userName, otp) {
+  const expiryTime = new Date(Date.now() + 5 * 60000).toLocaleTimeString(); // 5 mins from now
+
+  emailjs.send("service_v1avwdt", "template_f6corjb", {
+    user_name: userName,
+    email: userEmail,
+    passcode: otp,
+    time: expiryTime
+  })
+  .then(function(response) {
+    console.log("✅ OTP sent successfully:", response.status);
+    alert("OTP has been sent to your email.");
+  }, function(error) {
+    console.error("❌ Failed to send OTP:", error);
+    alert("Failed to send OTP. Please try again.");
+  });
+}
+
+
   
+  </script>
+
+  
+
+
+
+
+
+<script>
+  (function () {
+    emailjs.init("yWquru6Fki6Lvx0je"); // Your public key
+  })();
+</script>
+
 </body>
 </html>

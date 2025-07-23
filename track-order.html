@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Track Order</title>
@@ -263,16 +266,306 @@
     .timeline-scroll::-webkit-scrollbar-track {
       background: #eee;
     }
+
+
+    header {
+      background: #074c63;
+      color: white;
+      padding: 1.2rem;
+      text-align: center;
+      font-size: 1.6rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    .back-btn {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      font-size: 2rem;
+      cursor: pointer;
+      color: white;
+    }
+    .container {
+      max-width: 900px;
+      margin: 100px auto 2rem;
+      padding: 1rem;
+    }
+    .search-box {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+    }
+    .search-box button {
+      background: #074c63;
+      color: white;
+      border: none;
+      padding: 0 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0 6px 6px 0;
+    }
+    .order-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .order-id {
+      font-weight: bold;
+      color: #074c63;
+    }
+    .order-items {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .order-items img {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+    .order-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .order-actions button {
+      background: #074c63;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .order-actions .cancel-btn {
+      background: crimson;
+    }
+    .no-orders {
+      text-align: center;
+      color: #555;
+      font-size: 1.3rem;
+      margin-top: 3rem;
+    }
+    
+
+    .status-step .circle {
+  width: 32px;
+  height: 32px;
+  background: #ccc;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  line-height: 32px;
+  font-size: 18px;
+  color: white;
+}
+
+
+.action-btn-wrapper button {
+  background: #074c63;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.action-btn-wrapper .cancel-btn {
+  background: crimson;
+}
+
+ .progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+  }
+
+  .progress-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    color: #999;
+  }
+
+  .progress-step::before {
+    content: "";
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 12px;
+    width: 12px;
+    background-color: #ccc;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .progress-step::after {
+    content: "";
+    position: absolute;
+    top: 17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: #ccc;
+    z-index: 0;
+  }
+
+  .progress-step:last-child::after {
+    display: none;
+  }
+
+  .progress-step.active {
+    color: #007bff;
+  }
+
+  .progress-step.active::before {
+    background-color: #007bff;
+  }
+
+  .progress-step.active::after {
+    background-color: #007bff;
+  }
+
+
+
+  .tracking-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.step {
+  text-align: center;
+  flex: 1;
+  position: relative;
+}
+
+.step::before {
+  content: '';
+  height: 5px;
+  background-color: #ddd;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  right: -50%;
+  z-index: -1;
+}
+
+.step:first-child::before {
+  left: 50%;
+}
+
+.step.completed::before {
+  background-color: #4CAF50;
+}
+
+.step-indicator {
+  width: 25px;
+  height: 25px;
+  margin: 0 auto 5px;
+  border-radius: 50%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+}
+
+.step.completed .step-indicator {
+  background-color: #4CAF50;
+}
+
+
+
     
   </style>
 </head>
 <body>
   <header>
+    
     <span class="back-btn" onclick="window.location.href='index.html'">&#8592;</span>
     📦 Track Order
   </header>
-  <div class="container" id="orderContainer"></div>
+
+   <div class="container">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Enter Order ID..." />
+      <button onclick="searchOrder()">Search</button>
+    </div>
+ <div id="ordersContainer"></div>
+<div id="orderDetailsContainer"></div> <!-- ✅ Add this -->
+
+<Detailed view when clicking "Show Details" -->
+
+  </div>
   <script>
+
+
+    // 💾 Seed some mock data for testing (only runs once)
+if (!localStorage.getItem("orders")) {
+  const testOrders = [{
+    id: "ORDER123",
+    email: "guest@example.com",
+    date: new Date().toISOString(),
+    estimatedDelivery: "2025-07-15",
+    paymentMode: "COD",
+    cancelled: false,
+    items: [
+      {
+        name: "Wireless Mouse",
+        price: 799,
+        image: "https://via.placeholder.com/60x60?text=Mouse"
+      },
+      {
+        name: "Keyboard",
+        price: 1299,
+        image: "https://via.placeholder.com/60x60?text=Keyboard"
+      }
+    ]
+  }];
+
+  localStorage.setItem("orders", JSON.stringify(testOrders));
+
+  const checkoutDetails = {
+    email: "guest@example.com",
+    name: "Sumith Singh",
+    currentAddress: "123, Example Street",
+    city: "Bangalore",
+    state: "KA",
+    pincode: "560001",
+    phone: "9739170288"
+  };
+
+  localStorage.setItem("checkoutDetails", JSON.stringify(checkoutDetails));
+}
+
     function getStatusSteps(dateStr) {
       const orderDate = new Date(dateStr);
       const today = new Date();
@@ -286,117 +579,212 @@
         </div>
       `).join('');
     }
+    
+document.getElementById("searchInput")?.addEventListener("keyup", function (e) {
+  if (e.key === "Enter") searchOrder();
+});
 
-    function renderTrackOrder() {
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const checkout = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
-      const email = checkout.email || "guest@example.com";
-      const userOrders = orders.filter(o => o.email === email && !o.cancelled);
-    
-      if (userOrders.length === 0) {
-        document.getElementById("orderContainer").innerHTML = `<div class='no-orders'>🚫 No current orders to track</div>`;
-        return;
-      }
-    
-      const trackOrderId = localStorage.getItem("trackOrderId");
-const latestOrder = userOrders.find(o => o.id === trackOrderId) || userOrders[0];
 
-      const orderDate = new Date(latestOrder.date);
-    
-      const paymentTag = latestOrder.paymentMode === 'COD'
-        ? `<span style="color:red;font-weight:600"> - COD</span>`
-        : `<span style="color:blue;font-weight:600"> - UPI</span>`;
-    
-      const content = `
-        <div style="text-align:center; font-weight:600; font-size:1.05rem; margin-bottom:2.5rem;">
-          ${latestOrder.email}
+function searchOrder() {
+  const searchId = document.getElementById("searchInput").value.trim();
+  if (!searchId) return;
+
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+ const order = orders.find(o => o.id.toLowerCase().includes(searchId.toLowerCase()));
+
+  if (order) {
+    showOrderDetails(order.id);
+  } else {
+    alert("❌ No matching order found.");
+  }
+}
+
+
+
+function renderAllOrders() {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const checkout = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
+  const email = checkout.email || "guest@example.com";
+
+  const activeOrders = orders
+    .filter(order => order.email === email && !order.cancelled)
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // Descending by date
+
+  const container = document.getElementById("ordersContainer");
+  container.innerHTML = "";
+
+  if (activeOrders.length === 0) {
+    container.innerHTML = `<div class='no-orders'>🚫 No current active orders found</div>`;
+    return;
+  }
+
+  activeOrders.forEach(order => {
+    const orderCard = document.createElement("div");
+    orderCard.className = "order-card";
+    orderCard.setAttribute("data-id", order.id || order.orderId);
+
+    const orderDate = new Date(order.date);
+
+    const itemsHTML = order.items.map(item => `
+      <div style="text-align:center;">
+        <img src="${item.image}" alt="${item.name}" />
+        <div>${item.name}</div>
+      </div>
+    `).join("");
+
+    const itemDetails = order.items.map(item => `
+      <div class="item" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
+        <img src="${item.image}" width="50" height="50" style="border-radius: 8px;"> 
+        <span>${item.name} — ₹${item.price}</span>
+      </div>
+    `).join("");
+
+    const paymentTag = order.paymentMode === 'COD'
+      ? `<span style="color:red;font-weight:600"> - COD</span>`
+      : `<span style="color:blue;font-weight:600"> - UPI</span>`;
+
+    orderCard.innerHTML = `
+      <div class="order-header">
+        <div>
+          <div class="order-id">Order ID: ${order.id || order.orderId || 'N/A'}</div>
+          <div>Ordered on: ${orderDate.toDateString()}</div>
+          <div>Payment: ${order.paymentMode}</div>
         </div>
-    
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; margin-bottom:2.5rem;">
-          <div><strong>Ordered on</strong><br>${orderDate.toDateString()}</div>
-          <div style="text-align:right!;"><strong>Estimated delivery</strong><br>by ${latestOrder.estimatedDelivery} ${paymentTag}</div>
+        <div style="text-align:right;">
+          <div><strong>Estimated Delivery:</strong></div>
+          <div>${order.estimatedDelivery}</div>
         </div>
-    
-        <!-- ✅ Progress Timeline Card -->
-     <!-- ✅ Progress Timeline Card -->
-<div style="background:#f1f1f1; border-radius:12px; padding:1rem 1.2rem; margin-bottom:2rem;">
-  <div class="timeline-scroll">
-    <div class="timeline-wrapper">
-      <div class="progress-line"></div>
-      <div class="progress-fill" id="progressFill"></div>
-      <!-- Circles and labels will be injected here -->
-    </div>
-  </div>
-</div>
+      </div>
 
-    
-        <div class="summary" style="text-align:left;">
-          <h3 style="margin-bottom:1.5rem;">Summary ${paymentTag}</h3>
-          <div style="margin-bottom: 2rem;">
-            ${latestOrder.items.map(item => `
-              <div class="item" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
-                <img src="${item.image}" width="50" height="50" style="border-radius: 8px;"> 
-                <span>${item.name} — ₹${item.price}</span>
+      <div class="order-items">${itemsHTML}</div>
+
+      <div style="margin-top: 1rem; font-weight: bold;">
+        Total Quantity: ${order.items.length} <br>
+        Total Amount: ₹${order.items.reduce((sum, item) => sum + item.price, 0)}
+      </div>
+
+      <div class="order-actions">
+        <button onclick="toggleDetails(this)">Show Details</button>
+        ${order.cancelled
+          ? `<span style="color:crimson;font-weight:bold;">❌ Order Cancelled</span>`
+          : `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">❌ Cancel Order</button>`}
+      </div>
+
+      <div class="tracking-details" style="display:none; margin-top:1.5rem;">
+        <div style="background:#f9f9f9; padding:1rem; border-radius:10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div><strong>Estimated Delivery:</strong> ${order.estimatedDelivery} ${paymentTag}</div>
+          <div><strong>Items:</strong></div>
+          ${itemDetails}
+
+          <!-- ✅ Tracking Status Card -->
+          <div class="status-card" style="margin-top:1.5rem; background:#ffffff; padding:1rem; border-radius:10px; box-shadow: 0 1px 6px rgba(0,0,0,0.08);">
+            <div style="font-weight:bold; margin-bottom:1rem; font-size:1.1rem; color:#074c63;">📦 Order Tracking Progress</div>
+            <div class="timeline-scroll">
+              <div class="timeline-wrapper">
+                <div class="progress-line"></div>
+                <div class="progress-fill" id="progressFill-${order.id}"></div>
               </div>
-            `).join('')}
+            </div>
           </div>
-    
-          <div class="action-btn-wrapper" style="margin-top:2rem;">
+
+          <div class="action-btn-wrapper" style="margin-top: 1.5rem;">
             <button class="print-btn" onclick="printSummary()">🖨 Print Summary</button>
-            <button class="print-btn cancel-btn" onclick="cancelLatestOrder()">❌ Cancel Order</button>
+            ${order.cancelled
+              ? `<span style="color:crimson;font-weight:bold;">❌ Order Cancelled</span>`
+              : `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">❌ Cancel Order</button>`}
           </div>
         </div>
-      `;
+      </div>
+    `;
+
+    container.appendChild(orderCard);
+  });
+}
+
     
-      document.getElementById("orderContainer").innerHTML = content;
-      createProgressTimeline(latestOrder.date);
+  
+function createProgressTimeline(orderDateStr, fillId = "progressFill") {
+  const steps = ["✔", "📦", "🚚", "📍", "✅"];
+  const labels = ["Order Placed", "Packed", "Shipped", "Out for Delivery", "Delivered"];
+  const total = steps.length;
+  const orderDate = new Date(orderDateStr);
+  const today = new Date();
+  const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
+
+  const progress = document.getElementById(fillId);
+  if (!progress) return;
+
+  const container = progress.closest(".timeline-wrapper");
+  if (!container) return;
+
+  // Remove old steps if re-rendered
+  container.querySelectorAll(".timeline-step, .timeline-label, .current-label").forEach(el => el.remove());
+
+  const gapPercent = 100 / (total - 1);
+
+  steps.forEach((icon, i) => {
+    const leftPercent = i * gapPercent;
+
+    const circle = document.createElement("div");
+    circle.className = "timeline-step" + (diffDays >= i ? " active" : "");
+    circle.style.left = `calc(${leftPercent}% - 16px)`;
+    circle.innerHTML = icon;
+    container.appendChild(circle);
+
+    const label = document.createElement("div");
+    label.className = "timeline-label";
+    label.style.left = `${leftPercent}%`;
+    label.innerText = labels[i];
+    container.appendChild(label);
+
+    if (diffDays === i) {
+      const current = document.createElement("div");
+      current.className = "current-label";
+      current.innerText = "Current";
+      circle.appendChild(current);
     }
-    
-  
-    function createProgressTimeline(orderDateStr) {
-      const steps = ["✔", "📦", "🚚", "📍", "✅"];
-      const labels = ["Order Placed", "Packed", "Shipped", "Out for Delivery", "Delivered"];
-      const total = steps.length;
-      const orderDate = new Date(orderDateStr);
-      const today = new Date();
-      const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
-      const container = document.querySelector(".timeline-wrapper");
-      const gapPercent = 100 / (total - 1);
-  
-      // Add circles and labels
-      steps.forEach((icon, i) => {
-        const leftPercent = i * gapPercent;
-      
-        const circle = document.createElement("div");
-        circle.className = "timeline-step" + (diffDays >= i ? " active" : "");
-        circle.style.left = `calc(${leftPercent}% - 16px)`;
-        circle.innerHTML = icon;
-        container.appendChild(circle);
-      
-        // Label below icon
-        const label = document.createElement("div");
-        label.className = "timeline-label";
-        label.style.left = `${leftPercent}%`;
-        label.innerText = labels[i];
-        container.appendChild(label);
-      
-        // Add "Current" above the current step
-        if (diffDays === i) {
-          const current = document.createElement("div");
-          current.className = "current-label";
-          current.innerText = "Current";
-          circle.appendChild(current); // Append to icon
-        }
-      });
-      
-  
-      // Fill line
-      const progress = document.getElementById("progressFill");
-      const fillPercent = Math.min((diffDays / (total - 1)) * 100, 100);
-      progress.style.width = `${fillPercent}%`;
+  });
+
+  const fillPercent = Math.min((diffDays / (total - 1)) * 100, 100);
+  progress.style.width = `${fillPercent}%`;
+}
+
+
+function toggleDetails(button) {
+  const trackingDetails = button.parentElement.nextElementSibling;
+
+  if (trackingDetails.style.display === "none") {
+    trackingDetails.style.display = "block";
+    button.textContent = "Hide Details";
+
+    const orderCard = button.closest(".order-card");
+    const orderId = orderCard.getAttribute("data-id");
+
+    // 🧠 Avoid duplicate initialization
+    const alreadyInitialized = orderCard.getAttribute("data-timeline-init");
+    if (!alreadyInitialized) {
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const thisOrder = orders.find(o => o.id === orderId);
+      if (thisOrder) {
+        createProgressTimeline(thisOrder.date, `progressFill-${orderId}`);
+        orderCard.setAttribute("data-timeline-init", "true");
+      }
     }
+
+  } else {
+    trackingDetails.style.display = "none";
+    button.textContent = "Show Details";
+  }
+
   
-    renderTrackOrder();
+}
+
+
+
+  
+  
+
+
 
 
     function cancelLatestOrder() {
@@ -418,205 +806,283 @@ const latestOrder = userOrders.find(o => o.id === trackOrderId) || userOrders[0]
       }
     }
 
+async function printSummary(orderID = localStorage.getItem("lastOrderId")) {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const addressData = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
+ const latestOrder = orders.find(o => o.id === orderID || o.orderId === orderID);
 
 
-    async function printSummary() {
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const addressData = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
-      const latestOrder = orders.slice(-1)[0];
+  if (!latestOrder) {
+    alert("❌ Order not found.");
+    return;
+  }
+
+  const companyName = "MAHAVEER ENTERPRISES";
+  const gstin = "29GHUPS1629Q1ZZ";
+
+  const customerName = addressData.name || "Customer Name not found";
+  const email = latestOrder.email || "guest@example.com";
+  const paymentMode = latestOrder.paymentMode || "N/A";
+ const orderId = latestOrder.orderId || "N/A"; // ✅ Correct assignment
+
+
+  let address = "";
+  if (addressData.deliveryAddress) {
+    address = addressData.deliveryAddress;
+  } else {
+    address = `
+      ${addressData.name || "Name not found"}<br>
+      ${addressData.currentAddress || "Address not found"}<br>
+      ${addressData.city || ""} ${addressData.state || ""} ${addressData.pincode || ""}<br>
+      ${addressData.phone || ""}
+    `.trim();
+  }
+
+  const orderDate = new Date(latestOrder.date);
+  const today = new Date();
+  const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
+
+  const steps = [
+    { name: "Order Placed", icon: "✔" },
+    { name: "Packed", icon: "📦" },
+    { name: "Shipped", icon: "🚚" },
+    { name: "Out for Delivery", icon: "📍" },
+    { name: "Delivered", icon: "✅" }
+  ];
+
+  const statusHTML = steps.map((step, i) => {
+    return `<li>${diffDays >= i ? '✅' : '⬜'} ${step.name}</li>`;
+  }).join('');
+
+  const itemsHTML = latestOrder.items.map((item, index) => {
+    const pageBreak = index > 0 && index % 10 === 0 ? '<div class="page-break"></div>' : '';
+    return `
+      ${pageBreak}
+      <li class="item">
+        <img src="${item.image || 'https://via.placeholder.com/50'}" />
+        ${item.name} — ₹${item.price}
+      </li>
+    `;
+  }).join('');
+
+  const choice = confirm("Click OK to Print, or Cancel to Download PDF");
+
+  if (choice) {
+    const w = window.open();
+    w.document.write(`
+      <html>
+        <head>
+          <title>Order Summary</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 30px;
+              font-size: 14px;
+              color: #333;
+            }
+            .header {
+              border-bottom: 2px solid #000;
+              padding-bottom: 10px;
+              margin-bottom: 20px;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .header .title {
+              flex-grow: 1;
+              text-align: center;
+              font-size: 16px;
+              color: #074c63;
+              font-weight: bold;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            }
+            .gstin {
+              font-size: 10px;
+              color: #444;
+              white-space: nowrap;
+            }
+            .section-title {
+              text-align: center;
+              font-size: 14px;
+              font-weight: bold;
+              text-decoration: underline;
+              margin-bottom: 20px;
+            }
+            .section { margin-bottom: 25px; }
+            ul { padding-left: 20px; }
+            .item { margin-bottom: 12px; }
+            img {
+              width: 50px;
+              height: 50px;
+              object-fit: cover;
+              vertical-align: middle;
+              margin-right: 10px;
+              border-radius: 8px;
+            }
+            .label { font-weight: bold; color: #333; }
+            .footer {
+              position: fixed;
+              bottom: 20px;
+              left: 30px;
+              font-size: 10px;
+              color: #555;
+            }
+            .page-break {
+              page-break-before: always;
+              margin-top: 60px;
+            }
+            @media print {
+              @page { margin: 0; }
+              body { margin: 0.8in; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <div class="gstin">GSTIN: ${gstin}</div>
+            <div class="title">${companyName}</div>
+            <div style="width: 60px;"></div>
+          </div>
+
+          <div class="section-title">Track Order - Summary</div>
+          <div class="section"><span class="label">Customer Name:</span> ${customerName}</div>
+          <div class="section"><span class="label">Customer Email:</span> ${email}</div>
+          <div class="section"><span class="label">Order ID:</span> #${orderId}</div>
+          <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
+          <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
+          <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
+          <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
+
+          <hr>
+
+          <div class="section">
+            <span class="label">Order Status:</span>
+            <ul>${statusHTML}</ul>
+          </div>
+
+          <hr>
+
+          <div class="section">
+            <span class="label">Items Ordered:</span>
+            <ul>${itemsHTML}</ul>
+          </div>
+
+          <div class="footer">GSTIN: ${gstin}</div>
+        </body>
+      </html>
+    `);
+    w.document.close();
+    setTimeout(() => w.print(), 1000);
+  } else {
+    // jsPDF fallback
+    alert("❌ PDF download is not available unless jsPDF is included.");
+  }
+}
+
+
     
-      const companyName = "MAHAVEER ENTERPRISES";
-      const gstin = "29GHUPS1629Q1ZZ";
-      const customerName = addressData.name || "Customer Name not found";
-      const email = latestOrder?.email || "guest@example.com";
-      const paymentMode = latestOrder?.paymentMode || "N/A";
     
-      let address = "";
-      if (addressData.deliveryAddress) {
-        address = addressData.deliveryAddress;
-      } else {
-        address = `
-          ${addressData.name || "Name not found"}<br>
-          ${addressData.currentAddress || "Address not found"}<br>
-          ${addressData.city || ""} ${addressData.state || ""} ${addressData.pincode || ""}<br>
-          ${addressData.phone || ""}
-        `.trim();
-      }
-    
-      const orderDate = new Date(latestOrder.date);
-      const today = new Date();
-      const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
-    
-      const steps = [
-        { name: "Order Placed", icon: "✔" },
-        { name: "Packed", icon: "📦" },
-        { name: "Shipped", icon: "🚚" },
-        { name: "Out for Delivery", icon: "📍" },
-        { name: "Delivered", icon: "✅" }
-      ];
-    
-      const statusHTML = steps.map((step, i) => {
-        return `<li>${diffDays >= i ? '✅' : '⬜'} ${step.name}</li>`;
-      }).join('');
-    
-      const itemsHTML = latestOrder.items.map((item, index) => {
-        const pageBreak = index > 0 && index % 10 === 0 ? '<div class="page-break"></div>' : '';
-        return `
-          ${pageBreak}
-          <li class="item">
-            <img src="${item.image || 'https://via.placeholder.com/50'}" />
-            ${item.name} — ₹${item.price}
-          </li>
-        `;
-      }).join('');
-    
-      const choice = confirm("Click OK to Print, or Cancel to Download PDF");
-    
-      if (choice) {
-        const w = window.open();
-        w.document.write(`
-          <html>
-            <head>
-              <title>Order Summary</title>
-              <style>
-                body {
-                  font-family: Arial, sans-serif;
-                  padding: 30px;
-                  font-size: 14px;
-                  color: #333;
-                }
-                .header {
-                  border-bottom: 2px solid #000;
-                  padding-bottom: 10px;
-                  margin-bottom: 20px;
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                }
-                .header .title {
-                  flex-grow: 1;
-                  text-align: center;
-                  font-size: 16px;
-                  color: #074c63;
-                  font-weight: bold;
-                  text-transform: uppercase;
-                  letter-spacing: 1px;
-                }
-                .gstin {
-                  font-size: 10px;
-                  color: #444;
-                  white-space: nowrap;
-                }
-                .section-title {
-                  text-align: center;
-                  font-size: 14px;
-                  font-weight: bold;
-                  text-decoration: underline;
-                  margin-bottom: 20px;
-                }
-                .section { margin-bottom: 25px; }
-                ul { padding-left: 20px; }
-                .item { margin-bottom: 12px; }
-                img {
-                  width: 50px;
-                  height: 50px;
-                  object-fit: cover;
-                  vertical-align: middle;
-                  margin-right: 10px;
-                  border-radius: 8px;
-                }
-                .label { font-weight: bold; color: #333; }
-                .footer {
-                  position: fixed;
-                  bottom: 20px;
-                  left: 30px;
-                  font-size: 10px;
-                  color: #555;
-                }
-                .page-break {
-                  page-break-before: always;
-                  margin-top: 60px;
-                }
-                @media print {
-                  @page { margin: 0; }
-                  body { margin: 0.8in; }
-                }
-              </style>
-            </head>
-            <body>
-              <div class="header">
-                <div class="gstin">GSTIN: ${gstin}</div>
-                <div class="title">${companyName}</div>
-                <div style="width: 60px;"></div>
-              </div>
-    
-              <div class="section-title">Track Order - Summary</div>
-              <div class="section"><span class="label">Customer Name:</span> ${customerName}</div>
-              <div class="section"><span class="label">Customer Email:</span> ${email}</div>
-              <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
-              <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
-              <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
-              <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
-    
-              <hr>
-    
-              <div class="section">
-                <span class="label">Order Status:</span>
-                <ul>${statusHTML}</ul>
-              </div>
-    
-              <hr>
-    
-              <div class="section">
-                <span class="label">Items Ordered:</span>
-                <ul>${itemsHTML}</ul>
-              </div>
-    
-              <div class="footer">GSTIN: ${gstin}</div>
-            </body>
-          </html>
-        `);
-        w.document.close();
-        setTimeout(() => w.print(), 1000);
-      } else {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        let y = 10;
-    
-        doc.setFontSize(16);
-        doc.text(companyName, 105, y, null, null, 'center'); y += 6;
-        doc.setFontSize(10);
-        doc.text(`GSTIN: ${gstin}`, 180, 10, null, null, 'right'); y += 6;
-    
-        doc.setFontSize(14);
-        doc.text("Track Order - Summary", 105, y, null, null, 'center'); y += 10;
-    
-        doc.setFontSize(12);
-        doc.text(`Customer Name: ${customerName}`, 10, y); y += 8;
-        doc.text(`Customer Email: ${email}`, 10, y); y += 8;
-        doc.text(`Delivery Address: ${address.replace(/<br>/g, ', ')}`, 10, y); y += 8;
-        doc.text(`Ordered on: ${orderDate.toDateString()}`, 10, y); y += 8;
-        doc.text(`Estimated delivery: ${latestOrder.estimatedDelivery}`, 10, y); y += 8;
-        doc.text(`Payment Mode: ${paymentMode}`, 10, y); y += 12;
-    
-        doc.text("Order Status:", 10, y); y += 8;
-        steps.forEach((step, i) => {
-          doc.text(`${diffDays >= i ? '✅' : '⬜'} ${step.name}`, 12, y); y += 8;
-        });
-    
-        y += 5;
-        doc.text("Items:", 10, y); y += 8;
-        latestOrder.items.forEach(item => {
-          doc.text(`- ${item.name} — ₹${item.price}`, 12, y); y += 8;
-        });
-    
-        doc.setFontSize(10);
-        doc.text(`GSTIN: ${gstin}`, 10, 285);
-        doc.save("Order_Summary.pdf");
-      }
+
+let lastShownOrderId = null;
+
+function showOrderDetails(orderId) {
+  const container = document.getElementById("orderDetailsContainer");
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const order = orders.find(o => o.id === orderId || o.orderId === orderId);
+
+
+
+  if (!order) return;
+
+  if (lastShownOrderId === orderId) {
+    container.innerHTML = "";
+    lastShownOrderId = null;
+    return;
+  }
+
+  lastShownOrderId = orderId;
+
+  const orderDate = new Date(order.date);
+  const paymentTag = order.paymentMode === 'COD'
+    ? `<span style="color:red;font-weight:600"> - COD</span>`
+    : `<span style="color:blue;font-weight:600"> - UPI</span>`;
+
+  const itemHTML = order.items.map(item => `
+    <div class="item" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
+      <img src="${item.image}" width="50" height="50" style="border-radius: 8px;"> 
+      <span>${item.name} — ₹${item.price}</span>
+    </div>
+  `).join('');
+
+  const summaryHTML = `
+    <div class="container" style="background:white;">
+      <h3>📦 Order Details</h3>
+      <div><strong>Order ID:</strong> ${order.id}</div>
+      <div><strong>Ordered on:</strong> ${orderDate.toDateString()}</div>
+      <div><strong>Estimated Delivery:</strong> ${order.estimatedDelivery} ${paymentTag}</div>
+      <div><strong>Items:</strong></div>
+      ${itemHTML}
+
+
+      <div style="margin: 1rem 0; font-weight: bold;">
+  Total Quantity: ${order.items.length} <br>
+  Total Amount: ₹${order.items.reduce((sum, item) => sum + item.price, 0)}
+</div>
+
+      <div class="timeline-scroll">
+        <div class="timeline-wrapper">
+          <div class="progress-line"></div>
+          <div class="progress-fill" id="progressFill-${order.id}"></div>
+
+        </div>
+      </div>
+
+      <div class="action-btn-wrapper">
+       <button class="print-btn" onclick="printSummary('${order.id}')">🖨 Print Summary</button>
+
+        <button class="cancel-btn" onclick="cancelOrder('${order.id}')">❌ Cancel Order</button>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = summaryHTML;
+ createProgressTimeline(order.date, `progressFill-${order.id}`);
+
+}
+
+
+
+  // Cancel order logic
+<!-- ✅ Copy-paste entire code from your original file as is. -->
+<!-- 🟢 No changes in CSS section needed if already added. -->
+<!-- 🔻 Below are changes only to be made inside JavaScript <script> block -->
+
+<!-- ✅ Replace this section inside your existing script: -->
+
+function cancelOrder(orderId) {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const index = orders.findIndex(o => o.id === orderId || o.orderId === orderId);
+  if (index !== -1) {
+    if (confirm("Are you sure you want to cancel this order?")) {
+      orders[index].cancelled = true;
+      localStorage.setItem("orders", JSON.stringify(orders));
+      alert("✅ Your order has been cancelled.");
+      renderAllOrders();
     }
-    
-    
+  }
+}
+
+
+
+
+
+
+  // Auto-run
+  window.onload = () => {
+   renderAllOrders();
+
+  };
     
   </script>
 </body>
