@@ -3,573 +3,808 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Profile</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>My Profile | Mahaveer Enterprises</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f4f6f8;
-      color: #333;
+    :root {
+      --primary: #1976d2;
+      --primary-dark: #0d47a1;
+      --primary-light: #e3f2fd;
+      --text: #333333;
+      --text-light: #666666;
+      --border: #e0e0e0;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --success: #28a745;
+      --danger: #dc3545;
+      --radius: 12px;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
-
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header */
     .header {
-      background: linear-gradient(to right, #1976d2, #0d47a1);
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
       color: white;
       padding: 1rem 1.5rem;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       position: sticky;
       top: 0;
-      z-index: 999;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      box-shadow: var(--shadow);
     }
-
-    .header-left button {
+    
+    .back-btn {
       background-color: white;
-      color: #1976d2;
+      color: var(--primary);
       border: none;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 16px;
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      font-size: 1rem;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
-
-    .header-left button:hover {
-      background-color: #e3f2fd;
-      transform: scale(1.05);
+    
+    .back-btn:hover {
+      background-color: var(--primary-light);
     }
-
-    .menu-right {
+    
+    .header-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+    
+    .header-actions {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
-
-    .search-wrapper {
-      position: relative;
-    }
-
-    .search-icon {
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .cart-icon{
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    .search-icon:hover {
-      transform: scale(1.2);
-    }
-    .search-wrapper {
-      position: relative;
-    }
     
-    .search-container {
-      position: absolute;
-      top:-10px;
-      right: 0;
-      width: 300px;
-      background: #fff;
-      padding: 12px 12px 10px;
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      display: none;
-      z-index: 999;
-    }
-    
-    .search-container input {
-      width: calc(100% - 28px); /* Leaves room for the close button */
-      padding: 8px 10px;
-      border-radius: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      outline: none;
-      box-sizing: border-box;
-      transition: border 0.2s ease;
-    }
-    
-    
-    .search-container input:focus {
-      border-color: #1976d2;
-    }
-    
-    .search-container .close-btn {
-      position: absolute;
-      top: 08px;
-      right: 0px;
-      background: none;
-      border: none;
-      font-size: 28px;
-      color: #888;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-    
-    .search-container .close-btn:hover {
-      transform: scale(1.2);
-    }
-    
-
-    .cart-icon:hover {
-      transform: scale(1.3);
-      color: #ffc107;
-    }
-    
-    
-
-    .cart-icon {
-      font-size: 25px;
+    .action-icon {
+      font-size: 1.4rem;
       color: white;
+      cursor: pointer;
+      transition: transform 0.2s ease;
       position: relative;
       background: none;
       border: none;
-      cursor: pointer;
+      padding: 0;
     }
-
+    
+    .action-icon:hover {
+      transform: scale(1.1);
+    }
+    
     .cart-badge {
       position: absolute;
-      top: -8px;
-      right: -10px;
-      background-color: #ff5252;
+      top: -5px;
+      right: -8px;
+      background-color: var(--danger);
       color: white;
-      font-size: 12px;
+      font-size: 0.7rem;
       padding: 2px 6px;
       border-radius: 50%;
       font-weight: bold;
     }
-
-    .profile-section {
+    
+    /* Profile Section */
+    .profile-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
+    
+    .profile-card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    
+    .profile-header {
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      padding: 1.5rem;
       text-align: center;
-      padding: 2rem 1rem 1rem;
-      animation: fadeIn 0.6s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .profile-pic-wrapper {
+      color: white;
       position: relative;
-      width: 110px;
-      height: 110px;
-      margin: auto;
     }
-
+    
+    .profile-pic-wrapper {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid white;
+      margin: 0 auto 1rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
     .profile-pic {
       width: 100%;
       height: 100%;
-      border-radius: 50%;
       object-fit: cover;
-      border: 3px solid white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
-    .edit-icon {
+    
+    .edit-profile-pic {
       position: absolute;
       bottom: 0;
       right: 0;
       background-color: white;
-      border: 1px solid #ccc;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      padding: 6px;
-      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-
-    .user-details {
-      margin-top: 1rem;
+    
+    .edit-profile-pic i {
+      color: var(--primary);
+      font-size: 1rem;
     }
-
-    .user-details h2 {
-      font-weight: 600;
+    
+    .profile-name {
       font-size: 1.5rem;
-      margin: 0;
-    }
-
-    .user-details p {
-      color: #555;
-      margin: 4px 0 0;
-    }
-
-    .form-section {
-      padding: 1.5rem 2rem;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      box-sizing: border-box;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
     }
     
-
-    @media (max-width: 480px) {
-      .form-section {
-        padding: 1rem;
-      }
+    .profile-email {
+      font-size: 0.95rem;
+      opacity: 0.9;
     }
     
+    .profile-body {
+      padding: 1.5rem;
+    }
     
-
+    .profile-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .section-title i {
+      font-size: 1.2rem;
+    }
+    
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .info-item:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      font-weight: 500;
+      color: var(--text-light);
+    }
+    
+    .info-value {
+      font-weight: 500;
+    }
+    
+    .address-value {
+      margin-top: 8px;
+      white-space: pre-line;
+      line-height: 1.5;
+    }
+    
+    .edit-btn {
+      color: var(--primary);
+      background: none;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .edit-btn i {
+      font-size: 0.8rem;
+    }
+    
+    .action-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .btn {
+      padding: 1rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-light);
+    }
+    
+    .btn-danger {
+      background-color: transparent;
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+    
+    .btn-danger:hover {
+      background-color: #f8d7da;
+    }
+    
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal {
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 500px;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+    
+    .modal-header {
+      padding: 1rem 1.5rem;
+      background-color: var(--primary);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .close-modal {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+    
+    .close-modal:hover {
+      opacity: 0.8;
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    
     .form-group {
       margin-bottom: 1.2rem;
     }
-
-    .form-group label {
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
       font-weight: 500;
-      margin-bottom: 6px;
-      display: block;
+      color: var(--text);
     }
-
-    .form-group input {
+    
+    .form-control {
       width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-    }
-
-    .update-link {
-      float: right;
-      font-size: 0.9rem;
-      color: #1976d2;
-      cursor: pointer;
-    }
-
-    .submit-btn {
-      width: 100%;
-      max-width: 400px;
-      padding: 12px;
-      font-size: 16px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out;
-      display: block;
-      margin: 0 auto; /* Center horizontally */
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: all 0.3s ease;
     }
     
-    
-    .submit-btn {
-      margin-left: auto;
-      margin-right: auto;
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
     }
     
-
-    .submit-btn:hover {
-      background-color: #145ea8;
-    }
-
-    input[type="file"] {
-      display: none;
-    }
-
-    html, body {
-      height: 100%;
-      margin: 0;
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
     }
     
-    body {
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      background-color: #f9f9f9;
       display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      justify-content: flex-end;
+      gap: 1rem;
     }
     
-    main {
-      flex: 1;
-      display: block;
+    /* Responsive */
+    @media (max-width: 768px) {
+      .profile-pic-wrapper {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .profile-name {
+        font-size: 1.3rem;
+      }
     }
     
-    
-    
-
-    
+    @media (max-width: 480px) {
+      .header {
+        padding: 1rem;
+      }
+      
+      .profile-header {
+        padding: 1.5rem 1rem;
+      }
+      
+      .profile-body {
+        padding: 1.5rem 1rem;
+      }
+      
+      .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+      
+      .edit-btn {
+        align-self: flex-end;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <main>
-
-  <!-- Use your existing HTML body content here, no change needed -->
-
-
-  <div class="header">
-    <div class="header-left">
-      <button onclick="goBack()">←</button>
-      <span style="font-weight: 500;"></span>
-    </div>
-    
-    <div class="menu-right">
-      <div class="search-wrapper">
-        <button class="search-icon" onclick="toggleSearch(event)">
-          <img src="search (1).png" alt="Search" width="32" height="32">
-        </button>
-      
-        <div id="searchContainer" class="search-container">
-          <button class="close-btn" onclick="toggleSearch(event)">✖</button>
-          <input type="text" id="searchInput" placeholder="Search..." onkeyup="if(event.key==='Enter'){searchProducts()}">
-
-        </div>
-      </div>
-      
-      
-    
-      <button class="cart-icon" onclick="showCart()">
-        🛒
+  <!-- Header -->
+  <header class="header">
+    <button class="back-btn" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <div class="header-title">My Profile</div>
+    <div class="header-actions">
+      <button class="action-icon" onclick="showCart()">
+        <i class="fas fa-shopping-cart"></i>
         <span id="cart-count" class="cart-badge">0</span>
       </button>
     </div>
+  </header>
+
+  <!-- Profile Content -->
+  <div class="profile-container">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-pic-wrapper">
+          <img id="profileImage" class="profile-pic" />
+          <label for="profileUpload" class="edit-profile-pic">
+            <i class="fas fa-pen"></i>
+            <input type="file" id="profileUpload" accept="image/*" onchange="uploadProfilePic()" style="display: none;" />
+          </label>
+        </div>
+        <h1 class="profile-name" id="profileName">Loading...</h1>
+        <p class="profile-email" id="profileEmail">Loading...</p>
+      </div>
+      
+      <div class="profile-body">
+        <div class="profile-section">
+          <h2 class="section-title">
+            <i class="fas fa-user"></i>
+            Personal Information
+          </h2>
+          
+          <div class="info-item">
+            <span class="info-label">Full Name</span>
+            <span class="info-value" id="infoName">Loading...</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="infoEmail">Loading...</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="info-label">Mobile</span>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span class="info-value" id="infoMobile">Loading...</span>
+              <button class="edit-btn" onclick="openEditModal('mobile')">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="profile-section">
+          <h2 class="section-title">
+            <i class="fas fa-map-marker-alt"></i>
+            Address
+          </h2>
+          
+          <div class="info-item">
+            <div style="width: 100%;">
+              <div class="info-label">Default Address</div>
+              <div id="addressDisplay" class="address-value">
+                No address saved
+              </div>
+            </div>
+            <button class="edit-btn" onclick="openAddressModal()">
+              <i class="fas fa-edit"></i> Manage
+            </button>
+          </div>
+        </div>
+        
+        <div class="action-btns">
+          <button class="btn btn-primary" onclick="openEditModal('password')">
+            <i class="fas fa-lock"></i> Change Password
+          </button>
+          <button class="btn btn-outline" onclick="window.location.href='my-orders.html'">
+  <i class="fas fa-history"></i> Order History
+</button>
+          <button class="btn btn-danger" onclick="confirmLogout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-    
-  
 
-  <div class="profile-section">
-    <div class="profile-pic-wrapper">
-      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" id="profileImage" class="profile-pic" />
-
-      <label for="profileUpload" class="edit-icon"><i class="fas fa-pen"></i></label>
-
-      <input type="file" id="profileUpload" accept="image/*" onchange="uploadProfilePic()" />
-    </div>
-    <div class="user-details">
-      <h2 id="profileName">Name</h2>
-      <p id="profileEmail">Email</p>
+  <!-- Edit Modal -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modalTitle">Edit Information</div>
+        <div class="close-modal" onclick="closeModal()">&times;</div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" id="fieldLabel">Field Name</label>
+          <input type="text" class="form-control" id="editField" placeholder="Enter value">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveChanges()">Save Changes</button>
+      </div>
     </div>
   </div>
 
-  <div class="form-section">
-    <div class="form-group">
-      <label>Mobile Number <span class="update-link" onclick="editField('mobile')">Update</span></label>
-      <input type="text" id="mobileNumber" placeholder="+91XXXXXXXXXX" disabled />
+  <!-- Address Modal -->
+  <div class="modal-overlay" id="addressModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Manage Address</div>
+        <div class="close-modal" onclick="closeAddressModal()">&times;</div>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="addressName" placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mobile Number</label>
+          <input type="tel" class="form-control" id="addressMobile" placeholder="Enter mobile number">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Full Address</label>
+          <textarea class="form-control" id="addressText" rows="4" placeholder="House no, Building, Street, Area, City, State, Pincode"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address Type</label>
+          <select class="form-control" id="addressType">
+            <option value="home">Home</option>
+            <option value="work">Work</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeAddressModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveAddress()">Save Address</button>
+      </div>
     </div>
-
-    <div class="form-group">
-      <label>Email ID <span class="update-link" onclick="editField('email')">Update</span></label>
-      <input type="text" id="emailInput" disabled />
-    </div>
-
-    <div style="padding: 0 16px;">
-      <button class="submit-btn">SUBMIT</button>
-    </div>
-    
   </div>
 
- <!-- 🛠 Your existing HTML remains unchanged, just JavaScript fixed below -->
+  <!-- Footer Placeholder -->
+  <div id="footer-placeholder"></div>
 
-<script>
-  function goBack() {
-    window.history.back();
-  }
-
-  function toggleSearch(event) {
-    event.stopPropagation();
-    const container = document.getElementById('searchContainer');
-    const isVisible = container.style.display === 'block';
-    container.style.display = isVisible ? 'none' : 'block';
-
-    if (!isVisible) {
-      document.addEventListener('click', closeSearchOnOutsideClick);
-    } else {
-      document.removeEventListener('click', closeSearchOnOutsideClick);
-    }
-  }
-
-  function closeSearchOnOutsideClick(e) {
-    const searchWrapper = document.querySelector('.search-wrapper');
-    if (!searchWrapper.contains(e.target)) {
-      document.getElementById('searchContainer').style.display = 'none';
-      document.removeEventListener('click', closeSearchOnOutsideClick);
-    }
-  }
-
-  function searchProducts() {
-    const input = document.getElementById('searchInput').value.trim().toLowerCase();
-  
-    const sections = [
-      'watches-section',
-      'bracelet-section',
-      'trousers-section',
-      'kids-section'
-    ];
-  
-    const homeSections = document.getElementById('homeSections');
-    const wishlistSection = document.getElementById('wishlist-section');
-  
-    let anyMatch = false;
-  
-    // Hide all sections by default
-    sections.forEach(id => {
-      const section = document.getElementById(id);
-      if (section) {
-        section.style.display = 'none';
-        const cards = section.querySelectorAll('.product-card');
-        cards.forEach(card => card.style.display = 'none');
-      }
-    });
-  
-    if (wishlistSection) wishlistSection.style.display = 'none';
-    if (homeSections) homeSections.style.display = 'none';
-  
-    if (input === "") {
-      if (homeSections) homeSections.style.display = "block";
-      return;
-    }
-  
-    sections.forEach(id => {
-      const section = document.getElementById(id);
-      if (!section) return;
-  
-      const cards = section.querySelectorAll('.product-card');
-      let sectionHasMatch = false;
-  
-      cards.forEach(card => {
-        const name = card.querySelector('h3')?.textContent.toLowerCase() || "";
-        const desc = card.querySelector('p')?.textContent.toLowerCase() || "";
-  
-        if (name.includes(input) || desc.includes(input)) {
-          card.style.display = 'flex';
-          sectionHasMatch = true;
-          anyMatch = true;
-        }
-      });
-  
-      if (sectionHasMatch) {
-        section.style.display = 'block';
-      }
-    });
-  
-    if (!anyMatch) {
-      alert("No products found!");
-      if (homeSections) homeSections.style.display = 'block';
-    }
-  }
-
-  function showCart() {
-    window.location.href = 'cart.html';
-  }
-
-  function uploadProfilePic() {
-    const fileInput = document.getElementById("profileUpload");
-    const file = fileInput.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = function (e) {
-        const imageUrl = e.target.result;
-        document.getElementById("profileImage").src = imageUrl;
-        localStorage.setItem("user_profile", imageUrl);
+  <script>
+    // Load user data from auth
+    function loadUserData() {
+      // Get data from localStorage (from auth page)
+      const userData = {
+        name: localStorage.getItem('user_name') || 'User',
+        email: localStorage.getItem('user_email') || 'user@example.com',
+        mobile: localStorage.getItem('user_mobile') || 'Not provided',
+        profilePic: localStorage.getItem('user_profile') || 'https://cdn-icons-png.flaticon.com/512/847/847969.png',
+        address: JSON.parse(localStorage.getItem('user_address')) || null
       };
 
-      reader.readAsDataURL(file);
+      // Set profile data
+      document.getElementById('profileName').textContent = userData.name;
+      document.getElementById('profileEmail').textContent = userData.email;
+      document.getElementById('infoName').textContent = userData.name;
+      document.getElementById('infoEmail').textContent = userData.email;
+      document.getElementById('infoMobile').textContent = userData.mobile;
+      document.getElementById('profileImage').src = userData.profilePic;
+      
+      // Load address if available
+      if (userData.address) {
+        displayAddress(userData.address);
+      }
+      
+      // Update cart count
+      updateCartCount();
     }
-  }
 
-  function loadUserProfile() {
-    const name = localStorage.getItem("user_name") || "John Doe";
-    const email = localStorage.getItem("user_email") || "example@gmail.com";
-    const mobile = localStorage.getItem("user_mobile") || "+91XXXXXXXXXX";
-    const profile = localStorage.getItem("user_profile");
-
-    document.getElementById("profileName").textContent = name;
-    document.getElementById("profileEmail").textContent = email;
-    document.getElementById("mobileNumber").value = mobile;
-    document.getElementById("emailInput").value = email;
-
-    const profileImage = document.getElementById("profileImage");
-    profileImage.src = profile || "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-  }
-
-  function editField(field) {
-    if (field === 'mobile') {
-      document.getElementById("mobileNumber").disabled = false;
-      document.getElementById("mobileNumber").focus();
-    } else if (field === 'email') {
-      document.getElementById("emailInput").disabled = false;
-      document.getElementById("emailInput").focus();
+    // Display address in profile
+    function displayAddress(address) {
+      const addressDisplay = document.getElementById('addressDisplay');
+      addressDisplay.innerHTML = `
+        <strong>${address.name}</strong><br>
+        ${address.mobile}<br>
+        ${address.address}<br>
+        <span style="color: var(--text-light);">(${address.type.charAt(0).toUpperCase() + address.type.slice(1)} Address)</span>
+      `;
     }
-  }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    loadUserProfile();
-
-    document.querySelector(".submit-btn").addEventListener("click", () => {
-      const updatedMobile = document.getElementById("mobileNumber").value;
-      const updatedEmail = document.getElementById("emailInput").value;
-
-      localStorage.setItem("user_mobile", updatedMobile);
-      localStorage.setItem("user_email", updatedEmail);
-
-      document.getElementById("profileEmail").textContent = updatedEmail;
-
-      document.getElementById("mobileNumber").disabled = true;
-      document.getElementById("emailInput").disabled = true;
-
-      alert("Profile updated successfully ✅");
-    });
-  });
-
-  function updateCartCount() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const count = cart.length;
-    const badge = document.getElementById('cart-count');
-  
-    if (badge) {
-      if (count > 0) {
-        badge.textContent = count;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
+    // Upload profile picture
+    function uploadProfilePic() {
+      const fileInput = document.getElementById('profileUpload');
+      const file = fileInput.files[0];
+      
+      if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          const imageUrl = e.target.result;
+          document.getElementById('profileImage').src = imageUrl;
+          
+          // Save to localStorage
+          localStorage.setItem('user_profile', imageUrl);
+          
+          showToast('Profile picture updated successfully');
+        };
+        
+        reader.readAsDataURL(file);
       }
     }
-  }
-  
-  // Ensure it's updated once when this page loads too
-  document.addEventListener("DOMContentLoaded", function () {
-    updateCartCount(); // 🔄 live cart count fix
-  });
-  
 
-
-
-  fetch("footer.html")
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById("footer-placeholder").innerHTML = data;
-    });
-
-    function openPolicy() {
-      const modal = document.getElementById("policyModal");
-      if (modal) modal.style.display = "block";
+    // Edit modal functions
+    let currentEditingField = '';
+    
+    function openEditModal(field) {
+      currentEditingField = field;
+      const modal = document.getElementById('editModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const fieldLabel = document.getElementById('fieldLabel');
+      const editField = document.getElementById('editField');
+      
+      // Set modal content based on field
+      switch(field) {
+        case 'mobile':
+          modalTitle.textContent = 'Edit Mobile Number';
+          fieldLabel.textContent = 'Mobile Number';
+          editField.type = 'tel';
+          editField.placeholder = 'Enter your mobile number';
+          editField.value = document.getElementById('infoMobile').textContent;
+          break;
+          
+        case 'password':
+          modalTitle.textContent = 'Change Password';
+          fieldLabel.textContent = 'New Password';
+          editField.type = 'password';
+          editField.placeholder = 'Enter new password';
+          editField.value = '';
+          break;
+          
+        default:
+          break;
+      }
+      
+      modal.classList.add('active');
     }
-  
-    function acceptPolicy() {
-      const checkbox = document.getElementById("policyCheck");
-      if (!checkbox.checked) {
-        alert("Please agree to the privacy policy before continuing.");
+    
+    function closeModal() {
+      document.getElementById('editModal').classList.remove('active');
+    }
+    
+    function saveChanges() {
+      const newValue = document.getElementById('editField').value.trim();
+      
+      if (!newValue) {
+        showToast('Please enter a value');
         return;
       }
-      document.getElementById("policyModal").style.display = "none";
-      window.location.href = "index.html";
+      
+      // Update the field based on what's being edited
+      if (currentEditingField === 'mobile') {
+        if (!/^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/.test(newValue)) {
+          showToast('Please enter a valid Indian mobile number');
+          return;
+        }
+        
+        document.getElementById('infoMobile').textContent = newValue;
+        localStorage.setItem('user_mobile', newValue);
+        showToast('Mobile number updated successfully');
+      } else if (currentEditingField === 'password') {
+        if (newValue.length < 6) {
+          showToast('Password must be at least 6 characters');
+          return;
+        }
+        
+        // In a real app, you would send this to your backend
+        showToast('Password changed successfully');
+      }
+      
+      closeModal();
     }
-</script>
-</main>
 
-<!--footer-->
-<div id="footer-placeholder"></div>
+    // Address modal functions
+    function openAddressModal() {
+      // Load existing address if available
+      const savedAddress = JSON.parse(localStorage.getItem('user_address')) || {};
+      document.getElementById('addressName').value = savedAddress.name || '';
+      document.getElementById('addressMobile').value = savedAddress.mobile || '';
+      document.getElementById('addressText').value = savedAddress.address || '';
+      document.getElementById('addressType').value = savedAddress.type || 'home';
+      
+      document.getElementById('addressModal').classList.add('active');
+    }
+    
+    function closeAddressModal() {
+      document.getElementById('addressModal').classList.remove('active');
+    }
+    
+    function saveAddress() {
+      const addressData = {
+        name: document.getElementById('addressName').value.trim(),
+        mobile: document.getElementById('addressMobile').value.trim(),
+        address: document.getElementById('addressText').value.trim(),
+        type: document.getElementById('addressType').value
+      };
 
+      if (!addressData.name || !addressData.mobile || !addressData.address) {
+        showToast('Please fill all address fields');
+        return;
+      }
+
+      // Validate mobile number
+      if (!/^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/.test(addressData.mobile)) {
+        showToast('Please enter a valid Indian mobile number');
+        return;
+      }
+
+      // Save to localStorage
+      localStorage.setItem('user_address', JSON.stringify(addressData));
+      displayAddress(addressData);
+      closeAddressModal();
+      showToast('Address saved successfully');
+    }
+
+    // Other functions
+   function viewOrderHistory() {
+  window.location.href = 'my-orders.html';
+}
+    
+    function confirmLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        // Clear user session and redirect
+        localStorage.removeItem('authToken');
+        window.location.href = 'auth.html';
+      }
+    }
+    
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const cartCount = document.getElementById('cart-count');
+      cartCount.textContent = cart.length;
+    }
+    
+    function showCart() {
+      window.location.href = 'cart.html';
+    }
+    
+    function goBack() {
+      window.history.back();
+    }
+    
+    function showToast(message) {
+      // Simple alert for demo - in a real app you'd use a proper toast notification
+      alert(message);
+    }
+
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+      
+      // Load footer
+      fetch("footer.html")
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("footer-placeholder").innerHTML = data;
+        });
+    });
+  </script>
 </body>
 </html>
