@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Secure Payment</title>
@@ -754,17 +756,32 @@
         gap: 0.5rem;
       }
       
-      .payment-option {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+       .payment-option {
+    flex-direction: column;
+    align-items: stretch; /* Ensures full width */
+    position: relative;
+  }
       
-      .payment-icon {
-        margin-left: 0;
-        margin-top: 0.5rem;
-        align-self: flex-end;
-      }
-    }
+     .payment-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0; /* Reset margin added earlier */
+  }
+}
+
+    /* Add this to your existing CSS */
+.upi-image {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 1rem;
+  display: block;
+  background: white;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
 </style>
 </head>
 <body>
@@ -846,7 +863,7 @@
   <span class="or-text">OR</span>
 </div>
             
-            <img src="QR.png" alt="Scan QR Code" class="upi-image">
+            <canvas id="upiQRCode" class="upi-image"></canvas>
             <div class="upi-id">9739170288@ybl</div>
             <button class="copy-btn" onclick="copyUPI()">
               <i class="far fa-copy"></i> Copy UPI ID
@@ -974,39 +991,48 @@
   <script>
     emailjs.init("yWquru6Fki6Lvx0je");
     
-    // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
-      // Load checkout data
-      const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails')) || {};
-      const checkoutItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
-      
-      // Set address
-      if (checkoutData.name && checkoutData.currentAddress) {
-        document.getElementById('checkoutName').textContent = checkoutData.name;
-        document.getElementById('checkoutAddress').textContent = checkoutData.currentAddress;
-      }
-      
-      // Calculate total amount
-      calculateTotalAmount();
-      
-      // Start countdown on user interaction
-      document.body.addEventListener('click', startCountdown, { once: true });
-    });
+  // Load checkout data
+  const checkoutData = JSON.parse(localStorage.getItem('checkoutDetails')) || {};
+  const checkoutItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
+  
+  // Set address
+  if (checkoutData.name && checkoutData.currentAddress) {
+    document.getElementById('checkoutName').textContent = checkoutData.name;
+    document.getElementById('checkoutAddress').textContent = checkoutData.currentAddress;
+  }
+  
+  // Calculate total amount without generating QR code yet
+  calculateTotalAmount(false);
+  
+  // Generate QR code separately
+  generateUPIQRCode();
+  
+  // Start countdown on user interaction
+  document.body.addEventListener('click', startCountdown, { once: true });
+});
+
+
     
-    // Calculate total amount
-    function calculateTotalAmount() {
-      const checkoutItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
-      let total = 0;
-      
-      checkoutItems.forEach(item => {
-        const price = Number(item.price) || 0;
-        const qty = Number(item.qty || item.quantity || 1);
-        total += price * qty;
-      });
-      
-      document.getElementById("payAmount").textContent = `₹${total.toLocaleString('en-IN')}`;
-      return total;
-    }
+function calculateTotalAmount(generateQR = true) {
+  const checkoutItems = JSON.parse(localStorage.getItem('checkoutItem')) || [];
+  let total = 0;
+  
+  checkoutItems.forEach(item => {
+    const price = Number(item.price) || 0;
+    const qty = Number(item.qty || item.quantity || 1);
+    total += price * qty;
+  });
+  
+  document.getElementById("payAmount").textContent = `₹${total.toLocaleString('en-IN')}`;
+  
+  // Only generate QR code if explicitly requested
+  if (generateQR) {
+    generateUPIQRCode();
+  }
+  
+  return total;
+}
     
     // NEW: Payment with UPI Apps
     function payWithPhonePe() {
@@ -1404,6 +1430,37 @@ let emailMessage = `
     }
   }
 });
+
+
+function generateUPIQRCode() {
+  // Get amount from display instead of recalculating
+  const amountText = document.getElementById("payAmount").textContent;
+  const amount = parseFloat(amountText.replace(/[^0-9.]/g, ''));
+  
+  const upiId = '9739170288@ybl';
+  const merchantName = 'Mahaveer Enterprises';
+  const transactionNote = 'Payment for order';
+  
+  const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${amount}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
+  
+  const canvas = document.getElementById('upiQRCode');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  canvas.width = 200;
+  canvas.height = 200;
+  
+  QRCode.toCanvas(canvas, upiLink, {
+    width: 180,
+    margin: 2,
+    color: {
+      dark: '#000000',
+      light: '#ffffff'
+    }
+  }, function(error) {
+    if (error) console.error(error);
+  });
+}
 
   </script>
 </body>
