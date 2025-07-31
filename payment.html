@@ -1210,31 +1210,57 @@
       };
       
       // Build email content
-      let emailMessage = `
-        <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
-          <h2 style="color: #0b4127;">Your Order #${orderId}</h2>
-          <p>Thank you for your purchase! Here are your order details:</p>
-          
-          <div style="margin: 20px 0; border-top: 1px solid #eee; border-bottom: 1px solid #
-                    </div>
-          
-          <div style="margin-bottom: 20px;">
-            <h3 style="margin: 0 0 10px 0; font-size: 16px;">Delivery Address</h3>
-            <p style="margin: 0; white-space: pre-line;">${addressDetails}</p>
-          </div>
-          
-          <div style="margin-bottom: 20px;">
-            <h3 style="margin: 0 0 10px 0; font-size: 16px;">Payment Method</h3>
-            <p style="margin: 0;">${paymentMethod === 'upi' ? 'UPI Payment' : 'Cash on Delivery'}</p>
-          </div>
-          
-          <div style="background-color: #f9f9f9; padding: 15px; border-radius: 4px; text-align: right;">
-            <p style="margin: 0; font-size: 18px; font-weight: bold;">
-              Total: ₹${totalAmount.toLocaleString('en-IN')}
-            </p>
-          </div>
-        </div>
-      `;
+// Build email content
+let itemsHtml = orderItems.map(item => `
+  <div style="display: flex; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+    <div style="flex: 0 0 80px; margin-right: 15px;">
+      <img src="${item.image || 'https://via.placeholder.com/80'}" alt="${item.name}" style="width: 80px; height: 80px; object-fit: contain;">
+    </div>
+    <div style="flex: 1;">
+      <h3 style="margin: 0 0 5px 0; font-size: 16px;">${item.name}</h3>
+      <p style="margin: 0; color: #666;">Quantity: ${item.qty || 1}</p>
+      <p style="margin: 5px 0 0 0; font-weight: bold;">₹${(item.price * (item.qty || 1)).toLocaleString('en-IN')}</p>
+    </div>
+  </div>
+`).join('');
+
+let emailMessage = `
+  <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif; color: #333;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h1 style="color: #0b4127; margin-bottom: 5px;">Order Confirmation</h1>
+      <p style="margin: 0;">Thank you for shopping with Mahaveer Enterprises!</p>
+    </div>
+    
+    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+      <p style="margin: 0 0 5px 0;"><strong>Order #:</strong> ${orderId}</p>
+      <p style="margin: 0 0 5px 0;"><strong>Order Date:</strong> ${new Date(order.date).toDateString()}</p>
+      <p style="margin: 0;"><strong>Estimated Delivery:</strong> ${order.estimatedDelivery}</p>
+    </div>
+    
+    <h2 style="font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 15px;">Your Items</h2>
+    ${itemsHtml}
+    
+    <div style="margin: 20px 0;">
+      <h2 style="font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px;">Delivery Address</h2>
+      <p style="margin: 0; white-space: pre-line;">${addressDetails}</p>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      <h2 style="font-size: 18px; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px;">Payment Method</h2>
+      <p style="margin: 0;">${paymentMethod === 'upi' ? 'UPI Payment' : 'Cash on Delivery'}</p>
+    </div>
+    
+    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 4px; text-align: right;">
+      <p style="margin: 0; font-size: 18px; font-weight: bold;">
+        Order Total: ₹${totalAmount.toLocaleString('en-IN')}
+      </p>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px; color: #666; font-size: 14px;">
+      <p>Thank you for your purchase! We'll notify you when your order ships.</p>
+    </div>
+  </div>
+`;
       
       // Send email
       emailjs.send("service_v1avwdt", "template_0pm6m3o", {
