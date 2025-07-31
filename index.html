@@ -1460,6 +1460,33 @@ body.loading {
 }
 
 
+.menu-dropdown a#dropdownLogout {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* spacing between icon and text */
+  margin-top: 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.menu-dropdown a#dropdownLogout:hover {
+  background-color: #c82333;
+}
+
+.logout-icon {
+  width: 20px;
+  height: 20px;
+}
+
 
 
 
@@ -1554,13 +1581,34 @@ body.loading {
 
       <a href="#" onclick="showWishlist()"><span>❤️</span>My Wishlist</a>
       <a href="#" onclick="trackOrder()"><span>📦</span>Track Order</a>
-      <a href="auth.html" id="signupLink" onclick="localStorage.setItem('auth_view', 'signup')">
-        <span>📝</span>Sign Up
-      </a>
-      <a href="auth.html" id="signinLink" onclick="localStorage.setItem('auth_view', 'signin')">
-        <span>🔐</span>Sign In
-      </a>
-      <button id="logoutBtn" onclick="logoutUser()">Logout</button>
+      <a href="auth.html" id="dropdownSignUp" onclick="localStorage.setItem('auth_view', 'signup')">
+  <span>📝</span>Sign Up
+</a>
+<a href="auth.html" id="dropdownSignIn" onclick="localStorage.setItem('auth_view', 'signin')">
+  <span>🔐</span>Sign In
+</a>
+<button onclick="logoutUser()" style="
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #dc3545; 
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+">
+  <img src="logout.png" alt="Logout" style="width: 24px; height: 24px;" />
+  Logout
+</button>
+
+
+
+
+</a>
+
   
     <!-- MENU OVERLAY -->
     <div id="menuOverlay" class="menu-overlay"></div>
@@ -2581,6 +2629,44 @@ body.loading {
 
 <!--footer-->
   <div id="footer-placeholder"></div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const userEmail = localStorage.getItem("user_email");
+
+    const signInBtn = document.getElementById("signInBtn");
+    const signUpBtn = document.getElementById("signUpBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    const dropdownSignIn = document.getElementById("dropdownSignIn");
+    const dropdownSignUp = document.getElementById("dropdownSignUp");
+    const dropdownLogout = document.getElementById("dropdownLogout");
+
+    if (userEmail) {
+      if (signInBtn) signInBtn.style.display = "none";
+      if (signUpBtn) signUpBtn.style.display = "none";
+      if (logoutBtn) logoutBtn.style.display = "inline-block";
+
+      if (dropdownSignIn) dropdownSignIn.style.display = "none";
+      if (dropdownSignUp) dropdownSignUp.style.display = "none";
+      if (dropdownLogout) dropdownLogout.style.display = "inline-block";
+    } else {
+      if (signInBtn) signInBtn.style.display = "inline-block";
+      if (signUpBtn) signUpBtn.style.display = "inline-block";
+      if (logoutBtn) logoutBtn.style.display = "none";
+
+      if (dropdownSignIn) dropdownSignIn.style.display = "inline-block";
+      if (dropdownSignUp) dropdownSignUp.style.display = "inline-block";
+      if (dropdownLogout) dropdownLogout.style.display = "none";
+    }
+  });
+
+  function logoutUser() {
+    localStorage.removeItem("user_name");
+    localStorage.removeItem("user_email");
+    window.location.href = "auth.html";
+  }
+</script>
 
 </body>
 

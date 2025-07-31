@@ -1,88 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <!-- Make sure SweetAlert2 is added for Swal to work -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Authentication</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-    * { box-sizing: border-box; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ebd5, #9face6);
-      margin: 0;
-      padding: 1rem;
+      background: white;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
     }
 
     .card {
       background: white;
-      padding: 2.5rem 2rem;
-      border-radius: 15px;
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       width: 100%;
-      max-width: 420px;
       position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
     }
 
     .close-icon {
       position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 22px !important;
-      font-family: Arial, sans-serif !important;
-      font-weight: bold !important;
-      line-height: 1 !important;
-      padding: 0 !important;
-      border: none !important;
-      background: none !important;
-      color: #888 !important;
-      cursor: pointer !important;
-      width: auto !important;
-      height: auto !important;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.4rem;
+      color: #888;
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
     }
 
     .close-icon:hover {
-      color: red !important;
+      color: #ff4444;
     }
 
     .card h2 {
       text-align: center;
       color: #333;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       font-weight: 600;
+      font-size: 1.5rem;
     }
 
-    .input-container {
-      position: relative;
+    .card p.subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .input-group {
       margin-bottom: 1rem;
     }
 
-    input[type="password"],
+    .input-group label {
+      display: block;
+      color: #555;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      font-weight: 500;
+    }
+
+    .input-field {
+      position: relative;
+    }
+
     input[type="text"],
     input[type="email"],
-    input[type="number"] {
+    input[type="password"] {
       width: 100%;
-      padding: 0.8rem;
-      padding-right: 40px;
-      margin: 0.3rem 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
+      padding: 0.85rem;
+      border: none;
+      border-bottom: 1px solid #ddd;
       font-size: 1rem;
       transition: border-color 0.3s;
     }
@@ -94,7 +106,7 @@
 
     .toggle-visibility {
       position: absolute;
-      right: 12px;
+      right: 0;
       top: 50%;
       transform: translateY(-50%);
       width: 24px;
@@ -107,269 +119,464 @@
       opacity: 1;
     }
 
-    button {
+    .btn {
       width: 100%;
       padding: 0.9rem;
-      background: linear-gradient(to right, #6c63ff, #846bff);
-      color: white;
       font-size: 1rem;
       font-weight: 600;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 1rem;
-      transition: background 0.3s, transform 0.2s;
+      transition: all 0.2s ease;
     }
 
-    button:hover {
+    .btn-primary {
+      background: #6c63ff;
+      color: white;
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary:hover {
       background: #5a55e3;
-      transform: scale(1.02);
+      transform: translateY(-1px);
     }
 
-    .card a {
+    .btn-google {
+      background: white;
+      color: #444;
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-google:hover {
+      background: #f8f8f8;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .btn-google svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .link-text {
       display: block;
       text-align: center;
       margin-top: 1rem;
       color: #6c63ff;
       text-decoration: none;
       font-size: 0.95rem;
+      cursor: pointer;
     }
 
-    .card a:hover {
+    .link-text:hover {
       color: #4a42d4;
+      text-decoration: underline;
     }
 
     .hidden {
       display: none;
     }
 
+    /* Password Requirements */
     .requirements {
-      font-size: 13px;
-      color: #888;
-      margin: 0.5rem 0 -0.2rem 0;
-      padding-left: 10px;
+      font-size: 0.75rem;
+      color: #666;
+      margin: 0.5rem 0;
+      padding-left: 0.5rem;
     }
 
     .requirements li {
       list-style: none;
-      margin-bottom: 5px;
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
     }
 
     .requirements li::before {
-      content: '❌ ';
-      color: red;
+      content: '❌';
+      font-size: 0.8rem;
     }
 
     .requirements li.valid::before {
-      content: '✅ ';
-      color: green;
+      content: '✅';
     }
 
     .match-message {
-      font-size: 13px;
-      color: red;
-      margin-top: -0.4rem;
-      margin-bottom: 0.6rem;
+      font-size: 0.8rem;
+      margin: 0.3rem 0;
+      color: #ff4444;
     }
 
     .match-message.valid {
-      color: green;
+      color: #4CAF50;
     }
 
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 1rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
 
-   /* Disable scroll while loading */
-html.loading,
-body.loading {
-  overflow: hidden;
-}
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
 
-/* Loader Overlay */
-#loader-overlay {
-  position: fixed;
-  inset: 0;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-}
+    .divider::before {
+      margin-right: 0.5rem;
+    }
 
-/* Professional Logo Bounce */
-#loader-logo {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  animation: bounce 1.4s ease-in-out infinite;
-}
+    .divider::after {
+      margin-left: 0.5rem;
+    }
 
-/* Subtle bounce */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-12px) scale(1.05);
-  }
-}
+    /* OTP Section */
+    .otp-section {
+      text-align: center;
+    }
 
+    .otp-title {
+      margin-bottom: 0.5rem;
+    }
 
+    .otp-description {
+      color: #666;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
 
+    .otp-inputs {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+
+    .otp-input {
+      width: 3rem;
+      height: 3.5rem;
+      font-size: 1.5rem;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid #ddd;
+      transition: all 0.2s ease;
+    }
+
+    .otp-input:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+
+    .otp-input.error {
+      border-color: #ff4444;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-3px); }
+      40%, 80% { transform: translateX(3px); }
+    }
+
+    .otp-actions {
+      margin-top: 1.5rem;
+    }
+
+    .resend-info {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .resend-btn {
+      background: none;
+      border: none;
+      color: #6c63ff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .resend-btn:hover {
+      color: #4a42d4;
+    }
+
+    /* Loader */
+    #loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease;
+    }
+
+    #loader-logo {
+      width: 80px;
+      height: 80px;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-15px) scale(1.05); }
+    }
+
+    /* Button loading state */
+    .btn-loading {
+      position: relative;
+      pointer-events: none;
+    }
+
+    .btn-loading::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
-<!-- LOADER START -->
-<div id="loader-overlay">
-  <img src="loader.png" alt="Loading..." id="loader-logo" />
-</div>
-<!-- LOADER END -->
-
-<!-- 🌟 NEW FLEX CONTAINER TO STACK CARD + GOOGLE BUTTON -->
-<div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-
-  <!-- CARD START -->
-  <div class="card">
-    <button class="close-icon" onclick="window.location.href='index.html'">✕</button>
-
-    <!-- Sign Up Section -->
-    <div id="signupSection">
-      <h2>Sign Up</h2>
-      <div class="input-container">
-        <input type="text" id="signupName" placeholder="Full Name" required />
-      </div>
-      <div class="input-container">
-        <input type="email" id="signupEmail" placeholder="Email" required />
-      </div>
-      <div class="input-container">
-        <input type="password" id="signupPassword" placeholder="Password" required />
-        <img src="hidden.png" class="toggle-visibility" id="toggleSignupPassword"
-             onclick="toggleVisibility('signupPassword', 'toggleSignupPassword')" />
-      </div>
-
-      <ul id="passwordRequirements" class="requirements hidden">
-        <li id="length">8–12 characters</li>
-        <li id="upper">At least one uppercase letter</li>
-        <li id="lower">At least one lowercase letter</li>
-        <li id="number">At least one number</li>
-        <li id="special">At least one special character</li>
-      </ul>
-
-      <div class="input-container">
-        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
-        <img src="hidden.png" class="toggle-visibility" id="toggleSignupConfirmPassword"
-             onclick="toggleVisibility('signupConfirmPassword', 'toggleSignupConfirmPassword')" />
-      </div>
-
-      <div id="confirmMessage" class="match-message hidden">Passwords do not match</div>
-      <button onclick="signupUser()">Sign Up</button>
-      <a onclick="showSection('signinSection')">Already have an account? Sign In</a>
-    </div>
-
-    <!-- OTP Section -->
-    <div id="otpSection" class="hidden">
-      <h2>Verify Email</h2>
-      <p>Enter the 6-digit OTP sent to your email</p>
-      <input type="text" id="otpInput" placeholder="Enter OTP" required />
- <button id="verifyBtn" onclick="verifyOTP()">Verify & Register</button>
-
-    </div>
-
-    <!-- Sign In Section -->
-    <div id="signinSection" class="hidden">
-      <h2>Sign In</h2>
-      <input type="email" id="signinEmail" placeholder="Email" required />
-      <input type="password" id="signinPassword" placeholder="Password" required />
-      <button onclick="signinUser()">Sign In</button>
-      <a onclick="showSection('signupSection')">Don't have an account? Sign Up</a>
-    </div>
+  <!-- Loader -->
+  <div id="loader-overlay">
+    <img src="loader.png" alt="Loading..." id="loader-logo" />
   </div>
-  <!-- CARD END -->
 
-  <!-- 🌟 GOOGLE SIGN-IN BUTTON -->
-<!-- GOOGLE SIGN-IN BUTTON -->
-<div style="display: flex; justify-content: center; margin-top: 0rem;">
-  <button onclick="signInWithGoogle()" style="
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  ">
-    <img src="google.svg" alt="Google logo" style="
-      width: 240px;
-      height: 50px;
-      display: block;
-    " />
-  </button>
-</div>
+  <div class="auth-container">
+    <!-- Main Card -->
+    <div class="card">
+      <button class="close-icon" onclick="window.location.href='index.html'">✕</button>
 
+      <!-- Sign Up Section -->
+      <div id="signupSection">
+        <h2>Create Account</h2>
+        <p class="subtitle">Join us to get started</p>
 
+        <div class="input-group">
+          <label for="signupName">Full Name</label>
+          <div class="input-field">
+            <input type="text" id="signupName" placeholder="Enter your full name" required />
+          </div>
+        </div>
 
-</div> <!-- END OF FLEX CONTAINER -->
+        <div class="input-group">
+          <label for="signupEmail">Email</label>
+          <div class="input-field">
+            <input type="email" id="signupEmail" placeholder="Enter your email" required />
+          </div>
+        </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <div class="input-group">
+          <label for="signupPassword">Password</label>
+          <div class="input-field">
+            <input type="password" id="signupPassword" placeholder="Create a password" required />
+            <img src="hidden.png" class="toggle-visibility" id="toggleSignupPassword"
+                 onclick="toggleVisibility('signupPassword', 'toggleSignupPassword')" />
+          </div>
+          <ul id="passwordRequirements" class="requirements hidden">
+            <li id="length">8–12 characters</li>
+            <li id="upper">At least one uppercase letter</li>
+            <li id="lower">At least one lowercase letter</li>
+            <li id="number">At least one number</li>
+            <li id="special">At least one special character</li>
+          </ul>
+        </div>
 
+        <div class="input-group">
+          <label for="signupConfirmPassword">Confirm Password</label>
+          <div class="input-field">
+            <input type="password" id="signupConfirmPassword" placeholder="Confirm your password" required />
+            <img src="hidden.png" class="toggle-visibility" id="toggleSignupConfirmPassword"
+                 onclick="toggleVisibility('signupConfirmPassword', 'toggleSignupConfirmPassword')" />
+          </div>
+          <div id="confirmMessage" class="match-message hidden">Passwords do not match</div>
+        </div>
 
+        <button class="btn btn-primary" id="signupButton">Create Account</button>
+        <a class="link-text" id="showSignIn">Already have an account? Sign In</a>
+      </div>
 
-  <!-- Firebase SDKs -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      <!-- OTP Section -->
+      <div id="otpSection" class="hidden otp-section">
+        <h2 class="otp-title">Verify Email</h2>
+        <p class="otp-description">Enter the 6-digit OTP sent to your email</p>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBi0nzU1HPutrUa63OFWR4vyFlOsNGGvJg",
-    authDomain: "mahaveerauth-d18cd.firebaseapp.com",
-    projectId: "mahaveerauth-d18cd",
-    storageBucket: "mahaveerauth-d18cd.firebasestorage.app",
-    messagingSenderId: "477338276474",
-    appId: "1:477338276474:web:509f61bdb45cd651a6e1c3",
-    measurementId: "G-K4X93YBJH0"
-  };
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" class="otp-input" autocomplete="one-time-code" aria-label="OTP Digit 1" />
+          <input type="text" maxlength="1" class="otp-input" autocomplete="one-time-code" aria-label="OTP Digit 2" />
+          <input type="text" maxlength="1" class="otp-input" autocomplete="one-time-code" aria-label="OTP Digit 3" />
+          <input type="text" maxlength="1" class="otp-input" autocomplete="one-time-code" aria-label="OTP Digit 4" />
+          <input type="text" maxlength="1" class="otp-input" autocomplete="one-time-code" aria-label="OTP Digit 5" />
+          <input type="text" maxlength="1" class="otp-input" autocomplete="one-time-code" aria-label="OTP Digit 6" />
+        </div>
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+        <div class="otp-actions">
+          <button id="verifyBtn" class="btn btn-primary">Verify OTP</button>
+          <div class="resend-info">
+            <span id="resendInfo">Resend OTP in <span id="timer">30</span>s</span>
+            <button id="resendBtn" class="resend-btn hidden">Resend OTP</button>
+          </div>
+        </div>
+      </div>
 
-  setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-      console.log("Persistence set to LOCAL");
-    })
-    .catch((error) => {
-      console.error("Error setting persistence:", error);
+      <!-- Sign In Section -->
+      <div id="signinSection" class="hidden">
+        <h2>Sign In</h2>
+        <div class="input-group">
+          <label for="signinEmail">Email</label>
+          <div class="input-field">
+            <input type="email" id="signinEmail" placeholder="Enter your email" required />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="signinPassword">Password</label>
+          <div class="input-field">
+            <input type="password" id="signinPassword" placeholder="Enter your password" required />
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="signinButton">Sign In</button>
+        <a class="link-text" id="showSignUp">Don't have an account? Sign Up</a>
+      </div>
+    </div>
+
+    <!-- Google Sign In Button -->
+    <button class="btn btn-google" id="googleSignInButton">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Continue with Google
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { 
+      getAuth, 
+      createUserWithEmailAndPassword, 
+      signInWithEmailAndPassword, 
+      setPersistence, 
+      browserLocalPersistence, 
+      signInWithPopup, 
+      GoogleAuthProvider,
+      fetchSignInMethodsForEmail
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { 
+      initializeFirestore, 
+      doc, 
+      setDoc, 
+      serverTimestamp,
+      enableNetwork,
+      disableNetwork
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBi0nzU1HPutrUa63OFWR4vyFlOsNGGvJg",
+      authDomain: "mahaveerauth-d18cd.firebaseapp.com",
+      projectId: "mahaveerauth-d18cd",
+      storageBucket: "mahaveerauth-d18cd.appspot.com",
+      messagingSenderId: "477338276474",
+      appId: "1:477338276474:web:509f61bdb45cd651a6e1c3",
+      measurementId: "G-K4X93YBJH0"
+    };
+
+    // Initialize Firebase with persistent cache
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = initializeFirestore(app, {
+      cache: { kind: "persistent" }
     });
 
-  // Expose Firebase objects to global window object
-  window.auth = auth;
-  window.db = db;
-  window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
-  window.signInWithEmailAndPassword = signInWithEmailAndPassword;
-  window.signInWithPopup = signInWithPopup;
-  window.GoogleAuthProvider = GoogleAuthProvider;
-  window.serverTimestamp = serverTimestamp;
-  window.setDoc = setDoc;
-  window.doc = doc;
-</script>
+    // Set auth persistence
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        console.log("Persistence set to LOCAL");
+      })
+      .catch((error) => {
+        console.error("Error setting persistence:", error);
+      });
 
+    // Initialize EmailJS
+    (function () {
+      emailjs.init("yWquru6Fki6Lvx0je");
+    })();
 
+    // Network state monitoring
+    let isOnline = navigator.onLine;
+    window.addEventListener('online', () => {
+      isOnline = true;
+      enableNetwork(db).catch(console.error);
+    });
+    window.addEventListener('offline', () => {
+      isOnline = false;
+      disableNetwork(db).catch(console.error);
+    });
 
-<script>
-  (function () {
-    emailjs.init("yWquru6Fki6Lvx0je");
-  })();
-</script>
-
-
-  <script>
- 
+    // Global variables
     let generatedOTP = "";
     let userData = {};
+    let countdownInterval;
+    let isFirstOTPSent = false;
 
+    // DOM elements
+    const signupButton = document.getElementById("signupButton");
+    const signinButton = document.getElementById("signinButton");
+    const googleSignInButton = document.getElementById("googleSignInButton");
+    const verifyButton = document.getElementById("verifyBtn");
+    const resendButton = document.getElementById("resendBtn");
+    const showSignIn = document.getElementById("showSignIn");
+    const showSignUp = document.getElementById("showSignUp");
+
+    // Section management
     function showSection(id) {
       document.getElementById("signupSection").classList.add("hidden");
       document.getElementById("signinSection").classList.add("hidden");
       document.getElementById("otpSection").classList.add("hidden");
       document.getElementById(id).classList.remove("hidden");
+      
+      if (id === "otpSection") {
+        initializeOTPSection();
+        document.querySelector('.otp-input').focus();
+      }
     }
 
+    // Event listeners for section switching
+    showSignIn.addEventListener("click", () => showSection("signinSection"));
+    showSignUp.addEventListener("click", () => showSection("signupSection"));
+
+    // Password visibility toggle
     function toggleVisibility(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
@@ -382,11 +589,24 @@ body.loading {
       }
     }
 
+    // Password validation
     function validatePassword(pwd) {
       return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,12}$/.test(pwd);
     }
 
-    function signupUser() {
+    // Email existence check
+    async function checkEmailExists(email) {
+      try {
+        const methods = await fetchSignInMethodsForEmail(auth, email);
+        return methods.length > 0;
+      } catch (error) {
+        console.error("Error checking email:", error);
+        return false;
+      }
+    }
+
+    // Sign up function
+    async function signupUser() {
       const name = document.getElementById("signupName").value.trim();
       const email = document.getElementById("signupEmail").value.trim();
       const password = document.getElementById("signupPassword").value.trim();
@@ -395,127 +615,358 @@ body.loading {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!/^[A-Za-z\s]+$/.test(name)) {
-        alert("Name should only contain letters and spaces.");
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Name",
+          text: "Name should only contain letters and spaces.",
+        });
         return;
       }
 
       if (!emailPattern.test(email)) {
-        alert("Please enter a valid email address.");
+        Swal.fire({
+          icon: "error",
+          title: "Invalid Email",
+          text: "Please enter a valid email address.",
+        });
         return;
       }
 
       if (!validatePassword(password)) {
-        alert("Password does not meet requirements.");
+        Swal.fire({
+          icon: "error",
+          title: "Weak Password",
+          text: "Password does not meet requirements.",
+        });
         return;
       }
 
       if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+        Swal.fire({
+          icon: "error",
+          title: "Password Mismatch",
+          text: "Passwords do not match.",
+        });
         return;
       }
 
-   generatedOTP = ("" + Math.floor(100000 + Math.random() * 900000));
+      try {
+        const emailExists = await checkEmailExists(email);
+        if (emailExists) {
+          Swal.fire({
+            icon: "error",
+            title: "Email Exists",
+            text: "This email is already in use. Please try another email.",
+          });
+          return;
+        }
 
-      const expiryTime = new Date(Date.now() + 15 * 60000).toLocaleTimeString();
+        generatedOTP = ("" + Math.floor(100000 + Math.random() * 900000));
+        const expiryTime = new Date(Date.now() + 15 * 60000).toLocaleTimeString();
+        userData = { name, email, password };
 
-      userData = { name, email, password };
+        await emailjs.send("service_v1avwdt", "template_f6corjb", {
+          user_name: name,
+          passcode: generatedOTP,
+          time: expiryTime,
+          email: email
+        });
 
-      emailjs.send("service_v1avwdt", "template_f6corjb", {
-        user_name: name,
-        passcode: generatedOTP,
-        time: expiryTime,
-        email: email
-      })
-      .then(() => {
-        alert("OTP sent to email.");
+        await Swal.fire({
+          icon: "success",
+          title: "OTP Sent",
+          text: "OTP has been sent to your email.",
+          timer: 2000
+        });
+        
         showSection("otpSection");
-      })
-      .catch(err => {
-        alert("Email failed. Check console.");
-        console.error("EMAILJS ERROR:", err);
-      });
-    }
-  // 🔐 OTP Verification and Firebase User Creation
- async function verifyOTP() {
-  const otpInput = document.getElementById("otpInput");
-  const verifyButton = document.getElementById("verifyBtn"); // add id to your button
-  verifyButton.disabled = true;
-
-  try {
-    const enteredOTP = otpInput.value.trim();
-
-    if (enteredOTP !== generatedOTP) {
-      await Swal.fire({
-        icon: "error",
-        title: "Invalid OTP",
-        text: "Please enter the correct OTP sent to your email.",
-      });
-      window.location.href = "auth.html";
-      return;
+      } catch (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: err.message || "Failed to send OTP. Please try again.",
+        });
+        console.error("Error:", err);
+      }
     }
 
-    if (!userData || !userData.email || !userData.password || !userData.name) {
-      throw new Error("User data is missing. Please re-enter your details.");
+    // Verify OTP function with enhanced error handling
+    async function verifyOTP() {
+      const otpInputs = document.querySelectorAll('.otp-input');
+      const enteredOTP = Array.from(otpInputs).map(input => input.value).join('');
+      
+      // Show loading state
+      verifyButton.disabled = true;
+      verifyButton.classList.add('btn-loading');
+      const loader = document.getElementById("loader-overlay");
+      loader.style.display = "flex";
+      loader.style.opacity = "1";
+
+      try {
+        if (enteredOTP.length !== 6) {
+          throw new Error("Please enter a complete 6-digit OTP");
+        }
+
+        if (enteredOTP !== generatedOTP) {
+          otpInputs.forEach(input => {
+            input.classList.add('error');
+            setTimeout(() => input.classList.remove('error'), 1000);
+          });
+          throw new Error("Invalid OTP. Please enter the correct OTP sent to your email.");
+        }
+
+        if (!userData || !userData.email || !userData.password || !userData.name) {
+          throw new Error("User data is missing. Please re-enter your details.");
+        }
+
+        // Double check email existence before creating account
+        const emailExists = await checkEmailExists(userData.email);
+        if (emailExists) {
+          throw {
+            code: 'auth/email-already-in-use',
+            message: 'This email was registered while you were verifying OTP. Please sign in instead.'
+          };
+        }
+
+        const { email, password, name } = userData;
+
+        // Show verification success
+        await Swal.fire({
+          icon: "success",
+          title: "OTP Verified!",
+          text: "Your email has been successfully verified.",
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+        // Create user in Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        
+        console.log("User created:", user.uid);
+
+        // Ensure we're online before writing to Firestore
+        await enableNetwork(db);
+
+        // Save user data to Firestore with retry logic
+        let attempts = 0;
+        const maxAttempts = 3;
+        let success = false;
+        
+        while (attempts < maxAttempts && !success) {
+          try {
+            await setDoc(doc(db, "users", user.uid), {
+              name,
+              email,
+              createdAt: serverTimestamp(),
+              uid: user.uid
+            });
+            success = true;
+            console.log("User data saved to Firestore");
+          } catch (writeError) {
+            attempts++;
+            console.error(`Firestore write attempt ${attempts} failed:`, writeError);
+            if (attempts >= maxAttempts) throw writeError;
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempts)); // Exponential backoff
+          }
+        }
+
+        // Show registration complete message
+        await Swal.fire({
+          icon: "success",
+          title: "Registration Complete!",
+          text: "You've been successfully registered.",
+          showConfirmButton: true,
+          confirmButtonText: "Continue"
+        });
+
+        // Redirect after user clicks the button
+        window.location.href = "index.html";
+        
+      } catch (error) {
+        console.error("Verification error:", error);
+        
+        // Clear OTP inputs on error
+        otpInputs.forEach(input => input.value = '');
+        otpInputs[0].focus();
+        
+        let errorMessage = "Verification failed. Please try again.";
+        if (error.code === 'auth/email-already-in-use') {
+          errorMessage = "This email is already registered. Please sign in instead.";
+          // Clear the form and show sign-in section
+          userData = {};
+          showSection("signinSection");
+          document.getElementById("signinEmail").value = email; // Pre-fill the email
+        } else if (error.code === 'permission-denied') {
+          errorMessage = "Database write permission denied. Please contact support.";
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: errorMessage,
+        });
+      } finally {
+        // Reset loading state
+        verifyButton.disabled = false;
+        verifyButton.classList.remove('btn-loading');
+        loader.style.opacity = "0";
+        setTimeout(() => loader.style.display = "none", 600);
+      }
     }
 
-    const { email, password, name } = userData;
+    // Sign in function
+    async function signinUser() {
+      const email = document.getElementById("signinEmail").value;
+      const password = document.getElementById("signinPassword").value;
 
-    // Create user in Firebase Auth
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-    // Save user data to Firestore
-    await setDoc(doc(db, "users", cred.user.uid), {
-      name,
-      email,
-      createdAt: serverTimestamp(),
-    });
-
-    // Show success popup and then redirect
-    await Swal.fire({
-      icon: "success",
-      title: "Registered Successfully!",
-      text: "Redirecting to homepage...",
-      timer: 2000,
-      showConfirmButton: false,
-    });
-
-    window.location.href = "index.html";
-
-  } catch (error) {
-    console.error("Error in verification:", error.message);
-    await Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: error.message,
-    });
-  } finally {
-    verifyButton.disabled = false;
-  }
-}
-
-
-   // 🔐 Firebase Email/Password Sign In
-  function signinUser() {
-    const email = document.getElementById("signinEmail").value;
-    const password = document.getElementById("signinPassword").value;
-
-    auth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        alert("Login successful!");
-        window.location.href = "index.html"; // ✅ change to your dashboard page
-      })
-      .catch(error => {
-        alert("Login failed: " + error.message);
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        
+        await Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: "Redirecting to homepage...",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        
+        window.location.href = "index.html";
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+        });
         console.error("Login error:", error);
-      });
-  }
+      }
+    }
 
-    // Block numbers in name field
+    // Google sign in function
+    async function signInWithGoogle() {
+      const provider = new GoogleAuthProvider();
+
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const isNewUser = result?.additionalUserInfo?.isNewUser;
+
+        if (isNewUser) {
+          await setDoc(doc(db, "users", user.uid), {
+            name: user.displayName,
+            email: user.email,
+            createdAt: serverTimestamp(),
+          });
+        }
+
+        localStorage.setItem('user_email', user.email);
+        localStorage.setItem('user_name', user.displayName);
+
+        await Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: "Redirecting to homepage...",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        
+        window.location.href = "index.html";
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Google Sign-In Failed",
+          text: error.message,
+        });
+        console.error("Google Sign-In error:", error);
+      }
+    }
+
+    // OTP section initialization
+    function initializeOTPSection() {
+      isFirstOTPSent = true;
+      startResendTimer();
+    }
+
+    // Resend timer function
+    function startResendTimer() {
+      clearInterval(countdownInterval);
+      
+      const timerDisplay = document.getElementById("timer");
+      const resendBtn = document.getElementById("resendBtn");
+      const resendInfo = document.getElementById("resendInfo");
+
+      resendBtn.classList.add("hidden");
+      resendInfo.classList.remove("hidden");
+      
+      let countdown = 30;
+      timerDisplay.textContent = countdown;
+
+      countdownInterval = setInterval(() => {
+        countdown--;
+        timerDisplay.textContent = countdown;
+
+        if (countdown <= 0) {
+          clearInterval(countdownInterval);
+          resendBtn.classList.remove("hidden");
+          resendInfo.classList.add("hidden");
+        }
+      }, 1000);
+    }
+
+    // Resend OTP function
+    async function resendOTP() {
+      generatedOTP = ("" + Math.floor(100000 + Math.random() * 900000));
+      
+      try {
+        await emailjs.send("service_v1avwdt", "template_f6corjb", {
+          user_name: userData.name,
+          passcode: generatedOTP,
+          time: new Date(Date.now() + 5 * 60000).toLocaleTimeString(),
+          email: userData.email
+        });
+        
+        await Swal.fire({
+          icon: "success",
+          title: "New OTP Sent",
+          text: "A new OTP has been sent to your email.",
+          timer: 2000
+        });
+        
+        startResendTimer();
+      } catch (err) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Resend OTP",
+          text: "Please try again later.",
+        });
+        console.error("OTP Resend Error:", err);
+      }
+    }
+
+    // OTP Input Handling
+    const otpInputs = document.querySelectorAll(".otp-input");
+    otpInputs.forEach((input, index) => {
+      input.addEventListener("input", () => {
+        input.value = input.value.replace(/[^0-9]/g, "");
+        if (input.value && index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !input.value && index > 0) {
+          otpInputs[index - 1].focus();
+        }
+      });
+    });
+
+    // Password Validation
     document.getElementById("signupName").addEventListener("input", function () {
       this.value = this.value.replace(/[0-9]/g, '');
     });
 
-    // Live password validation
     const passwordInput = document.getElementById("signupPassword");
     const confirmInput = document.getElementById("signupConfirmPassword");
     const confirmMsg = document.getElementById("confirmMessage");
@@ -531,14 +982,8 @@ body.loading {
       document.getElementById("number").classList.toggle("valid", /\d/.test(val));
       document.getElementById("special").classList.toggle("valid", /[@$!%*?&]/.test(val));
 
-      if (
-        val.length >= 8 &&
-        val.length <= 12 &&
-        /[A-Z]/.test(val) &&
-        /[a-z]/.test(val) &&
-        /\d/.test(val) &&
-        /[@$!%*?&]/.test(val)
-      ) {
+      if (val.length >= 8 && val.length <= 12 && /[A-Z]/.test(val) && 
+          /[a-z]/.test(val) && /\d/.test(val) && /[@$!%*?&]/.test(val)) {
         passwordReqs.classList.add("hidden");
       }
     });
@@ -561,82 +1006,35 @@ body.loading {
       }
     });
 
-     // 🔐 Google Sign-In via Firebase
-  function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    // Event listeners for buttons
+    signupButton.addEventListener("click", signupUser);
+    signinButton.addEventListener("click", signinUser);
+    googleSignInButton.addEventListener("click", signInWithGoogle);
+    verifyButton.addEventListener("click", verifyOTP);
+    resendButton.addEventListener("click", resendOTP);
 
-    auth.signInWithPopup(provider)
-      .then(result => {
-        const user = result.user;
-        if (result.additionalUserInfo.isNewUser) {
-          return db.collection("users").doc(user.uid).set({
-            name: user.displayName,
-            email: user.email,
-            createdAt: serverTimestamp()
+    // Toggle visibility for password fields
+    document.getElementById("toggleSignupPassword").addEventListener("click", () => {
+      toggleVisibility("signupPassword", "toggleSignupPassword");
+    });
 
-          });
-        }
-      })
-      .then(() => {
-        window.location.href = "index.html"; // ✅ change to your dashboard page
-      })
-      .catch(error => {
-        alert("Google Sign-In failed: " + error.message);
-        console.error("Google error:", error);
-      });
-  }
+    document.getElementById("toggleSignupConfirmPassword").addEventListener("click", () => {
+      toggleVisibility("signupConfirmPassword", "toggleSignupConfirmPassword");
+    });
 
-
-    // Wait for full content load
-  window.addEventListener("load", function () {
-    const loader = document.getElementById("loader-overlay");
-
-    setTimeout(() => {
-      loader.style.transition = "opacity 0.6s ease";
-      loader.style.opacity = "0";
+    // Loader
+    window.addEventListener("load", function () {
+      const loader = document.getElementById("loader-overlay");
 
       setTimeout(() => {
-        loader.style.display = "none";
-        document.documentElement.classList.remove("loading");
-        document.body.classList.remove("loading");
-      }, 600);
-    }, 500); // Delay to allow bounce to run
-  });
+        loader.style.transition = "opacity 0.6s ease";
+        loader.style.opacity = "0";
 
-
-  function sendOTP(userEmail, userName, otp) {
-  const expiryTime = new Date(Date.now() + 5 * 60000).toLocaleTimeString(); // 5 mins from now
-
-  emailjs.send("service_v1avwdt", "template_f6corjb", {
-    user_name: userName,
-    email: userEmail,
-    passcode: otp,
-    time: expiryTime
-  })
-  .then(function(response) {
-    console.log("✅ OTP sent successfully:", response.status);
-    alert("OTP has been sent to your email.");
-  }, function(error) {
-    console.error("❌ Failed to send OTP:", error);
-    alert("Failed to send OTP. Please try again.");
-  });
-}
-
-
-  
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 600);
+      }, 500);
+    });
   </script>
-
-  
-
-
-
-
-
-<script>
-  (function () {
-    emailjs.init("yWquru6Fki6Lvx0je"); // Your public key
-  })();
-</script>
-
 </body>
 </html>
