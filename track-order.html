@@ -94,37 +94,68 @@
       box-shadow: var(--shadow);
     }
 
-    /* Search Box */
-    .search-box {
-      display: flex;
-      margin-bottom: 1.5rem;
-    }
+      /* Replace your existing search box styles with these */
+  .search-box {
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
 
+  .search-box input {
+    width: 100%;
+    padding: 0.8rem 3rem 0.8rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    background-color: var(--card-bg);
+    color: var(--text);
+    transition: border-color 0.3s ease;
+  }
+
+  .search-box input:focus {
+    border-color: var(--primary);
+  }
+
+  .search-icon, .clear-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1rem;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+  }
+
+  .search-icon:hover, .clear-icon:hover {
+    color: var(--primary);
+  }
+
+  .clear-icon {
+    display: none;
+    right: 3rem;
+  }
+
+  /* Show clear icon when input has value */
+  .search-box.has-value .clear-icon {
+    display: block;
+  }
+
+  /* For mobile responsiveness */
+  @media (max-width: 768px) {
     .search-box input {
-      flex: 1;
-      padding: 0.8rem 1rem;
-      font-size: 1rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius) 0 0 var(--radius);
-      outline: none;
-      background-color: var(--card-bg);
-      color: var(--text);
+      padding-left: 1rem;
+      padding-right: 2.8rem;
     }
-
-    .search-box button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0 1.5rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 0 var(--radius) var(--radius) 0;
-      transition: var(--transition);
+    
+    .search-icon, .clear-icon {
+      right: 0.8rem;
     }
-
-    .search-box button:hover {
-      background: var(--primary-dark);
+    
+    .clear-icon {
+      right: 2.5rem;
     }
+  }
 
     /* Order Card */
     .order-card {
@@ -546,6 +577,155 @@
         min-width: 300px;
       }
     }
+
+
+    /* Add these media queries at the end of your existing CSS */
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 1rem;
+    margin: 80px auto 1rem;
+    border-radius: 0;
+  }
+
+  .search-box {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .search-box input {
+    border-radius: var(--radius);
+    width: 100%;
+  }
+
+  .search-box button {
+    border-radius: var(--radius);
+    padding: 0.8rem;
+    width: 100%;
+  }
+
+  .order-card {
+    padding: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .order-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .order-header > div {
+    width: 100%;
+    text-align: left;
+  }
+
+  .order-items {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .order-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .order-actions button {
+    width: 100%;
+  }
+
+  .timeline-wrapper {
+    margin: 20px 10px;
+    min-width: 100%;
+  }
+
+  .status-step {
+    min-width: 80px;
+    font-size: 0.8rem;
+  }
+
+  .action-btn-wrapper button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 0.8rem;
+    font-size: 1rem;
+    height: 60px;
+  }
+
+  .back-btn {
+    left: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .header-title {
+    font-size: 1.1rem;
+  }
+
+  .container {
+    margin-top: 70px;
+  }
+
+  .status-step {
+    min-width: 60px;
+    font-size: 0.7rem;
+  }
+
+  .status-step .circle {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+  }
+
+  .order-items img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .timeline-step {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 14px;
+  }
+
+  .timeline-label {
+    font-size: 10px;
+  }
+
+  .current-label {
+    font-size: 10px;
+    top: -22px;
+  }
+
+  .progress-line,
+  .progress-fill {
+    height: 4px;
+    top: 10px;
+  }
+}
+
+/* Fix for the right gap issue */
+.order-card {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Ensure all buttons have proper spacing on mobile */
+button {
+  margin: 0.25rem 0;
+}
+
+/* Make sure images in order items don't overflow */
+.order-items img {
+  max-width: 100%;
+  height: auto;
+}
   </style>
 </head>
 <body>
@@ -560,12 +740,13 @@
   </header>
 
   <div class="container">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Enter Order ID..." />
-      <button onclick="searchOrder()">
-        <i class="fas fa-search"></i> Search
-      </button>
-    </div>
+ <!-- To this (add id="searchBox") -->
+<div class="search-box" id="searchBox">
+  <input type="text" id="searchInput" placeholder="Enter Order ID..." />
+  <i class="fas fa-search search-icon" id="searchIcon"></i>
+  <i class="fas fa-times clear-icon" id="clearIcon"></i>
+</div>
+
  <div id="ordersContainer"></div>
 <div id="orderDetailsContainer"></div> <!-- ✅ Add this -->
 
@@ -633,18 +814,132 @@ document.getElementById("searchInput")?.addEventListener("keyup", function (e) {
 
 
 function searchOrder() {
-  const searchId = document.getElementById("searchInput").value.trim();
-  if (!searchId) return;
-
+  const searchInput = document.getElementById("searchInput").value.trim();
+  const searchBox = document.getElementById("searchBox");
+  
+  // Update UI state
+  searchBox.classList.toggle("has-value", searchInput.length > 0);
+  
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
- const order = orders.find(o => o.id.toLowerCase().includes(searchId.toLowerCase()));
+  const checkout = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
+  const email = checkout.email || "guest@example.com";
 
-  if (order) {
-    showOrderDetails(order.id);
-  } else {
-    alert("❌ No matching order found.");
-  }
+  // Extract just the numeric part of the order ID for matching
+  const searchNumber = searchInput.replace(/\D/g, '');
+
+  // Filter orders based on exact numeric ID match and email
+  const filteredOrders = searchNumber
+    ? orders.filter(order => {
+        const orderIdNumber = (order.id || order.orderId || '').replace(/\D/g, '');
+        return orderIdNumber.includes(searchNumber) && 
+               order.email === email &&
+               !order.cancelled;
+      })
+    : orders.filter(order => order.email === email && !order.cancelled);
+
+  renderOrders(filteredOrders);
 }
+
+
+function renderOrders(orders) {
+  const container = document.getElementById("ordersContainer");
+  container.innerHTML = "";
+
+  if (orders.length === 0) {
+    const searchId = document.getElementById("searchInput").value.trim();
+    const message = searchId 
+      ? "🚫 No matching orders found" 
+      : "🚫 No current active orders found";
+    container.innerHTML = `<div class='no-orders'>${message}</div>`;
+    return;
+  }
+
+  // Sort by date (newest first)
+  orders.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  orders.forEach(order => {
+    const orderCard = document.createElement("div");
+    orderCard.className = "order-card";
+    orderCard.setAttribute("data-id", order.id || order.orderId);
+
+    const orderDate = new Date(order.date);
+
+    const itemsHTML = order.items.map(item => `
+      <div style="text-align:center;">
+        <img src="${item.image}" alt="${item.name}" />
+        <div>${item.name}</div>
+      </div>
+    `).join("");
+
+    const itemDetails = order.items.map(item => `
+      <div class="item" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
+        <img src="${item.image}" width="50" height="50" style="border-radius: 8px;"> 
+        <span>${item.name} — ₹${item.price}</span>
+      </div>
+    `).join("");
+
+    const paymentMethod = order.paymentMethod || order.paymentMode || 'UPI';
+    const paymentTag = paymentMethod === 'COD'
+      ? `<span style="color:red;font-weight:600"> - COD</span>`
+      : `<span style="color:blue;font-weight:600"> - UPI</span>`;
+
+    orderCard.innerHTML = `
+      <div class="order-header">
+        <div>
+          <div class="order-id">Order ID: ${order.id || order.orderId || 'N/A'}</div>
+          <div>Ordered on: ${orderDate.toDateString()}</div>
+          <div>Payment: ${paymentMethod || 'Not specified'}</div>
+        </div>
+        <div style="text-align:right;">
+          <div><strong>Estimated Delivery:</strong></div>
+          <div>${order.estimatedDelivery}</div>
+        </div>
+      </div>
+
+      <div class="order-items">${itemsHTML}</div>
+
+      <div style="margin-top: 1rem; font-weight: bold;">
+        Total Quantity: ${order.items.length} <br>
+        Total Amount: ₹${order.items.reduce((sum, item) => sum + item.price, 0)}
+      </div>
+
+      <div class="order-actions">
+        <button onclick="toggleDetails(this)">Show Details</button>
+        ${order.cancelled
+          ? `<span style="color:crimson;font-weight:bold;">❌ Order Cancelled</span>`
+          : `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">❌ Cancel Order</button>`}
+      </div>
+
+      <div class="tracking-details" style="display:none; margin-top:1.5rem;">
+        <div style="background:#f9f9f9; padding:1rem; border-radius:10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <div><strong>Estimated Delivery:</strong> ${order.estimatedDelivery} ${paymentTag}</div>
+          <div><strong>Items:</strong></div>
+          ${itemDetails}
+
+          <div class="status-card" style="margin-top:1.5rem; background:#ffffff; padding:1rem; border-radius:10px; box-shadow: 0 1px 6px rgba(0,0,0,0.08);">
+            <div style="font-weight:bold; margin-bottom:1rem; font-size:1.1rem; color:#074c63;">📦 Order Tracking Progress</div>
+            <div class="timeline-scroll">
+              <div class="timeline-wrapper">
+                <div class="progress-line"></div>
+                <div class="progress-fill" id="progressFill-${order.id}"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-btn-wrapper" style="margin-top: 1.5rem;">
+           <button class="print-btn" onclick="printSummary('${order.id || order.orderId}')">🖨 Print Summary</button>
+            ${order.cancelled
+              ? `<span style="color:crimson;font-weight:bold;">❌ Order Cancelled</span>`
+              : `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">❌ Cancel Order</button>`}
+          </div>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(orderCard);
+  });
+}
+
 
 
 
@@ -1471,9 +1766,72 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+function filterOrders(searchTerm = '') {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const checkout = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
+  const email = checkout.email || "guest@example.com";
+  
+  // Filter orders based on search term
+  const filteredOrders = searchTerm 
+    ? orders.filter(order => 
+        order.id.toLowerCase().includes(searchTerm.toLowerCase()) && 
+        order.email === email
+      )
+    : orders.filter(order => order.email === email);
+
+  renderOrders(filteredOrders);
+  updateSearchUI(searchTerm.length > 0);
+}
 
 
 
+function updateSearchUI(hasValue) {
+  const searchBox = document.querySelector(".search-box");
+  if (hasValue) {
+    searchBox.classList.add("has-value");
+  } else {
+    searchBox.classList.remove("has-value");
+  }
+}
+
+
+// Clear search function
+// Clear search function
+function clearSearch() {
+  const searchInput = document.getElementById("searchInput");
+  searchInput.value = "";
+  searchInput.focus();
+  document.getElementById("searchBox").classList.remove("has-value");
+  searchOrder(); // This will render all orders again
+}
+
+// Event listeners
+document.addEventListener("DOMContentLoaded", function() {
+  // Initial load
+  searchOrder();
+  
+  // Search icon click
+  document.getElementById("searchIcon").addEventListener("click", searchOrder);
+  
+  // Clear icon click
+  document.getElementById("clearIcon").addEventListener("click", clearSearch);
+  
+  // Enter key in search input
+  document.getElementById("searchInput").addEventListener("keyup", function(e) {
+    if (e.key === "Enter") {
+      searchOrder();
+    }
+    // Update clear icon visibility
+    document.getElementById("searchBox").classList.toggle("has-value", this.value.length > 0);
+  });
+  
+  // Input change detection
+  document.getElementById("searchInput").addEventListener("input", function() {
+    if (this.value === "") {
+      clearSearch();
+    }
+  });
+});
 
   // Auto-run
   window.onload = () => {
