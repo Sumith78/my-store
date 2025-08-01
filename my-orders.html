@@ -1230,16 +1230,7 @@ function filterOrders(filter) {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-  // First check if localStorage is available
-  try {
-    localStorage.setItem('test', 'test');
-    localStorage.removeItem('test');
-  } catch (e) {
-    alert('LocalStorage is not available. Some features may not work.');
-    return;
-  }
-  
-  // Then validate orders data
+  // First validate localStorage data
   try {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
     if (!Array.isArray(orders)) {
@@ -1249,22 +1240,8 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('orders', JSON.stringify([]));
   }
   
-  // Check for user authentication
-  const userEmail = localStorage.getItem('user_email') || 
-                   JSON.parse(localStorage.getItem('userData'))?.email;
-  
-  if (!userEmail) {
-    window.location.href = 'auth.html';
-    return;
-  }
-  
   // Then render orders
   renderOrders('all');
-  
-  // Mobile-specific debug info
-  console.log('Mobile debug initialized');
-  console.log('User email:', userEmail);
-  console.log('Orders count:', JSON.parse(localStorage.getItem('orders')).length);
 });
 
 // Debug function to check order data
@@ -1289,19 +1266,5 @@ function debugOrders() {
 window.debugOrders = debugOrders;
 </script>
 
-
-
-
-<div id="error-boundary" style="display: none; position: fixed; top: 0; left: 0; right: 0; background: #dc3545; color: white; padding: 1rem; z-index: 9999;">
-  An error occurred. Please refresh the page or contact support.
-</div>
-
-<script>
-// Global error handler
-window.onerror = function(message, source, lineno, colno, error) {
-  document.getElementById('error-boundary').style.display = 'block';
-  console.error('Global error:', message, error);
-};
-</script>
 </body>
 </html>
