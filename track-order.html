@@ -1,136 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Track Order</title>
-  <style>
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+     :root {
+      --primary: #1976d2;
+      --primary-dark: #0d47a1;
+      --primary-light: #e3f2fd;
+      --success: #28a745;
+      --success-light: #e6f6ec;
+      --danger: #dc3545;
+      --danger-light: #fdecec;
+      --warning: #ffc107;
+      --warning-light: #fff8e1;
+      --text: #333333;
+      --text-light: #666666;
+      --border: #e0e0e0;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+    }
+    
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
     }
-
 
     body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background-color: #f4f6f8;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
 
-    
+    /* Header */
     header {
-      background-color: #074c63;
+      background: var(--primary);
       color: white;
       padding: 1.2rem;
       text-align: center;
-      font-size: 1.6rem;
-      font-weight: bold;
+      font-size: 1.3rem;
+      font-weight: 600;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 1000;
-    }
-    
-
-   
-    
-
-    .container {
-      width: 95%;
-      max-width: 800px;
-      margin: 90px auto 2rem auto; /* push content below fixed header */
-      background-color: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    
-
-.status-bar::-webkit-scrollbar {
-  height: 6px;
-}
-.status-bar::-webkit-scrollbar-thumb {
-  background: #999;
-  border-radius: 4px;
-}
-
-
-.status-step {
-  text-align: center;
-  min-width: 100px;
-  color: #888;
-  flex: 0 0 auto;
-}
-
-    
-    .status-step.active {
-      font-weight: bold;
-      color: #074c63;
-    }
-
-    .status-step.active .circle {
-      background-color: #074c63;
-    }
-    .action-btn-wrapper {
+      box-shadow: var(--shadow);
+      height: 70px;
       display: flex;
       justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
+      align-items: center;
     }
-    .print-btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: #074c63;
-      color: white;
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    .cancel-btn {
-      background-color: crimson;
-    }
-    .no-orders {
-      text-align: center;
-      color: #777;
-      font-size: 1.4rem;
-      margin-top: 4rem;
-      animation: fadeIn 0.6s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+
     .back-btn {
       position: absolute;
-      left: 20px;
-      top: 10px;
-      font-size: 2rem;
-      cursor: pointer;
+      left: 1.5rem;
+      background: none;
+      border: none;
       color: white;
-      user-select: none;
-      transition: transform 0.3s ease, color 0.3s ease;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: var(--transition);
     }
+
     .back-btn:hover {
       color: #ffd700;
-      transform: translateX(-5px) scale(1.1);
+      transform: translateX(-3px);
     }
-    .timeline-header {
+
+    /* Main Container */
+    .container {
+      width: 95%;
+      max-width: 900px;
+      margin: 90px auto 2rem;
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    /* Search Box */
+    .search-box {
+      display: flex;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius) 0 0 var(--radius);
+      outline: none;
+      background-color: var(--card-bg);
+      color: var(--text);
+    }
+
+    .search-box button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0 1.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      transition: var(--transition);
+    }
+
+    .search-box button:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Order Card */
+    .order-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .order-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
+      flex-wrap: wrap;
       margin-bottom: 1rem;
+    }
+
+    .order-id {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .order-items {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .order-items img {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius);
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .order-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.8rem;
       flex-wrap: wrap;
     }
-    .summary h3 {
-      margin-bottom: 1.5rem;
+
+    .order-actions button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
     }
+
+    .order-actions button:hover {
+      background: var(--primary-dark);
+    }
+
+    .order-actions .cancel-btn {
+      background: var(--danger);
+    }
+
+    .order-actions .cancel-btn:hover {
+      background: #c82333;
+    }
+
+    /* Status Bar */
     .status-bar {
       display: flex;
       gap: 1.5rem;
@@ -138,121 +201,77 @@
       justify-content: center;
       margin-bottom: 3rem;
     }
-    @media (max-width: 600px) {
-      .timeline-header div {
-        width: 100%;
-        margin-bottom: 1rem;
-      }
-      .summary, .status-bar, .action-btn-wrapper {
-        text-align: center;
-      }
+
+    .status-step {
+      text-align: center;
+      min-width: 100px;
+      color: #888;
+      flex: 0 0 auto;
     }
 
-    
-   
-    
-    .timeline {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      flex-wrap: nowrap;
-      min-width: max-content;
-      
-    }
-    
-
-    .timeline-wrapper {
-      position: relative;
-      height: 40px;
-      margin: 40px ;
-    
-    }
-  
-    .progress-line {
-      position: absolute;
-      top: 18px;
-      left: 0;
-      right: 0;
-      height: 6px;
-      background-color: #ccc;
-      border-radius: 10px;
-      z-index: 1;
-    }
-  
-    .progress-fill {
-      position: absolute;
-      top: 18px; /* Match this with .progress-line */
-      left: 0;
-      height: 6px;
-      background-color: #074c63;
-      border-radius: 3px;
-      z-index: 2;
-      width: 0%;
-      transition: width 0.5s ease-in-out;
-    }
-
-    
-
-    .current-label {
-      position: absolute;
-      top: -28px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 12px;
+    .status-step.active {
       font-weight: bold;
-      color: #074c63;
-      animation: pulse 1s infinite;
+      color: var(--primary);
     }
-    
-    @keyframes pulse {
-      0% { opacity: 0.3; transform: translateX(-50%) scale(1); }
-      50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
-      100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
-    }
-    
-  
-    .timeline-step {
-      position: absolute;
-      top: 5px;
+
+    .status-step .circle {
       width: 32px;
       height: 32px;
-      border-radius: 50%;
       background: #ccc;
-      color: white;
-      text-align: center;
+      border-radius: 50%;
+      margin: 0 auto 8px;
       line-height: 32px;
-      font-size: 16px;
-      z-index: 3;
-      transition: background-color 0.4s ease;
-    }
-  
-    .timeline-step.active {
-      background: #074c63;
-    }
-  
-    .timeline-label {
-      position: absolute;
-      top: 42px;
-      transform: translateX(-50%);
-      font-size: 12px;
-      color: #555;
-      text-align: center;
+      font-size: 18px;
+      color: white;
     }
 
-    .timeline-wrapper {
-      position: relative;
-      height: 40px;
-      margin: 40px;
-      min-width: 600px; /* ✅ Force overflow if screen is narrow */
+    .status-step.active .circle {
+      background-color: var(--primary);
     }
-    
+
+    /* Action Buttons */
+    .action-btn-wrapper {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .action-btn-wrapper button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .action-btn-wrapper button:hover {
+      background: var(--primary-dark);
+    }
+
+    .action-btn-wrapper .cancel-btn {
+      background: var(--danger);
+    }
+
+    .action-btn-wrapper .cancel-btn:hover {
+      background: #c82333;
+    }
+
+    .print-btn {
+      background: var(--primary) !important;
+    }
+
+    /* Timeline */
     .timeline-scroll {
       overflow-x: auto;
       overflow-y: hidden;
       scroll-behavior: smooth;
       padding-bottom: 12px;
     }
-    
     
     .timeline-scroll::-webkit-scrollbar {
       height: 6px;
@@ -267,257 +286,285 @@
       background: #eee;
     }
 
+    .timeline-wrapper {
+      position: relative;
+      height: 80px;
+      margin: 20px 40px;
+      min-width: 600px;
+    }
 
-    header {
-      background: #074c63;
+    .progress-line {
+      position: absolute;
+      top: 18px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background-color: #ccc;
+      border-radius: 10px;
+      z-index: 1;
+    }
+
+    .progress-fill {
+      position: absolute;
+      top: 18px;
+      left: 0;
+      height: 6px;
+      background-color: var(--primary);
+      border-radius: 3px;
+      z-index: 2;
+      width: 0%;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .timeline-step {
+      position: absolute;
+      top: 5px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ccc;
       color: white;
-      padding: 1.2rem;
       text-align: center;
-      font-size: 1.6rem;
+      line-height: 32px;
+      font-size: 16px;
+      z-index: 3;
+      transition: background-color 0.4s ease;
+    }
+
+    .timeline-step.active {
+      background: var(--primary);
+    }
+
+    .timeline-label {
+      position: absolute;
+      top: 42px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+    }
+
+    .current-label {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--primary);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+      100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+    }
+
+    /* No Orders */
+    .no-orders {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 1.4rem;
+      margin-top: 4rem;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Cancellation Modal */
+    .cancellation-modal {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      z-index: 1000;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
     }
-    .back-btn {
-      position: absolute;
-      left: 20px;
-      top: 10px;
-      font-size: 2rem;
-      cursor: pointer;
-      color: white;
+
+    .cancellation-modal-content {
+      background-color: var(--card-bg);
+      width: 90%;
+      max-width: 500px;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      animation: modalFadeIn 0.3s ease;
     }
-    .container {
-      max-width: 900px;
-      margin: 100px auto 2rem;
-      padding: 1rem;
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .search-box {
-      display: flex;
-      margin-bottom: 1.5rem;
-    }
-    .search-box input {
-      flex: 1;
-      padding: 0.8rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px 0 0 6px;
-      outline: none;
-    }
-    .search-box button {
-      background: #074c63;
-      color: white;
-      border: none;
-      padding: 0 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border-radius: 0 6px 6px 0;
-    }
-    .order-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .order-header {
+
+    .cancellation-modal-header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
     }
-    .order-id {
-      font-weight: bold;
-      color: #074c63;
+
+    .cancellation-modal-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
     }
-    .order-items {
+
+    .close-cancellation-modal {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-light);
+    }
+
+    .cancellation-reason-options {
+      margin-bottom: 1.5rem;
+    }
+
+    .reason-option {
+      display: block;
+      margin-bottom: 0.8rem;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .reason-option:hover {
+      background-color: var(--bg);
+      border-color: var(--primary);
+    }
+
+    .reason-option.selected {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .custom-reason-container {
       margin-top: 1rem;
+    }
+
+    .custom-reason-textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      min-height: 100px;
+      resize: vertical;
+      font-family: inherit;
+      background-color: var(--card-bg);
+      color: var(--text);
+    }
+
+    .cancellation-modal-actions {
       display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
+      justify-content: flex-end;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
     }
-    .order-items img {
-      width: 60px;
-      height: 60px;
-      border-radius: 6px;
-      object-fit: cover;
+
+    .cancellation-modal-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
     }
-    .order-actions {
-      margin-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-    .order-actions button {
-      background: #074c63;
+
+    .cancellation-modal-btn.cancel {
+      background: var(--text-light);
       color: white;
       border: none;
-      padding: 0.6rem 1rem;
-      cursor: pointer;
-      border-radius: 6px;
-      font-size: 0.9rem;
     }
-    .order-actions .cancel-btn {
-      background: crimson;
+
+ 
+
+    .cancellation-modal-btn.submit {
+      background: var(--danger);
+      color: white;
+      border: none;
     }
-    .no-orders {
-      text-align: center;
-      color: #555;
-      font-size: 1.3rem;
-      margin-top: 3rem;
+
+    .cancellation-modal-btn.submit:hover {
+      background: #c82333;
     }
-    
 
-    .status-step .circle {
-  width: 32px;
-  height: 32px;
-  background: #ccc;
-  border-radius: 50%;
-  margin: 0 auto 8px;
-  line-height: 32px;
-  font-size: 18px;
-  color: white;
-}
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
 
+      .order-header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
 
-.action-btn-wrapper button {
-  background: #074c63;
-  color: white;
-  border: none;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
+      .order-actions {
+        flex-direction: column;
+      }
 
-.action-btn-wrapper .cancel-btn {
-  background: crimson;
-}
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
 
- .progress-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0;
-  }
+      .timeline-wrapper {
+        margin: 20px;
+        min-width: 400px;
+      }
+    }
 
-  .progress-step {
-    flex: 1;
-    text-align: center;
-    position: relative;
-    color: #999;
-  }
+    @media (max-width: 480px) {
+      header {
+        padding: 1rem;
+        font-size: 1.1rem;
+      }
 
-  .progress-step::before {
-    content: "";
-    position: absolute;
-    top: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 12px;
-    width: 12px;
-    background-color: #ccc;
-    border-radius: 50%;
-    z-index: 1;
-  }
+      .back-btn {
+        left: 1rem;
+        font-size: 1.1rem;
+      }
 
-  .progress-step::after {
-    content: "";
-    position: absolute;
-    top: 17px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    height: 2px;
-    background-color: #ccc;
-    z-index: 0;
-  }
+      .search-box button {
+        padding: 0 1rem;
+      }
 
-  .progress-step:last-child::after {
-    display: none;
-  }
-
-  .progress-step.active {
-    color: #007bff;
-  }
-
-  .progress-step.active::before {
-    background-color: #007bff;
-  }
-
-  .progress-step.active::after {
-    background-color: #007bff;
-  }
-
-
-
-  .tracking-steps {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  position: relative;
-}
-
-.step {
-  text-align: center;
-  flex: 1;
-  position: relative;
-}
-
-.step::before {
-  content: '';
-  height: 5px;
-  background-color: #ddd;
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  right: -50%;
-  z-index: -1;
-}
-
-.step:first-child::before {
-  left: 50%;
-}
-
-.step.completed::before {
-  background-color: #4CAF50;
-}
-
-.step-indicator {
-  width: 25px;
-  height: 25px;
-  margin: 0 auto 5px;
-  border-radius: 50%;
-  background-color: #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 12px;
-}
-
-.step.completed .step-indicator {
-  background-color: #4CAF50;
-}
-
-
-
-    
+      .timeline-wrapper {
+        min-width: 300px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
-    
-    <span class="back-btn" onclick="window.location.href='index.html'">&#8592;</span>
-    📦 Track Order
+    <button class="back-btn" onclick="window.location.href='index.html'">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <div class="header-title">
+      <i class="fas fa-shopping-bag"></i>
+      Track Order
+    </div>
   </header>
 
-   <div class="container">
+  <div class="container">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Enter Order ID..." />
-      <button onclick="searchOrder()">Search</button>
+      <button onclick="searchOrder()">
+        <i class="fas fa-search"></i> Search
+      </button>
     </div>
  <div id="ordersContainer"></div>
 <div id="orderDetailsContainer"></div> <!-- ✅ Add this -->
@@ -639,16 +686,17 @@ function renderAllOrders() {
       </div>
     `).join("");
 
-    const paymentTag = order.paymentMode === 'COD'
-      ? `<span style="color:red;font-weight:600"> - COD</span>`
-      : `<span style="color:blue;font-weight:600"> - UPI</span>`;
+ const paymentMethod = order.paymentMethod || order.paymentMode || 'UPI'; // Default to UPI if neither exists
+const paymentTag = paymentMethod === 'COD'
+  ? `<span style="color:red;font-weight:600"> - COD</span>`
+  : `<span style="color:blue;font-weight:600"> - UPI</span>`;
 
     orderCard.innerHTML = `
       <div class="order-header">
         <div>
           <div class="order-id">Order ID: ${order.id || order.orderId || 'N/A'}</div>
           <div>Ordered on: ${orderDate.toDateString()}</div>
-          <div>Payment: ${order.paymentMode}</div>
+          <div>Payment: ${paymentMethod || 'Not specified'}</div>
         </div>
         <div style="text-align:right;">
           <div><strong>Estimated Delivery:</strong></div>
@@ -688,7 +736,7 @@ function renderAllOrders() {
           </div>
 
           <div class="action-btn-wrapper" style="margin-top: 1.5rem;">
-            <button class="print-btn" onclick="printSummary()">🖨 Print Summary</button>
+           <button class="print-btn" onclick="printSummary('${order.id || order.orderId}')">🖨 Print Summary</button>
             ${order.cancelled
               ? `<span style="color:crimson;font-weight:bold;">❌ Order Cancelled</span>`
               : `<button class="cancel-btn" onclick="cancelOrder('${order.id}')">❌ Cancel Order</button>`}
@@ -806,182 +854,449 @@ function toggleDetails(button) {
       }
     }
 
-async function printSummary(orderID = localStorage.getItem("lastOrderId")) {
+
+
+    async function printSummary(orderID) {
+  if (!orderID) {
+    alert("❌ No order ID provided");
+    return;
+  }
+
+  // Fetch order details
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const addressData = JSON.parse(localStorage.getItem("checkoutDetails")) || {};
- const latestOrder = orders.find(o => o.id === orderID || o.orderId === orderID);
-
-
-  if (!latestOrder) {
+  const order = orders.find(o => o.id === orderID || o.orderId === orderID);
+  
+  if (!order) {
     alert("❌ Order not found.");
     return;
   }
 
-  const companyName = "MAHAVEER ENTERPRISES";
-  const gstin = "29GHUPS1629Q1ZZ";
+  // Fetch customer details from checkout data
+  const deliveryDetails = JSON.parse(localStorage.getItem("deliveryDetails")) || {};
+  const orderDate = new Date(order.date);
+  const formattedDate = orderDate.toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
 
-  const customerName = addressData.name || "Customer Name not found";
-  const email = latestOrder.email || "guest@example.com";
-  const paymentMode = latestOrder.paymentMode || "N/A";
- const orderId = latestOrder.orderId || "N/A"; // ✅ Correct assignment
+  // Business Information
+  const companyInfo = {
+    name: "MAHAVEER ENTERPRISES",
+    gstin: "29GHUPS1629Q1ZZ",
+    address: "Guestline, Bengaluru, Karnataka 562107",
+    phone: "+91 9739170288",
+    email: "mahaveerenterprises0118@gmail.com"
+  };
 
+  // Customer details from checkout form
+  const customerDetails = {
+    name: deliveryDetails.name || "Customer Name not found",
+    email: deliveryDetails.email || "guest@example.com",
+    phone: deliveryDetails.phone || "N/A",
+    address: deliveryDetails.address || "Address not found",
+    city: deliveryDetails.city || "",
+    state: deliveryDetails.state || "",
+    zip: deliveryDetails.zip || "",
+    notes: deliveryDetails.notes || ""
+  };
 
-  let address = "";
-  if (addressData.deliveryAddress) {
-    address = addressData.deliveryAddress;
-  } else {
-    address = `
-      ${addressData.name || "Name not found"}<br>
-      ${addressData.currentAddress || "Address not found"}<br>
-      ${addressData.city || ""} ${addressData.state || ""} ${addressData.pincode || ""}<br>
-      ${addressData.phone || ""}
-    `.trim();
-  }
+  // Payment details from order with correct status logic
+  const paymentMethod = order.paymentMethod || order.paymentMode || "COD";
+  const paymentStatus = paymentMethod === "COD" ? "Pending" : "Paid";
+  
+  const paymentDetails = {
+    mode: paymentMethod,
+    status: paymentStatus,
+    orderId: order.orderId || order.id || "N/A"
+  };
 
-  const orderDate = new Date(latestOrder.date);
-  const today = new Date();
-  const diffDays = Math.floor((today - orderDate) / (1000 * 60 * 60 * 24));
+  // Calculate totals
+  const subtotal = order.items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+  const shipping = order.shippingFee || 0;
+  const tax = order.tax || 0;
+  const total = subtotal + shipping + tax;
 
-  const steps = [
-    { name: "Order Placed", icon: "✔" },
-    { name: "Packed", icon: "📦" },
-    { name: "Shipped", icon: "🚚" },
-    { name: "Out for Delivery", icon: "📍" },
-    { name: "Delivered", icon: "✅" }
-  ];
+  // Format delivery address
+  const deliveryAddress = `
+    ${customerDetails.name}<br>
+    ${customerDetails.address}<br>
+    ${customerDetails.city}, ${customerDetails.state} - ${customerDetails.zip}<br>
+    Phone: ${customerDetails.phone}
+  `;
 
-  const statusHTML = steps.map((step, i) => {
-    return `<li>${diffDays >= i ? '✅' : '⬜'} ${step.name}</li>`;
-  }).join('');
+  // Format payment mode for display
+  const formattedPaymentMode = paymentMethod === 'UPI' ? 'UPI Payment' : 
+                             paymentMethod === 'COD' ? 'Cash on Delivery' : 
+                             paymentMethod;
 
-  const itemsHTML = latestOrder.items.map((item, index) => {
-    const pageBreak = index > 0 && index % 10 === 0 ? '<div class="page-break"></div>' : '';
-    return `
-      ${pageBreak}
-      <li class="item">
+  // Order items table
+  const itemsHTML = order.items.map(item => `
+    <tr>
+      <td class="product-info">
         <img src="${item.image || 'https://via.placeholder.com/50'}" />
-        ${item.name} — ₹${item.price}
-      </li>
-    `;
-  }).join('');
+        <div>
+          <div class="product-name">${item.name}</div>
+          ${item.description ? `<div class="product-desc">${item.description}</div>` : ''}
+        </div>
+      </td>
+      <td class="text-center">${item.quantity || 1}</td>
+      <td class="text-right">₹${item.price.toFixed(2)}</td>
+      <td class="text-right">₹${(item.price * (item.quantity || 1)).toFixed(2)}</td>
+    </tr>
+  `).join('');
+
+  // Payment summary
+  const paymentSummaryHTML = `
+    <div class="payment-summary-row">
+      <span>Subtotal:</span>
+      <span>₹${subtotal.toFixed(2)}</span>
+    </div>
+    ${shipping > 0 ? `
+    <div class="payment-summary-row">
+      <span>Shipping:</span>
+      <span>₹${shipping.toFixed(2)}</span>
+    </div>` : ''}
+    ${tax > 0 ? `
+    <div class="payment-summary-row">
+      <span>Tax (GST):</span>
+      <span>₹${tax.toFixed(2)}</span>
+    </div>` : ''}
+    <div class="payment-summary-row total">
+      <span>Total Amount:</span>
+      <span>₹${total.toFixed(2)}</span>
+    </div>
+  `;
+
+  const printHTML = `
+    <html>
+      <head>
+        <title>Invoice #${paymentDetails.orderId}</title>
+        <style>
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+          
+          :root {
+            --primary-color: #1976d2;
+            --secondary-color: #0d47a1;
+            --text-color: #333333;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #757575;
+          }
+          
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+          }
+          
+          body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 40px;
+            background-color: #fff;
+          }
+          
+          .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+          }
+          
+          .invoice-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px;
+            text-align: center;
+          }
+          
+          .invoice-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+          }
+          
+          .invoice-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+          }
+          
+          .invoice-body {
+            padding: 30px;
+          }
+          
+          .company-info {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+          }
+          
+          .company-logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+          }
+          
+          .company-details {
+            text-align: right;
+            font-size: 14px;
+          }
+          
+          .invoice-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+          }
+          
+          .invoice-details, .customer-details {
+            flex: 1;
+          }
+          
+          .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--medium-gray);
+          }
+          
+          .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+          }
+          
+          .detail-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: var(--dark-gray);
+          }
+          
+          .detail-value {
+            flex: 1;
+          }
+          
+          .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+          }
+          
+          .items-table th {
+            background-color: var(--light-gray);
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+          }
+          
+          .items-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--medium-gray);
+          }
+          
+          .product-info {
+            display: flex;
+            align-items: center;
+          }
+          
+          .product-info img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
+          }
+          
+          .product-name {
+            font-weight: 500;
+          }
+          
+          .product-desc {
+            font-size: 13px;
+            color: var(--dark-gray);
+            margin-top: 3px;
+          }
+          
+          .text-center {
+            text-align: center;
+          }
+          
+          .text-right {
+            text-align: right;
+          }
+          
+          .payment-summary {
+            background-color: var(--light-gray);
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 30px;
+            max-width: 300px;
+            margin-left: auto;
+          }
+          
+          .payment-summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+          }
+          
+          .payment-summary-row.total {
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--medium-gray);
+          }
+          
+          .invoice-footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--medium-gray);
+            text-align: center;
+            font-size: 14px;
+            color: var(--dark-gray);
+          }
+          
+          .terms {
+            margin-top: 30px;
+            font-size: 13px;
+            color: var(--dark-gray);
+          }
+          
+          @media print {
+            @page {
+              size: A4;
+              margin: 0;
+            }
+            body {
+              padding: 0;
+              background: white;
+            }
+            .invoice-container {
+              box-shadow: none;
+              border-radius: 0;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="invoice-container">
+          <div class="invoice-header">
+            <div class="invoice-title">ORDER INVOICE - MAHAVEER ENTERPRISES</div>
+            <div class="invoice-subtitle">#${paymentDetails.orderId}</div>
+          </div>
+          
+          <div class="invoice-body">
+            <div class="company-info">
+              <div>
+                <div class="company-logo">${companyInfo.name}</div>
+                <div>GSTIN: ${companyInfo.gstin}</div>
+              </div>
+              <div class="company-details">
+                <div>${companyInfo.address}</div>
+                <div>${companyInfo.phone} | ${companyInfo.email}</div>
+              </div>
+            </div>
+            
+            <div class="invoice-meta">
+              <div class="invoice-details">
+                <div class="section-title">Order Details</div>
+                <div class="detail-row">
+                  <div class="detail-label">Order Number:</div>
+                  <div class="detail-value">#${paymentDetails.orderId}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Order Date:</div>
+                  <div class="detail-value">${formattedDate}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Payment Method:</div>
+                  <div class="detail-value">${formattedPaymentMode}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Payment Status:</div>
+                  <div class="detail-value">${paymentDetails.status}</div>
+                </div>
+              </div>
+              
+              <div class="customer-details">
+                <div class="section-title">Customer Details</div>
+                <div class="detail-row">
+                  <div class="detail-label">Name:</div>
+                  <div class="detail-value">${customerDetails.name}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Email:</div>
+                  <div class="detail-value">${customerDetails.email}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Phone:</div>
+                  <div class="detail-value">${customerDetails.phone}</div>
+                </div>
+                <div class="detail-row">
+                  <div class="detail-label">Delivery Address:</div>
+                  <div class="detail-value">${deliveryAddress}</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="section-title">Order Items</div>
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Qty</th>
+                  <th>Unit Price</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemsHTML}
+              </tbody>
+            </table>
+            
+            <div class="payment-summary">
+              ${paymentSummaryHTML}
+            </div>
+            
+            ${customerDetails.notes ? `
+            <div class="section">
+              <div class="section-title">Delivery Instructions</div>
+              <div>${customerDetails.notes}</div>
+            </div>` : ''}
+            
+            <div class="terms">
+              <p><strong>Terms & Conditions:</strong></p>
+              <p>1. Goods once sold will not be taken back.</p>
+              <p>2. Please quote the order number in all correspondence.</p>
+              <p>3. For returns or exchanges, please contact customer support within 7 days.</p>
+            </div>
+            
+            <div class="invoice-footer">
+              <p>Thank you for shopping with ${companyInfo.name}!</p>
+              <p>For any queries, please contact our customer support at ${companyInfo.phone}</p>
+            </div>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
 
   const choice = confirm("Click OK to Print, or Cancel to Download PDF");
-
+  const w = window.open();
+  w.document.write(printHTML);
+  w.document.close();
+  
   if (choice) {
-    const w = window.open();
-    w.document.write(`
-      <html>
-        <head>
-          <title>Order Summary</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              padding: 30px;
-              font-size: 14px;
-              color: #333;
-            }
-            .header {
-              border-bottom: 2px solid #000;
-              padding-bottom: 10px;
-              margin-bottom: 20px;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-            }
-            .header .title {
-              flex-grow: 1;
-              text-align: center;
-              font-size: 16px;
-              color: #074c63;
-              font-weight: bold;
-              text-transform: uppercase;
-              letter-spacing: 1px;
-            }
-            .gstin {
-              font-size: 10px;
-              color: #444;
-              white-space: nowrap;
-            }
-            .section-title {
-              text-align: center;
-              font-size: 14px;
-              font-weight: bold;
-              text-decoration: underline;
-              margin-bottom: 20px;
-            }
-            .section { margin-bottom: 25px; }
-            ul { padding-left: 20px; }
-            .item { margin-bottom: 12px; }
-            img {
-              width: 50px;
-              height: 50px;
-              object-fit: cover;
-              vertical-align: middle;
-              margin-right: 10px;
-              border-radius: 8px;
-            }
-            .label { font-weight: bold; color: #333; }
-            .footer {
-              position: fixed;
-              bottom: 20px;
-              left: 30px;
-              font-size: 10px;
-              color: #555;
-            }
-            .page-break {
-              page-break-before: always;
-              margin-top: 60px;
-            }
-            @media print {
-              @page { margin: 0; }
-              body { margin: 0.8in; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <div class="gstin">GSTIN: ${gstin}</div>
-            <div class="title">${companyName}</div>
-            <div style="width: 60px;"></div>
-          </div>
-
-          <div class="section-title">Track Order - Summary</div>
-          <div class="section"><span class="label">Customer Name:</span> ${customerName}</div>
-          <div class="section"><span class="label">Customer Email:</span> ${email}</div>
-          <div class="section"><span class="label">Order ID:</span> #${orderId}</div>
-          <div class="section"><span class="label">Delivery Address:</span><br>${address}</div>
-          <div class="section"><span class="label">Ordered on:</span> ${orderDate.toDateString()}</div>
-          <div class="section"><span class="label">Estimated Delivery:</span> ${latestOrder.estimatedDelivery}</div>
-          <div class="section"><span class="label">Payment Mode:</span> ${paymentMode}</div>
-
-          <hr>
-
-          <div class="section">
-            <span class="label">Order Status:</span>
-            <ul>${statusHTML}</ul>
-          </div>
-
-          <hr>
-
-          <div class="section">
-            <span class="label">Items Ordered:</span>
-            <ul>${itemsHTML}</ul>
-          </div>
-
-          <div class="footer">GSTIN: ${gstin}</div>
-        </body>
-      </html>
-    `);
-    w.document.close();
-    setTimeout(() => w.print(), 1000);
+    setTimeout(() => w.print(), 500);
   } else {
-    // jsPDF fallback
     alert("❌ PDF download is not available unless jsPDF is included.");
   }
 }
-
-
-    
     
 
 let lastShownOrderId = null;
@@ -1060,18 +1375,100 @@ const order = orders.find(o => o.id === orderId || o.orderId === orderId);
 
 <!-- ✅ Replace this section inside your existing script: -->
 
-function cancelOrder(orderId) {
-  const orders = JSON.parse(localStorage.getItem("orders")) || [];
-  const index = orders.findIndex(o => o.id === orderId || o.orderId === orderId);
-  if (index !== -1) {
-    if (confirm("Are you sure you want to cancel this order?")) {
-      orders[index].cancelled = true;
-      localStorage.setItem("orders", JSON.stringify(orders));
-      alert("✅ Your order has been cancelled.");
-      renderAllOrders();
-    }
-  }
+let currentCancellingOrderId = null;
+
+function showCancellationModal(orderId) {
+  currentCancellingOrderId = orderId;
+  const modal = document.getElementById('cancellationModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  
+  // Reset modal state
+  document.querySelectorAll('.reason-option').forEach(option => {
+    option.classList.remove('selected');
+  });
+  document.getElementById('customReasonTextarea').style.display = 'none';
+  document.getElementById('customReasonTextarea').value = '';
 }
+
+function closeCancellationModal() {
+  const modal = document.getElementById('cancellationModal');
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+  currentCancellingOrderId = null;
+}
+
+function cancelOrder(orderId) {
+  showCancellationModal(orderId);
+}
+
+// Handle modal interactions
+document.addEventListener('DOMContentLoaded', function() {
+  const modal = document.getElementById('cancellationModal');
+  
+  // Reason selection
+  document.querySelectorAll('.reason-option').forEach(option => {
+    option.addEventListener('click', function() {
+      document.querySelectorAll('.reason-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      this.classList.add('selected');
+      
+      // Show textarea only if "Other reason" is selected
+      const textarea = document.getElementById('customReasonTextarea');
+      if (this.dataset.reason === 'Other reason') {
+        textarea.style.display = 'block';
+      } else {
+        textarea.style.display = 'none';
+      }
+    });
+  });
+  
+  // Close modal when clicking X or cancel button
+  document.querySelector('.close-cancellation-modal').addEventListener('click', closeCancellationModal);
+  document.querySelector('.cancellation-modal-btn.cancel').addEventListener('click', closeCancellationModal);
+  
+  // Submit cancellation
+  document.querySelector('.cancellation-modal-btn.submit').addEventListener('click', function() {
+    if (!currentCancellingOrderId) return;
+    
+    const selectedOption = document.querySelector('.reason-option.selected');
+    if (!selectedOption) {
+      alert('Please select a cancellation reason');
+      return;
+    }
+    
+    let reason = selectedOption.dataset.reason;
+    if (reason === 'Other reason') {
+      const customReason = document.getElementById('customReasonTextarea').value.trim();
+      if (customReason) {
+        reason = customReason;
+      }
+    }
+    
+    // Process cancellation
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    const index = orders.findIndex(o => o.id === currentCancellingOrderId || o.orderId === currentCancellingOrderId);
+    
+    if (index !== -1) {
+      orders[index].cancelled = true;
+      orders[index].cancelledDate = new Date().toISOString();
+      orders[index].cancellationReason = reason;
+      
+      localStorage.setItem('orders', JSON.stringify(orders));
+      alert('✅ Your order has been cancelled.');
+      renderAllOrders();
+      closeCancellationModal();
+    }
+  });
+  
+  // Close modal when clicking outside
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeCancellationModal();
+    }
+  });
+});
 
 
 
@@ -1085,5 +1482,35 @@ function cancelOrder(orderId) {
   };
     
   </script>
+
+  <!-- Cancellation Modal -->
+  <div id="cancellationModal" class="cancellation-modal">
+    <div class="cancellation-modal-content">
+      <div class="cancellation-modal-header">
+        <h3 class="cancellation-modal-title">Cancel Order</h3>
+        <button class="close-cancellation-modal">&times;</button>
+      </div>
+      <div class="cancellation-reason-options">
+        <div class="reason-option" data-reason="Changed my mind">Changed my mind</div>
+        <div class="reason-option" data-reason="Found better price elsewhere">Found better price elsewhere</div>
+        <div class="reason-option" data-reason="Ordered by mistake">Ordered by mistake</div>
+        <div class="reason-option" data-reason="Delivery time too long">Delivery time too long</div>
+        <div class="reason-option" data-reason="Other reason">Other reason</div>
+      </div>
+      <div class="custom-reason-container">
+        <textarea 
+          id="customReasonTextarea" 
+          class="custom-reason-textarea" 
+          placeholder="Please specify your reason (optional)..."
+          style="display: none;"></textarea>
+      </div>
+      <div class="cancellation-modal-actions">
+        <button class="cancellation-modal-btn cancel">Go Back</button>
+        <button class="cancellation-modal-btn submit">Confirm Cancellation</button>
+      </div>
+    </div>
+  </div>
+
+
 </body>
 </html>

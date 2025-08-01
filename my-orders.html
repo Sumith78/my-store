@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    /* ALL YOUR EXISTING STYLES REMAIN EXACTLY THE SAME */
     :root {
       --primary: #1976d2;
       --primary-dark: #0d47a1;
@@ -356,6 +357,184 @@
       background-color: var(--primary);
     }
     
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 2rem auto;
+      max-width: 600px;
+      width: 90%;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .modal-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    .close-modal {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .order-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .detail-group {
+      margin-bottom: 1rem;
+    }
+    
+    .detail-label {
+      font-weight: 500;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .detail-value {
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .modal-items {
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+    
+    .modal-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .modal-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .modal-item-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    
+    .modal-item-details {
+      flex: 1;
+    }
+    
+    .modal-item-name {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-item-price {
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-item-quantity {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+    
+    .modal-summary {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    
+    .summary-total {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed var(--border);
+    }
+    
+    /* Show More Items Button */
+    .show-more-items {
+      color: var(--primary);
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      transition: background-color 0.2s ease;
+      margin-top: 0.5rem;
+      border: 1px dashed var(--primary);
+    }
+    
+    .show-more-items:hover {
+      background-color: var(--primary-light);
+    }
+    
+    /* Hidden Items Container */
+    .hidden-items {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
     /* Responsive */
     @media (max-width: 768px) {
       .orders-container {
@@ -364,6 +543,10 @@
       
       .order-actions {
         flex-direction: column;
+      }
+      
+      .order-details-grid {
+        grid-template-columns: 1fr;
       }
     }
     
@@ -423,100 +606,233 @@
   </div>
 </div>
 
+<!-- Order Details Modal -->
+<div id="orderDetailsModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title">Order Details</h3>
+      <button class="close-modal" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBodyContent">
+      <!-- Content will be dynamically inserted here -->
+    </div>
+  </div>
+</div>
+
 <script>
-// Generate a formatted order ID
+// Generate a consistent order ID format matching payment.html
 function generateOrderId() {
-  const timestamp = Date.now().toString();
-  const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-  return `ORD-${timestamp.slice(-6)}-${randomNum}`;
+  return `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 }
 
-// Load orders for logged-in user
+// Enhanced order loading with phone number from checkout
 function loadUserOrders() {
-  // Get user email from localStorage (from your auth system)
-  const userEmail = localStorage.getItem('user_email') || 
-                   JSON.parse(localStorage.getItem('userData'))?.email ||
-                   JSON.parse(localStorage.getItem('checkoutDetails'))?.email;
-  
-  if (!userEmail) {
-    // Redirect to login if no user email found
-    window.location.href = 'auth.html';
-    return;
-  }
+  try {
+    // Get delivery details from checkout
+    const deliveryDetails = JSON.parse(localStorage.getItem('deliveryDetails')) || {};
+    
+    // Get user email from all possible sources
+    const userEmail = localStorage.getItem('user_email') || 
+                     JSON.parse(localStorage.getItem('userData'))?.email ||
+                     deliveryDetails.email;
+    
+    // Get phone number from delivery details
+    const userPhone = deliveryDetails.phone || 'Not specified';
 
-  // Load all orders from localStorage
-  const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
-  
-  // Ensure each order has a properly formatted ID
-  const ordersWithFormattedIds = allOrders.map(order => {
-    if (!order.id || !order.id.startsWith('ORD-')) {
-      return {
-        ...order,
-        id: generateOrderId()
-      };
+    if (!userEmail) {
+      window.location.href = 'auth.html';
+      return [];
     }
-    return order;
-  });
-  
-  // Save back to localStorage if we updated any IDs
-  if (ordersWithFormattedIds.length !== allOrders.length) {
-    localStorage.setItem('orders', JSON.stringify(ordersWithFormattedIds));
+
+    // Load and validate orders
+    let allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+    
+    // Process orders to ensure they have required fields including phone
+    const validOrders = allOrders.map(order => {
+      if (!order || typeof order !== 'object') return null;
+      
+      // Ensure required fields exist
+      if (!order.id || !order.id.startsWith('ORD-')) {
+        order.id = generateOrderId();
+      }
+      if (!order.email) order.email = userEmail;
+      if (!order.phone) order.phone = userPhone; // Add phone number from checkout
+      if (!order.items) order.items = [];
+      if (!order.date) order.date = new Date().toISOString();
+      
+      return order;
+    }).filter(order => order !== null);
+
+    // Save cleaned data if changes were made
+    if (validOrders.length !== allOrders.length) {
+      localStorage.setItem('orders', JSON.stringify(validOrders));
+    }
+    
+    return validOrders
+      .filter(order => order.email === userEmail)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+  } catch (error) {
+    console.error("Error loading orders:", error);
+    return [];
   }
-  
-  // Filter orders for current user and sort by date (newest first)
-  const userOrders = ordersWithFormattedIds
-    .filter(order => order.email === userEmail)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-  
-  return userOrders;
 }
 
-// Render orders based on current filter
-function renderOrders(filter = 'all') {
-  const orders = loadUserOrders();
-  const container = document.getElementById('ordersList');
-  const emptyState = document.getElementById('emptyState');
-  
-  // Filter orders
-  let filteredOrders = [];
-  switch(filter) {
-    case 'active':
-      filteredOrders = orders.filter(o => !o.cancelled && o.status !== 'delivered');
-      break;
-    case 'delivered':
-      filteredOrders = orders.filter(o => o.status === 'delivered');
-      break;
-    case 'cancelled':
-      filteredOrders = orders.filter(o => o.cancelled || o.status === 'cancelled');
-      break;
-    default:
-      filteredOrders = [...orders];
+// Improved address parsing function with phone number from checkout
+function parseAddress(address) {
+  // Get phone from delivery details if available
+  const deliveryDetails = JSON.parse(localStorage.getItem('deliveryDetails')) || {};
+  const defaultPhone = deliveryDetails.phone || 'Not specified';
+
+  if (!address) {
+    return {
+      name: 'Not specified',
+      street: 'Not specified',
+      city: 'Not specified',
+      state: 'Not specified',
+      zip: 'Not specified',
+      phone: defaultPhone,
+      fullAddress: 'Address not available'
+    };
   }
-  
-  if (filteredOrders.length === 0) {
-    container.innerHTML = '';
-    emptyState.style.display = 'block';
-    return;
+
+  // If address is already in object format
+  if (typeof address === 'object' && address !== null) {
+    return {
+      name: address.name || 'Not specified',
+      street: address.street || address.address || 'Not specified',
+      city: address.city || 'Not specified',
+      state: address.state || 'Not specified',
+      zip: address.zip || address.pincode || 'Not specified',
+      phone: address.phone || defaultPhone, // Use phone from checkout if not in address
+      fullAddress: address.fullAddress || 
+                 `${address.name || ''}\n${address.street || ''}\n${address.city || ''}, ${address.state || ''} ${address.zip || ''}`
+    };
   }
+
+  // If address is a string (legacy format)
+  const lines = address.split('\n');
+  if (lines.length === 0) {
+    return {
+      name: 'Not specified',
+      street: 'Not specified',
+      city: 'Not specified',
+      state: 'Not specified',
+      zip: 'Not specified',
+      phone: defaultPhone,
+      fullAddress: address
+    };
+  }
+
+  // Try to extract phone number from first line
+  const phoneMatch = lines[0].match(/\d{10}/);
+  const phone = phoneMatch ? phoneMatch[0] : defaultPhone;
   
-  emptyState.style.display = 'none';
-  
-  container.innerHTML = filteredOrders.map(order => {
-    const orderDate = new Date(order.date).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  // Name is first line without phone if present
+  const name = phoneMatch ? lines[0].replace(phoneMatch[0], '').trim() : lines[0];
+
+  // Try to parse address components from remaining lines
+  let street = lines.length > 1 ? lines[1] : 'Not specified';
+  let city = 'Not specified';
+  let state = 'Not specified';
+  let zip = 'Not specified';
+
+  if (lines.length > 1) {
+    const lastLine = lines[lines.length - 1];
+    const cityStateZipMatch = lastLine.match(/(.+),\s*(.+)\s(\d{6})/);
+    
+    if (cityStateZipMatch) {
+      city = cityStateZipMatch[1].trim();
+      state = cityStateZipMatch[2].trim();
+      zip = cityStateZipMatch[3].trim();
+      
+      // If we have more than 2 lines, join the middle lines as street
+      if (lines.length > 2) {
+        street = lines.slice(1, -1).join(', ');
+      }
+    } else {
+      // Fallback - just use the last line as city/state
+      const parts = lastLine.split(',');
+      if (parts.length > 0) {
+        city = parts[0].trim();
+        if (parts.length > 1) {
+          state = parts[1].trim();
+        }
+      }
+    }
+  }
+
+  return {
+    name,
+    street,
+    city,
+    state,
+    zip,
+    phone,
+    fullAddress: address
+  };
+}
+
+// Improved order details modal with better error handling
+function openOrderDetails(orderId) {
+  try {
+    if (!orderId) {
+      console.error("No order ID provided");
+      return;
+    }
+    
+    const allOrders = JSON.parse(localStorage.getItem('orders')) || [];
+    let order = allOrders.find(o => o.id === orderId);
+
+    if (!order) {
+      console.error("Order not found:", orderId);
+      alert('Order details not available. Please try again later.');
+      return;
+    }
+    
+    const modal = document.getElementById('orderDetailsModal');
+    const modalBody = document.getElementById('modalBodyContent');
+    
+    // Format order date
+    let orderDate;
+    try {
+      orderDate = new Date(order.date).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (e) {
+      console.error("Error formatting date:", e);
+      orderDate = "Date not available";
+    }
+    
+    // Format cancellation date if exists
+    let cancellationDate = "Not cancelled";
+    if (order.cancelledDate) {
+      try {
+        cancellationDate = new Date(order.cancelledDate).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        console.error("Error formatting cancellation date:", e);
+      }
+    }
     
     // Determine status
-    let statusText, statusClass;
+    let statusText = 'PROCESSING';
+    let statusClass = 'status-placed';
+    
     if (order.cancelled) {
       statusText = 'CANCELLED';
       statusClass = 'status-canceled';
-    } else {
-      switch(order.status) {
+    } else if (order.status) {
+      switch(order.status.toLowerCase()) {
         case 'placed': 
           statusText = 'ORDER PLACED';
           statusClass = 'status-placed';
@@ -529,58 +845,292 @@ function renderOrders(filter = 'all') {
           statusText = 'DELIVERED';
           statusClass = 'status-delivered';
           break;
-        default:
-          statusText = 'PROCESSING';
-          statusClass = 'status-placed';
       }
     }
     
-    // Calculate total amount
-    const totalAmount = order.items.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+    // Calculate amounts with fallbacks
+    const subtotal = order.items?.reduce((sum, item) => sum + ((item.price || 0) * (item.quantity || 1)), 0) || 0;
+    const shipping = order.shippingFee || 0;
+    const tax = order.tax || 0;
+    const totalAmount = subtotal + shipping + tax;
     
-    return `
-      <div class="order-card">
-        <div class="order-header">
-          <div>
-            <div class="order-id">Order #${order.id || generateOrderId()}</div>
-            <div class="order-date">${orderDate}</div>
-          </div>
-          <div class="order-status ${statusClass}">${statusText}</div>
+    // Expected delivery date (7 days from order date)
+    let formattedDeliveryDate = "Not available";
+    try {
+      const expectedDeliveryDate = new Date(order.date);
+      expectedDeliveryDate.setDate(expectedDeliveryDate.getDate() + 7);
+      formattedDeliveryDate = expectedDeliveryDate.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch (e) {
+      console.error("Error calculating delivery date:", e);
+    }
+    
+    // Payment method with fallback
+    const paymentMethod = order.paymentMethod || 'Not specified';
+    
+    // Parse shipping address with our improved function
+    const shippingAddress = parseAddress(order.shippingAddress || order.deliveryAddress);
+    
+    // Build modal content - adding cancellation details if order is cancelled
+    modalBody.innerHTML = `
+      <div class="order-details-grid">
+        <div class="detail-group">
+          <div class="detail-label">Order ID</div>
+          <div class="detail-value">${order.id}</div>
         </div>
-        
-        <div class="order-body">
-          <div class="order-items">
-            ${order.items.map(item => `
-              <div class="order-item">
-                <img src="${item.image || 'default-product.jpg'}" alt="${item.name}" class="item-image">
-                <div class="item-details">
-                  <div class="item-name">${item.name}</div>
-                  <div class="item-price">₹${item.price.toLocaleString('en-IN')}</div>
-                  <div class="item-quantity">Qty: ${item.quantity || 1}</div>
-                </div>
-              </div>
-            `).join('')}
+        <div class="detail-group">
+          <div class="detail-label">Order Date</div>
+          <div class="detail-value">${orderDate}</div>
+        </div>
+        <div class="detail-group">
+          <div class="detail-label">Order Status</div>
+          <div class="detail-value"><span class="order-status ${statusClass}">${statusText}</span></div>
+        </div>
+        ${order.cancelled ? `
+        <div class="detail-group">
+          <div class="detail-label">Cancellation Date</div>
+          <div class="detail-value">${cancellationDate}</div>
+        </div>
+        <div class="detail-group">
+          <div class="detail-label">Cancellation Reason</div>
+          <div class="detail-value">${order.cancellationReason || 'Not specified'}</div>
+        </div>
+        ` : `
+        <div class="detail-group">
+          <div class="detail-label">Payment Method</div>
+          <div class="detail-value">${paymentMethod}</div>
+        </div>
+        <div class="detail-group">
+          <div class="detail-label">Expected Delivery</div>
+          <div class="detail-value">${formattedDeliveryDate}</div>
+        </div>
+        <div class="detail-group">
+          <div class="detail-label">Tracking Number</div>
+          <div class="detail-value">${order.trackingNumber || 'Not available yet'}</div>
+        </div>
+        `}
+      </div>
+      
+      <div class="modal-items">
+        <h4>Order Items (${order.items?.length || 0})</h4>
+        ${(order.items || []).map(item => `
+          <div class="modal-item">
+            <img src="${item.image || 'default-product.jpg'}" alt="${item.name || 'Product'}" class="modal-item-image">
+            <div class="modal-item-details">
+              <div class="modal-item-name">${item.name || 'Unnamed product'}</div>
+              <div class="modal-item-price">₹${(item.price || 0).toLocaleString('en-IN')}</div>
+              <div class="modal-item-quantity">Quantity: ${item.quantity || 1}</div>
+            </div>
           </div>
-          
-          <div class="order-summary">
-            <div class="summary-label">Total Amount:</div>
-            <div class="summary-value">₹${totalAmount.toLocaleString('en-IN')}</div>
-          </div>
-          
-          <div class="order-actions">
-            <button class="action-btn btn-outline" onclick="window.location.href='order-details.html?orderId=${order.id}'">
-              <i class="fas fa-file-alt"></i> View Details
-            </button>
-            ${!order.cancelled && order.status !== 'delivered' ? `
-              <button class="action-btn btn-primary" onclick="window.location.href='track-order.html?orderId=${order.id}'">
-                <i class="fas fa-truck"></i> Track Order
-              </button>
-            ` : ''}
-          </div>
+        `).join('')}
+      </div>
+      
+      <div class="modal-summary">
+        <h4>Order Summary</h4>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>₹${subtotal.toLocaleString('en-IN')}</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>₹${shipping.toLocaleString('en-IN')}</span>
+        </div>
+        <div class="summary-row">
+          <span>Tax</span>
+          <span>₹${tax.toLocaleString('en-IN')}</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span>₹${totalAmount.toLocaleString('en-IN')}</span>
         </div>
       </div>
+      
+      ${!order.cancelled ? `
+      <div class="shipping-address" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+        <h4>Shipping Address</h4>
+        <p style="margin-top: 0.5rem; white-space: pre-line;">
+          ${shippingAddress.name}<br>
+          ${shippingAddress.city}, ${shippingAddress.state} ${shippingAddress.zip}<br>
+          Phone: ${shippingAddress.phone}
+        </p>
+      </div>
+      ` : ''}
     `;
-  }).join('');
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+  } catch (error) {
+    console.error("Error opening order details:", error);
+    alert('An error occurred while loading order details.');
+  }
+}
+
+
+
+// Close modal
+function closeModal() {
+  const modal = document.getElementById('orderDetailsModal');
+  modal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('orderDetailsModal');
+  if (event.target === modal) {
+    closeModal();
+  }
+}
+
+// Enhanced render function with working "+ more items"
+function renderOrders(filter = 'all') {
+  try {
+    const orders = loadUserOrders();
+    const container = document.getElementById('ordersList');
+    const emptyState = document.getElementById('emptyState');
+    
+    // Filter orders
+    let filteredOrders = [];
+    switch(filter) {
+      case 'active':
+        filteredOrders = orders.filter(o => !o.cancelled && o.status !== 'delivered');
+        break;
+      case 'delivered':
+        filteredOrders = orders.filter(o => o.status === 'delivered');
+        break;
+      case 'cancelled':
+        filteredOrders = orders.filter(o => o.cancelled || o.status === 'cancelled');
+        break;
+      default:
+        filteredOrders = [...orders];
+    }
+    
+    if (filteredOrders.length === 0) {
+      container.innerHTML = '';
+      emptyState.style.display = 'block';
+      return;
+    }
+    
+    emptyState.style.display = 'none';
+    
+    container.innerHTML = filteredOrders.map(order => {
+      // Format order date with error handling
+      let orderDate;
+      try {
+        orderDate = new Date(order.date).toLocaleDateString('en-IN', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      } catch (e) {
+        console.error("Error formatting date for order:", order.id, e);
+        orderDate = "Date not available";
+      }
+      
+      // Determine status
+      let statusText, statusClass;
+      if (order.cancelled) {
+        statusText = 'CANCELLED';
+        statusClass = 'status-canceled';
+      } else {
+        switch(order.status) {
+          case 'placed': 
+            statusText = 'ORDER PLACED';
+            statusClass = 'status-placed';
+            break;
+          case 'shipped':
+            statusText = 'SHIPPED';
+            statusClass = 'status-shipped';
+            break;
+          case 'delivered':
+            statusText = 'DELIVERED';
+            statusClass = 'status-delivered';
+            break;
+          default:
+            statusText = 'PROCESSING';
+            statusClass = 'status-placed';
+        }
+      }
+      
+      // Calculate total amount with fallbacks
+      const totalAmount = (order.items || []).reduce((sum, item) => {
+        return sum + ((item.price || 0) * (item.quantity || 1));
+      }, 0);
+      
+      return `
+        <div class="order-card">
+          <div class="order-header">
+            <div>
+              <div class="order-id">Order #${order.id || generateOrderId()}</div>
+              <div class="order-date">${orderDate}</div>
+            </div>
+            <div class="order-status ${statusClass}">${statusText}</div>
+          </div>
+          
+          <div class="order-body">
+            <div class="order-items">
+              ${(order.items || []).slice(0, 2).map(item => `
+                <div class="order-item">
+                  <img src="${item.image || 'default-product.jpg'}" alt="${item.name || 'Product'}" class="item-image">
+                  <div class="item-details">
+                    <div class="item-name">${item.name || 'Unnamed product'}</div>
+                    <div class="item-price">₹${(item.price || 0).toLocaleString('en-IN')}</div>
+                    <div class="item-quantity">Qty: ${item.quantity || 1}</div>
+                  </div>
+                </div>
+              `).join('')}
+              
+              ${(order.items || []).length > 2 ? `
+                <div class="show-more-items" 
+                     onclick="this.style.display='none'; 
+                             this.nextElementSibling.style.display='flex'">
+                  + ${(order.items || []).length - 2} more items
+                </div>
+                <div class="hidden-items">
+                  ${(order.items || []).slice(2).map(item => `
+                    <div class="order-item">
+                      <img src="${item.image || 'default-product.jpg'}" alt="${item.name || 'Product'}" class="item-image">
+                      <div class="item-details">
+                        <div class="item-name">${item.name || 'Unnamed product'}</div>
+                        <div class="item-price">₹${(item.price || 0).toLocaleString('en-IN')}</div>
+                        <div class="item-quantity">Qty: ${item.quantity || 1}</div>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+            </div>
+            
+            <div class="order-summary">
+              <div class="summary-label">Total Amount:</div>
+              <div class="summary-value">₹${totalAmount.toLocaleString('en-IN')}</div>
+            </div>
+            
+            <div class="order-actions">
+              <button class="action-btn btn-outline" onclick="openOrderDetails('${order.id}'); return false;">
+                <i class="fas fa-file-alt"></i> View Details
+              </button>
+              ${!order.cancelled && order.status !== 'delivered' ? `
+                <button class="action-btn btn-primary" onclick="window.location.href='track-order.html?orderId=${order.id}'">
+                  <i class="fas fa-truck"></i> Track Order
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+  } catch (error) {
+    console.error("Error rendering orders:", error);
+    document.getElementById('emptyState').style.display = 'block';
+  }
 }
 
 // Filter orders when tab is clicked
@@ -597,8 +1147,40 @@ function filterOrders(filter) {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
+  // First validate localStorage data
+  try {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    if (!Array.isArray(orders)) {
+      localStorage.setItem('orders', JSON.stringify([]));
+    }
+  } catch (e) {
+    localStorage.setItem('orders', JSON.stringify([]));
+  }
+  
+  // Then render orders
   renderOrders('all');
 });
+
+// Debug function to check order data
+function debugOrders() {
+  const orders = JSON.parse(localStorage.getItem('orders')) || [];
+  console.log("All orders in localStorage:", orders);
+  console.log("Order IDs:", orders.map(o => o?.id));
+  
+  const userEmail = localStorage.getItem('user_email') || 
+                   JSON.parse(localStorage.getItem('userData'))?.email ||
+                   JSON.parse(localStorage.getItem('checkoutDetails'))?.email;
+  console.log("Current user email:", userEmail);
+  
+  const deliveryDetails = JSON.parse(localStorage.getItem('deliveryDetails')) || {};
+  console.log("Delivery details phone:", deliveryDetails.phone);
+  
+  const userOrders = orders.filter(o => o?.email === userEmail);
+  console.log("User's orders:", userOrders);
+}
+
+// Make debug function available in console
+window.debugOrders = debugOrders;
 </script>
 
 </body>

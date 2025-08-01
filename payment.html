@@ -1218,7 +1218,7 @@ function calculateTotalAmount(generateQR = true) {
       const totalAmount = calculateTotalAmount();
       
       const order = {
-        orderId,
+        id: orderId,
         email: checkoutData.email || 'guest@example.com',
         date: new Date().toISOString(),
         estimatedDelivery: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toDateString(),

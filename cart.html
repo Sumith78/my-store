@@ -67,25 +67,8 @@
       position: relative;
     }
         
-      .back-btn {
-      position: absolute;
-      left: 0;
-      color: white;
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: none;
-      border: none;
-    }
+  
     
-    .back-btn:hover {
-      color: var(--warning);
-      transform: translateX(-3px);
-    }
-
 
      .cart-title {
       font-weight: 600;
@@ -487,22 +470,20 @@
             font-weight: bold;
         }
 
-        .back-btn {
-            position: absolute;
-            left: 1rem;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .back-btn:hover {
-            color: var(--warning);
-            transform: translateX(-3px);
-        }
+       .back-btn {
+      position: absolute;
+      left: 0;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .back-btn:hover {
+      transform: translateX(-3px);
+    }
 
         /* Checkout bar styles */
         .checkout-bar {
