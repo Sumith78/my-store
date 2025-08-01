@@ -782,6 +782,23 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
+
+
+@media (max-width: 480px) {
+  .result-message {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .order-details {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  #resendEmailSection {
+    margin-top: 1.5rem;
+  }
+}
 </style>
 </head>
 <body>
@@ -989,6 +1006,11 @@
 
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script>
+
+
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
     emailjs.init("yWquru6Fki6Lvx0je");
     
     document.addEventListener('DOMContentLoaded', function() {
@@ -1385,21 +1407,37 @@ let emailMessage = `
 
       
       // Send email
-      emailjs.send("service_v1avwdt", "template_0pm6m3o", {
-        email: order.email,
-        order_id: orderId,
-        order_date: new Date(order.date).toDateString(),
-        delivery_date: order.estimatedDelivery,
-        payment_mode: order.paymentMethod,
-        delivery_address: order.deliveryAddress,
-        total_amount: totalAmount,
-        user_name: checkoutData.name || "Guest",
-        message_html: emailMessage
-      }).then(() => {
-        console.log("Email sent successfully");
-      }).catch(err => {
-        console.error("Email sending failed:", err);
-      });
+     // Add this function near the top of your script
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Modify your placeOrder() function's email sending part:
+emailjs.send("service_v1avwdt", "template_0pm6m3o", {
+  email: order.email,
+  order_id: orderId,
+  order_date: new Date(order.date).toDateString(),
+  delivery_date: order.estimatedDelivery,
+  payment_mode: order.paymentMethod,
+  delivery_address: order.deliveryAddress,
+  total_amount: totalAmount,
+  user_name: checkoutData.name || "Guest",
+  message_html: emailMessage
+}).then(() => {
+  console.log("Email sent successfully");
+  if (isMobileDevice()) {
+    alert("Order confirmed! Check your email (including spam folder) for confirmation.");
+  }
+}).catch(err => {
+  console.error("Email sending failed:", err);
+  // Fallback for mobile when email fails
+  if (isMobileDevice()) {
+    const fallbackMsg = `Order placed successfully! Your Order ID: ${orderId}\n\n` +
+                       `Due to mobile restrictions, email may not have been sent.\n` +
+                       `Please note down your order details.`;
+    alert(fallbackMsg);
+  }
+});
       
       // Save order to localStorage
       let orders = JSON.parse(localStorage.getItem('orders')) || [];
