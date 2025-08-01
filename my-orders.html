@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>My Orders | Mahaveer Enterprises</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -570,6 +570,61 @@
         background-color: var(--primary);
       }
     }
+
+
+
+    /* Mobile-specific fixes */
+@media (max-width: 768px) {
+  body {
+    background-color: var(--card-bg);
+  }
+  
+  .orders-container {
+    padding: 4rem 0.5rem 1rem !important;
+  }
+  
+  .order-card {
+    margin: 0 -0.5rem 1rem !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .order-header {
+    padding: 0.8rem !important;
+  }
+  
+  .order-body {
+    padding: 1rem !important;
+  }
+  
+  .item-image {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .order-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 8px;
+  }
+  
+  .order-tab {
+    padding: 0.8rem 1rem !important;
+    font-size: 0.9rem;
+  }
+  
+  .item-name {
+    font-size: 0.9rem !important;
+  }
+  
+  .item-price, .item-quantity {
+    font-size: 0.8rem !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -620,6 +675,34 @@
 </div>
 
 <script>
+
+
+
+  // Mobile debugging helper
+console.log = function(message) {
+  if (typeof message === 'object') {
+    message = JSON.stringify(message, null, 2);
+  }
+  const debugDiv = document.getElementById('mobile-debug') || document.createElement('div');
+  debugDiv.id = 'mobile-debug';
+  debugDiv.style.position = 'fixed';
+  debugDiv.style.bottom = '0';
+  debugDiv.style.left = '0';
+  debugDiv.style.right = '0';
+  debugDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
+  debugDiv.style.color = 'white';
+  debugDiv.style.padding = '10px';
+  debugDiv.style.zIndex = '9999';
+  debugDiv.style.fontFamily = 'monospace';
+  debugDiv.style.fontSize = '12px';
+  debugDiv.style.maxHeight = '200px';
+  debugDiv.style.overflow = 'auto';
+  debugDiv.innerHTML += message + '<br>';
+  document.body.appendChild(debugDiv);
+};
+
+
+
 // Generate a consistent order ID format matching payment.html
 function generateOrderId() {
   return `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -1147,7 +1230,16 @@ function filterOrders(filter) {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-  // First validate localStorage data
+  // First check if localStorage is available
+  try {
+    localStorage.setItem('test', 'test');
+    localStorage.removeItem('test');
+  } catch (e) {
+    alert('LocalStorage is not available. Some features may not work.');
+    return;
+  }
+  
+  // Then validate orders data
   try {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
     if (!Array.isArray(orders)) {
@@ -1157,8 +1249,22 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('orders', JSON.stringify([]));
   }
   
+  // Check for user authentication
+  const userEmail = localStorage.getItem('user_email') || 
+                   JSON.parse(localStorage.getItem('userData'))?.email;
+  
+  if (!userEmail) {
+    window.location.href = 'auth.html';
+    return;
+  }
+  
   // Then render orders
   renderOrders('all');
+  
+  // Mobile-specific debug info
+  console.log('Mobile debug initialized');
+  console.log('User email:', userEmail);
+  console.log('Orders count:', JSON.parse(localStorage.getItem('orders')).length);
 });
 
 // Debug function to check order data
@@ -1183,5 +1289,19 @@ function debugOrders() {
 window.debugOrders = debugOrders;
 </script>
 
+
+
+
+<div id="error-boundary" style="display: none; position: fixed; top: 0; left: 0; right: 0; background: #dc3545; color: white; padding: 1rem; z-index: 9999;">
+  An error occurred. Please refresh the page or contact support.
+</div>
+
+<script>
+// Global error handler
+window.onerror = function(message, source, lineno, colno, error) {
+  document.getElementById('error-boundary').style.display = 'block';
+  console.error('Global error:', message, error);
+};
+</script>
 </body>
 </html>
