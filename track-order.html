@@ -726,6 +726,39 @@ button {
   max-width: 100%;
   height: auto;
 }
+
+
+
+/* Fix for image and text alignment in .order-items on mobile */
+.order-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.order-items div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+@media (max-width: 480px) {
+  .order-items {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .order-items div {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+
   </style>
 </head>
 <body>
