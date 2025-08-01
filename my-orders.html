@@ -1264,6 +1264,11 @@ function debugOrders() {
 
 // Make debug function available in console
 window.debugOrders = debugOrders;
+
+
+  window.onload = function () {
+    renderOrders('all');
+  };
 </script>
 
 </body>
